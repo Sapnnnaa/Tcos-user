@@ -644,14 +644,14 @@
                 </div>
                 <!-- Email -->
                 <div class="intro-y col-span-6">
-                  <label for="email" class="form-label">Email ID</label>
+                  <label for="email" class="form-label">Email ID<span class="text-danger">*</span></label>
                   <input
                     id="email"
                     name="email"
                     type="email"
                     class="form-control"
                     th:field="*{email}"
-
+                    required
                   />
                   <span class="error-message" id="emailError"
                     >Valid email required</span
@@ -1759,7 +1759,7 @@
         isValid &= validateField("bcNumber", "B.C. Number");
         isValid &= validateField("gender", "Gender", "select");
         isValid &= validateField("dob", "Date of Birth");
-       // isValid &= validateField("email", "Email ID");
+        isValid &= validateField("email", "Email ID");
         isValid &= validateField(
           "phoneNum",
           "Phone Number",
@@ -1791,15 +1791,11 @@
            const errorElement = document.getElementById('emailError');
 
            // 1. Empty check
-           //if (!email) {
-           //    setErrorMessage('email', 'Email is required');
-           //    return false;
-          // }
+           if (!email) {
+               setErrorMessage('email', 'Email is required');
+               return false;
+           }
 
-          // Allow empty email
-           if (email === "") {
-             errorElement.textContent = "";
-             errorElement.style.display = "none";
            // 2. Format validation
            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
            if (!emailRegex.test(email)) {

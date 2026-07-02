@@ -403,7 +403,7 @@
                 </div>
                 <!-- Email -->
                 <div class="intro-y col-span-12 sm:col-span-6">
-                  <label for="email" class="form-label">Email ID</label>
+                  <label for="email" class="form-label">Email ID<span class="text-danger">*</span></label>
 
                   <input
                           id="email"
@@ -411,7 +411,7 @@
                           type="email"
                           class="form-control"
                           th:field="*{email}"
-
+                          required
                   />
 
                   <span class="error-message" id="emailError">
@@ -1479,7 +1479,7 @@
         isValid &= validateField("bcNumber", "B.C. Number");
         isValid &= validateField("gender", "Gender", "select");
         isValid &= validateField("dob", "Date of Birth");
-        //isValid &= validateField("email", "Email ID");
+        isValid &= validateField("email", "Email ID");
         isValid &= validateField(
           "phoneNum",
           "Phone Number",
@@ -1513,16 +1513,16 @@
         // Hide error initially
         emailError.style.display = "none";
 
-         //Allow empty email (optional field)
-         if (email === "") {
-         return true;
-        }
-
-       // if (email === "") {
-        //emailError.textContent = "Email is required";
-       // emailError.style.display = "block";
-       // return false;
+        // Allow empty email (optional field)
+        // if (email === "") {
+       //  return true;
        // }
+
+        if (email === "") {
+        emailError.textContent = "Email is required";
+        emailError.style.display = "block";
+        return false;
+        }
 
         // Basic email format validation
         const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
