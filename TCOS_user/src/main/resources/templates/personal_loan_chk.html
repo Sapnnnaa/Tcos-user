@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en" class="light" xmlns:th="http://www.thymeleaf.org">
+<!-- BEGIN: Head -->
+
+<head>
+    <meta charset="utf-8">
+    <link href="../../../dist/images/logo.svg" rel="shortcut icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>TELCO - Profile</title>
+    <!-- BEGIN: CSS Assets-->
+    <link rel="stylesheet" href="../../../dist/css/app.css" />
+    <link rel="stylesheet" href="../../../dist/css/jquery.dataTables.min.css" />
+    <!-- END: CSS Assets-->
+
+</head>
+<style>
+    .dataTables_length select {
+        width: 60px;
+    }
+
+    /* Hard-coded styles for badges */
+    .badge {
+        display: inline-block;
+        padding: 5px 10px;
+        font-size: 14px;
+        font-weight: bold;
+        border-radius: 5px;
+    }
+
+    .badge-other {
+        color: white;
+        background-color: red;
+    }
+
+    .badge-active {
+        color: white;
+        background-color: green;
+    }
+
+    /* Enhanced Confirmation Page Styles */
+    .confirmation-container {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 20px;
+        padding: 3px;
+        margin: 20px 0;
+        box-shadow: 0 25px 50px rgba(102, 126, 234, 0.3);
+    }
+
+    .confirmation-inner {
+        background: white;
+        border-radius: 17px;
+        padding: 0;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .confirmation-inner::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 5px;
+        background: linear-gradient(90deg, #28a745, #20c997, #17a2b8, #6f42c1);
+        z-index: 1;
+    }
+
+    .confirmation-header {
+        background: linear-gradient(135deg, #28a745, #20c997);
+        color: white;
+        padding: 30px;
+        text-align: center;
+        position: relative;
+        margin-top: 5px;
+    }
+
+    .confirmation-header h1 {
+        font-size: 2.2rem;
+        font-weight: 700;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 15px;
+    }
+
+    .confirmation-header p {
+        font-size: 1.1rem;
+        opacity: 0.9;
+        margin: 0;
+    }
+
+    .status-indicator {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        background: rgba(255,255,255,0.2);
+        padding: 8px 15px;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        font-weight: 600;
+    }
+
+    .details-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 0;
+        margin: 0;
+    }
+
+    .detail-card {
+        background: white;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+
+    .detail-card:not(:last-child) {
+        border-right: 1px solid #e9ecef;
+    }
+
+    .detail-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        transition: all 0.3s ease;
+        z-index: 1;
+    }
+
+    .detail-card:nth-child(1)::before {
+        background: linear-gradient(90deg, #007bff, #0056b3);
+    }
+
+    .detail-card:nth-child(2)::before {
+        background: linear-gradient(90deg, #28a745, #20c997);
+    }
+
+    .detail-card:nth-child(3)::before {
+        background: linear-gradient(90deg, #17a2b8, #138496);
+    }
+
+    .detail-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+        z-index: 2;
+    }
+
+    .detail-card:hover::before {
+        height: 6px;
+    }
+
+    .card-header {
+        padding: 25px 25px 10px;
+        border-bottom: none;
+        position: relative;
+    }
+
+    .card-title {
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: #495057;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin: 0;
+    }
+
+    .card-title::before {
+        content: '';
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        display: inline-block;
+    }
+
+    .detail-card:nth-child(1) .card-title::before {
+        background: linear-gradient(135deg, #007bff, #0056b3);
+    }
+
+    .detail-card:nth-child(2) .card-title::before {
+        background: linear-gradient(135deg, #28a745, #20c997);
+    }
+
+    .detail-card:nth-child(3) .card-title::before {
+        background: linear-gradient(135deg, #17a2b8, #138496);
+    }
+
+    .card-content {
+        padding: 15px 25px 30px;
+    }
+
+    .detail-item {
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 15px;
+        padding: 12px;
+        border-radius: 8px;
+        background: #f8f9fa;
+        transition: all 0.3s ease;
+        border-left: 3px solid transparent;
+    }
+
+    .detail-item:hover {
+        background: #e9ecef;
+        border-left-color: #007bff;
+        transform: translateX(5px);
+    }
+
+    .detail-label {
+        font-weight: 600;
+        color: #495057;
+        min-width: 120px;
+        font-size: 0.9rem;
+    }
+
+    .detail-value {
+        color: #6c757d;
+        flex: 1;
+        font-size: 0.9rem;
+        word-break: break-word;
+    }
+
+    .action-section {
+        background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+        padding: 30px;
+        text-align: center;
+        border-top: 1px solid #dee2e6;
+    }
+
+    .enhanced-submit-btn {
+        background: linear-gradient(135deg, #28a745, #20c997);
+        border: none;
+        color: white;
+        padding: 15px 40px;
+        border-radius: 50px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 10px 30px rgba(40, 167, 69, 0.3);
+        position: relative;
+        overflow: hidden;
+        min-width: 180px;
+        margin: 0 10px;
+    }
+
+    .enhanced-submit-btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+        transition: left 0.5s;
+    }
+
+    .enhanced-submit-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 40px rgba(40, 167, 69, 0.4);
+    }
+
+    .enhanced-submit-btn:hover::before {
+        left: 100%;
+    }
+
+    .enhanced-submit-btn:active {
+        transform: translateY(-1px);
+    }
+
+    .alert-container {
+        margin: 20px 0;
+    }
+
+    .enhanced-alert {
+        padding: 20px;
+        border-radius: 15px;
+        border: none;
+        position: relative;
+        overflow: hidden;
+        margin: 15px 0;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+
+    .enhanced-alert.alert-success {
+        background: linear-gradient(135deg, #28a745, #20c997);
+        color: white;
+    }
+
+    .enhanced-alert.alert-danger {
+        background: linear-gradient(135deg, #dc3545, #c82333);
+        color: white;
+    }
+
+    .enhanced-alert::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 5px;
+        height: 100%;
+        background: rgba(255,255,255,0.3);
+    }
+
+    .enhanced-alert h4 {
+        margin-bottom: 10px;
+        font-size: 1.1rem;
+        font-weight: 600;
+    }
+
+    .enhanced-alert p {
+        margin: 0;
+        line-height: 1.5;
+    }
+
+    .download-section {
+        background: linear-gradient(135deg, #6f42c1, #5a32a3);
+        color: white;
+        padding: 25px;
+        border-radius: 15px;
+        text-align: center;
+        margin: 20px 0;
+        box-shadow: 0 15px 40px rgba(111, 66, 193, 0.3);
+    }
+
+    .download-btn {
+        background: rgba(255,255,255,0.2);
+        border: 2px solid rgba(255,255,255,0.3);
+        color: white;
+        padding: 12px 30px;
+        border-radius: 25px;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        margin-top: 15px;
+    }
+
+    .download-btn:hover {
+        background: rgba(255,255,255,0.3);
+        border-color: rgba(255,255,255,0.5);
+        transform: translateY(-2px);
+        color: white;
+        text-decoration: none;
+    }
+
+    .floating-elements {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+    }
+
+    .floating-elements::before,
+    .floating-elements::after {
+        content: '';
+        position: absolute;
+        background: rgba(255,255,255,0.1);
+        border-radius: 50%;
+    }
+
+    .floating-elements::before {
+        width: 80px;
+        height: 80px;
+        top: 20%;
+        right: 10%;
+        animation: float 6s ease-in-out infinite;
+    }
+
+    .floating-elements::after {
+        width: 50px;
+        height: 50px;
+        bottom: 30%;
+        left: 15%;
+        animation: float 4s ease-in-out infinite reverse;
+    }
+
+    @keyframes float {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-15px); }
+    }
+
+    .progress-steps {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 20px 0;
+        gap: 15px;
+    }
+
+    .step {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        font-size: 0.9rem;
+        position: relative;
+    }
+
+    .step.completed {
+        background: linear-gradient(135deg, #28a745, #20c997);
+        color: white;
+    }
+
+    .step.active {
+        background: linear-gradient(135deg, #17a2b8, #138496);
+        color: white;
+        animation: pulse 2s infinite;
+    }
+
+    .step.pending {
+        background: #e9ecef;
+        color: #6c757d;
+    }
+
+    .step-connector {
+        width: 30px;
+        height: 2px;
+        background: #e9ecef;
+        position: relative;
+    }
+
+    .step-connector.completed {
+        background: linear-gradient(90deg, #28a745, #20c997);
+    }
+
+    @media (max-width: 768px) {
+        .details-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .detail-card {
+            border-right: none;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .detail-card:last-child {
+            border-bottom: none;
+        }
+        
+        .confirmation-header h1 {
+            font-size: 1.8rem;
+        }
+        
+        .enhanced-submit-btn {
+            width: 100%;
+            margin: 10px 0;
+        }
+    }
+
+    .info-badge {
+        background: linear-gradient(135deg, #17a2b8, #138496);
+        color: white;
+        padding: 8px 15px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        display: inline-block;
+        margin-top: 10px;
+    }
+
+    .highlight-value {
+        background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+        padding: 3px 8px;
+        border-radius: 12px;
+        color: #856404;
+        font-weight: 600;
+    }
+</style>
+<!-- END: Head -->
+
+<body class="py-5 md:py-0">
+    <div class="flex md:mt-0">
+
+        <div th:replace="~{/fragments/nav}"></div>
+        <div th:insert="~{/fragments/mob}"></div>
+        <!-- BEGIN: Content -->
+        <div class="content content--top-nav">
+
+            <div th:replace="~{/fragments/top}"></div>
+            <div class="intro-y flex items-center mt-8">
+                <h2 class="text-lg font-medium mr-auto">
+                    Personal Loan Confirmation
+                </h2>
+
+            </div>
+            
+            <div class="confirmation-container">
+                <div class="confirmation-inner">
+                    <div class="confirmation-header">
+                        <div class="floating-elements"></div>
+                        <h1>
+                            <span></span>
+                            Final Review & Confirmation
+                        </h1>
+                        <p>Please review your details before submitting your personal loan application</p>
+                        
+                    </div>
+
+                    <div class="details-grid">
+                        <!-- Bank Details Card -->
+                        <div class="detail-card">
+                            <div class="card-header">
+                                <h3 class="card-title">🏦 Bank Details</h3>
+                            </div>
+                            <div class="card-content">
+                                <div class="detail-item">
+                                    <span class="detail-label">Account Number:</span>
+                                    <span class="detail-value highlight-value" th:text="${bank.accountNum}">****1234</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Bank Name:</span>
+                                    <span class="detail-value" th:text="${bank.bankName}">State Bank of India</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Branch:</span>
+                                    <span class="detail-value" th:text="${bank.branchName}">Main Branch</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">IFSC Code:</span>
+                                    <span class="detail-value highlight-value" th:text="${bank.ifscCode}">SBIN0001234</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Contact Details Card -->
+                        <div class="detail-card">
+                            <div class="card-header">
+                                <h3 class="card-title">👤 Personal Information</h3>
+                            </div>
+                            <div class="card-content">
+                                <div class="detail-item">
+                                    <span class="detail-label">Full Name:</span>
+                                    <span class="detail-value" th:text="${user.name}">John Doe</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Email ID:</span>
+                                    <span class="detail-value" th:text="${user.email}">john@example.com</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Phone Number:</span>
+                                    <span class="detail-value highlight-value" th:text="${user.phoneNum}">+91-9876543210</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Address:</span>
+                                    <span class="detail-value" th:text="${user.currentAddr}">123 Main Street, City</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Loan History Card -->
+                        <div class="detail-card">
+                            <div class="card-header">
+                                <h3 class="card-title">📊 Due Loan History</h3>
+                            </div>
+                            <div class="card-content" th:if="${prevLoan!=null}">
+                                <div class="detail-item">
+                                    <span class="detail-label">Last Loan Applied On: </span>
+                                    <span class="detail-value" th:text="${prevLoan != null ? #dates.format(prevLoan.loanApplyDate, 'dd-MM-yyyy') : 'No Previous Loan Pending'}"></span>
+                                </div>
+                                <div class="detail-item" th:if="${prevLoan!=null}">
+                                    <span class="detail-label">Approved On: </span>
+                                    <span class="detail-value" th:text="${prevLoan.loanApproveDate != null ? #dates.format(prevLoan.loanApproveDate, 'dd-MM-yyyy') : 'Not approved' }">Not approved</span>
+                                </div>
+                                <div class="detail-item" th:if="${prevLoan!=null}">
+                                    <span class="detail-label">Previous loan Status:</span>
+                                    <span class="detail-value" th:text="${prevLoan != null ? prevLoan.loanStatus : 'First Time Applicant'}"></span>
+                                </div>
+                                <div class="detail-item" th:if="${eligibleloan!=null}">
+                                    <span class="detail-label">Eligible loan Amount:</span>
+                                    <span class="detail-value" th:text="${eligibleloan}"></span>
+                                </div>
+                            </div>
+                            <div class="card-content" th:if="${prevLoan==null}">
+                                <div style="text-align: center; font-size: 1.5rem; font-weight: bold; padding: 100px;">
+                                    <span class="detail-value">No loans on due</span>
+                                </div>
+                                <div class="detail-item" th:if="${eligibleloan!=null}">
+                                    <span class="detail-label">Eligible loan Amount:</span>
+                                    <span class="detail-value" th:text="${eligibleloan}"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="action-section">
+                        <h3 style="margin-bottom: 20px; color: #495057;">Ready to Submit Your Application?</h3>
+                        <p style="color: #6c757d; margin-bottom: 25px;">By clicking submit, you confirm that all information provided is accurate and complete.</p>
+                        
+                        <form th:action="@{/user/termsper/personalloan/check}" method="post" style="display: inline-block;">
+                            <button type="submit" class="enhanced-submit-btn">
+                                🚀 Submit Application
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="alert-container">
+                        <div th:if="${message}" class="enhanced-alert alert-success">
+                            <h4>✅ Application Successful!</h4>
+                            <p th:text="${message}">Your application has been submitted successfully.</p>
+                        </div>
+                        
+                        <div th:if="${messageerr}" class="enhanced-alert alert-danger">
+                            <h4>⚠️ Application Error</h4>
+                            <p th:text="${messageerr}">There was an error processing your application.</p>
+                        </div>
+
+                        <!-- Enhanced Download Section - Only show if downloadUrl exists and is not empty -->
+                        <div th:if="${downloadUrl != null and downloadUrl != ''}" class="download-section">
+                            <h3 style="margin-bottom: 15px;">📄 Application Documents Ready</h3>
+                            <p style="margin-bottom: 0; opacity: 0.9;">Your loan application PDF is now available for download. Keep this document for your records.</p>
+                            <a th:href="${downloadUrl}" class="download-btn" target="_blank">
+                                <span>📥</span>
+                                Download Application PDF
+                            </a>
+                        </div>
+
+                        <!-- Hidden input for automatic download -->
+                        <input type="hidden" th:if="${downloadUrl != null and downloadUrl != ''}" th:value="${downloadUrl}" id="downloadurlvalue" />
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!-- END: Content -->
+
+        <!-- BEGIN: JS Assets-->
+
+        <!-- END: JS Assets-->
+        <script src="../../../dist/js/app.js"></script>
+        <script src="../../../dist/js/jquery-3.6.0.min.js"></script>
+        <script src="../../../dist/js/jquery.dataTables.min.js"></script>
+    </div>
+
+    <div th:insert="~{/fragments/footer}"></div>
+
+</body>
+<script>
+    // Enhanced interaction effects
+    document.addEventListener('DOMContentLoaded', function() {
+        // Add smooth animations to detail items
+        const detailItems = document.querySelectorAll('.detail-item');
+        detailItems.forEach((item, index) => {
+            item.style.animationDelay = `${index * 0.1}s`;
+            item.style.animation = 'slideInUp 0.6s ease forwards';
+        });
+
+        // Add hover effects to cards
+        const detailCards = document.querySelectorAll('.detail-card');
+        detailCards.forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-8px)';
+                this.style.boxShadow = '0 20px 50px rgba(0,0,0,0.12)';
+            });
+
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+                this.style.boxShadow = 'none';
+            });
+        });
+
+        // Animate submit button on form submission
+        const submitForm = document.querySelector('form');
+        const submitBtn = document.querySelector('.enhanced-submit-btn');
+        
+        if (submitForm && submitBtn) {
+            submitForm.addEventListener('submit', function(e) {
+                submitBtn.innerHTML = '⏳ Processing...';
+                submitBtn.style.opacity = '0.8';
+                submitBtn.style.pointerEvents = 'none';
+            });
+        }
+
+        // Add typing effect to success/error messages
+        const alerts = document.querySelectorAll('.enhanced-alert p');
+        alerts.forEach(alert => {
+            const text = alert.textContent;
+            alert.textContent = '';
+            let i = 0;
+            
+            const typeWriter = () => {
+                if (i < text.length) {
+                    alert.textContent += text.charAt(i);
+                    i++;
+                    setTimeout(typeWriter, 30);
+                }
+            };
+            
+            setTimeout(typeWriter, 500);
+        });
+
+        // Progress step animation
+        const steps = document.querySelectorAll('.step');
+        steps.forEach((step, index) => {
+            setTimeout(() => {
+                step.style.transform = 'scale(1.1)';
+                setTimeout(() => {
+                    step.style.transform = 'scale(1)';
+                }, 200);
+            }, index * 300);
+        });
+
+        // Automatic download functionality - same as commodity loan
+        const downloadInput = document.getElementById('downloadurlvalue');
+        if (downloadInput && downloadInput.value !== '') {
+            const baseUrl = window.location.origin;
+            window.location = baseUrl + downloadInput.value;
+        }
+    });
+
+    // Add keyframes for animations
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(23, 162, 184, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(23, 162, 184, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(23, 162, 184, 0); }
+        }
+    `;
+    document.head.appendChild(style);
+</script>
+
+</html>

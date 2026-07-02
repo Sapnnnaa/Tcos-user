@@ -1,0 +1,89 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
+<nav class="side-nav">
+    <a href="" class="intro-x flex items-center pl-5 pt-4" id="logo-container">
+        <!-- <img alt="Midone - HTML Admin Template" class="w-6" src=""> -->
+        <span class="hidden xl:block text-white text-lg ml-3"> TELCO </span>
+    </a>
+    <div class="side-nav__devider my-6"></div>
+    <ul>
+        <!-- Loan -->
+<!--        <li>-->
+<!--            <a href="javascript:;" class="side-menu">-->
+<!--                <div class="side-menu__icon"><i class="fas fa-hand-holding-usd"></i></div>-->
+<!--                <div class="side-menu__title">-->
+<!--                    Loan-->
+<!--                    <div class="side-menu__sub-icon transform rotate-180"><i class="fas fa-chevron-down"></i></div>-->
+<!--                </div>-->
+<!--            </a>-->
+<!--            <ul class="side-menu__sub-close">-->
+<!--                <li>-->
+<!--                    <a th:href="@{/user/termscom}" class="side-menu">-->
+<!--                        <div class="side-menu__icon"><i class="fas fa-boxes-stacked"></i></div>-->
+<!--                        <div class="side-menu__title">Commodity Loan</div>-->
+<!--                    </a>-->
+<!--                </li>-->
+<!--                <li>-->
+<!--                    <a th:href="@{/user/termsper}" class="side-menu">-->
+<!--                        <div class="side-menu__icon"><i class="fas fa-user-tag"></i></div>-->
+<!--                        <div class="side-menu__title">Normal Loan</div>-->
+<!--                    </a>-->
+<!--                </li>-->
+<!--            </ul>-->
+<!--        </li>-->
+
+        <!-- CD & Share -->
+        <li>
+            <a th:href="@{/user/cdshare}" class="side-menu">
+                <div class="side-menu__icon"><i class="fas fa-file-invoice-dollar"></i></div>
+                <div class="side-menu__title">CD & Share</div>
+            </a>
+        </li>
+
+        <!-- Loan History -->
+        <li>
+            <a href="javascript:;" class="side-menu">
+                <div class="side-menu__icon"><i class="fas fa-history"></i></div>
+                <div class="side-menu__title">
+                    Loan History
+                    <div class="side-menu__sub-icon transform rotate-180"><i class="fas fa-chevron-down"></i></div>
+                </div>
+            </a>
+            <ul class="side-menu__sub-close">
+                <li>
+                    <a th:href="@{/user/history}" class="side-menu">
+                        <div class="side-menu__icon"><i class="fas fa-clipboard-list"></i></div>
+                        <div class="side-menu__title">All Loan</div>
+                    </a>
+                </li>
+                <li>
+                    <a th:href="@{/user/history/commodityloan}" class="side-menu">
+                        <div class="side-menu__icon"><i class="fas fa-boxes-stacked"></i></div>
+                        <div class="side-menu__title">Commodity Loan</div>
+                    </a>
+                </li>
+                <li>
+                    <a th:href="@{/user/history/personalloan}" class="side-menu">
+                        <div class="side-menu__icon"><i class="fas fa-user-tag"></i></div>
+                        <div class="side-menu__title">Normal Loan</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        <!-- EMI Payment History -->
+        <li>
+            <a th:href="@{/user/emi}" class="side-menu">
+                <div class="side-menu__icon"><i class="fas fa-money-check-alt"></i></div>
+                <div class="side-menu__title">EMI Payment History</div>
+            </a>
+        </li>
+
+        <!-- CD & Share History -->
+        <li>
+            <a th:href="@{/user/cdsharehis}" class="side-menu">
+                <div class="side-menu__icon"><i class="fas fa-archive"></i></div>
+                <div class="side-menu__title">CD and Share History</div>
+            </a>
+        </li>
+    </ul>
+</nav>

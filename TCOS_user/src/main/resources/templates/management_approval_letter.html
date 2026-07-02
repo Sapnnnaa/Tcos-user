@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    </meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </meta>
+    <title>Loan Application Form and Management Approval Letter</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 5mm;
+            /* Default page margin */
+        }
+
+        body {
+            /* font-family: Arial, sans-serif; */
+            font-size: 10px;
+            margin: 0;
+            padding: 0;
+            background-color: #fffcfc;
+        }
+
+        .container {
+            width: 95%;
+            /* Full width of the A4 page */
+            max-width: 100%;
+            /* Remove content restriction */
+            margin: 0 auto;
+            padding: 20px;
+            background: #fff;
+        }
+
+        .header {
+            font-weight: bold;
+            color: #070707;
+            text-align: center;
+            font-size: 20px;
+            margin-bottom: 7px;
+        }
+
+        .sub-header {
+            font-weight: bold;
+            font-size: 16px;
+            color: #070707;
+            margin: 1px 0 5px;
+            /* border: 2px solid black; */
+        }
+
+        .field {
+            font-size: 13.5px;
+            color: #070707;
+            margin: 5px 0;
+            line-height: 1.6;
+        }
+
+        .signature {
+            font-weight: bold;
+            font-size: 13.5px;
+            color: #000000;
+            text-align: right;
+            margin-top: 20px;
+        }
+
+        .underline {
+            display: inline-block;
+            border-bottom: 1px solid #000;
+            width: 100px;
+            margin-left: 5px;
+        }
+
+        .bordered {
+            border: 2px solid black;
+            padding: 7px;
+            margin-top: 15px;
+            margin-bottom: 15px;
+        }
+
+        .center {
+            text-align: center;
+        }
+
+        .padding {
+            padding-top: 0;
+        }
+
+        .content {
+            border: 2px solid black;
+            margin-bottom: 5px;
+        }
+
+        .table {
+            width: 100%;
+            /* Make the table span the full width */
+            border-collapse: collapse;
+        }
+
+        .td {
+            width: 50%;
+            /* Each cell takes up half of the table width */
+            vertical-align: top;
+            /* Align content to the top of the cells */
+            margin-right: 30px;
+        }
+
+        .spacing {
+            margin-right: 20%;
+        }
+
+        .sureties {
+            border: 1px solid black;
+            width: 100%;
+        }
+
+        .sureties {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .sureties th,
+        .sureties td {
+            border: 2px solid #000;
+            padding: 8px;
+            text-align: left;
+        }
+
+        .sureties th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
+        .sureties td {
+            text-align: center;
+        }
+
+        /* Management Approval Letter Styles */
+        .letterhead {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #000;
+            padding-bottom: 15px;
+        }
+
+        .company-logo {
+            width: 80px;
+            height: auto;
+            margin-bottom: 10px;
+        }
+
+        .company-name {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .company-address {
+            font-size: 14px;
+            color: #555;
+        }
+
+        .letter-content {
+            margin: 30px 0;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        .date-ref {
+            text-align: right;
+            margin-bottom: 30px;
+            font-size: 12px;
+        }
+
+        .subject {
+            font-weight: bold;
+            text-decoration: underline;
+            margin: 20px 0;
+            font-size: 12px;
+        }
+
+        .salutation {
+            margin-bottom: 20px;
+            font-size: 12px;
+        }
+
+        .body-text {
+            margin-bottom: 15px;
+            text-align: justify;
+            font-size: 12px;
+        }
+
+        .details-grid {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .member-details {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border: 1px solid #ddd;
+            font-size: 12px;
+            width: 48%;
+            vertical-align: top;
+        }
+
+        .details-row {
+            margin-bottom: 8px;
+        }
+
+        .highlight {
+            background-color: #ffffcc;
+            padding: 2px 4px;
+        }
+
+        .signature-section {
+            margin-top: 50px;
+        }
+
+        .signature-box {
+            display: inline-block;
+            width: 45%;
+            vertical-align: top;
+        }
+
+        .signature-line {
+            border-bottom: 1px solid #000;
+            width: 200px;
+            margin: 30px 0 10px 0;
+        }
+
+        .footer-note {
+            margin-top: 40px;
+            font-size: 10px;
+            color: #666;
+            border-top: 1px solid #ccc;
+            padding-top: 15px;
+        }
+
+        /* Page break styles */
+        .page-break {
+            page-break-before: always;
+        }
+
+        .approval-letter-container {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #fff;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- LOAN APPLICATION FORM - PAGE 1 -->
+    <div class="container">
+        <table>
+            <tr>
+                <td>
+                    <img th:src="${logoPath}" alt="Company Logo"
+                        style="width: 90px; height: auto; margin-right: 15px;"></img>
+                </td>
+                <td></td>
+                <td></td>
+                <td class="header">
+                    Telco Co-operative Society Ltd., Jamshedpur - 831004<br></br>
+                    APPLICATION FOR NORMAL LOAN
+                </td>
+
+            </tr>
+        </table>
+
+        <div class="content bordered">
+            <div class="center" style="font-weight: bold; font-size: 14px;">
+                <strong><u>Members Details</u></strong>
+            </div>
+            <div class="field">
+                Ticket No.: <span class="underline">[[${ticketNumber}]]</span> Age: <span class="underline"></span> Full
+                Name: <span class="">[[${userName}]]</span>
+            </div>
+            <div class="field">
+                Current Address: <span>[[${address}]]</span>
+            </div>
+            <div class="field">
+                Company Name: <span class="underline">[[${companyName}]]</span> Date of Separation: <span
+                    class="underline">[[${dos}]]</span>
+            </div>
+            <div class="field">
+                Length of Continuous Service: [[${servicePeriod}]]|| Paid-up Share Value (Rs.): <span
+                    class="underline">[[${shareTotal}]]</span>
+            </div>
+            <div class="field">
+                Member of any other Society (Yes/No): <span class="underline"></span> Outstanding in other Society
+                (Rs.): <span class="underline"></span>
+            </div>
+        </div>
+
+        <div class="content">
+            <div class="sub-header center">
+                <u>Details of Earlier Loan and Deposit</u>
+            </div>
+            <div class="field">
+                Date of Last Loan: <span class="underline">[[${dateOfLastLoan}]]</span> Loan taken (Rs.): <span
+                    class="underline">[[${loanTaken}]]</span> No of Instalments paid: <span
+                    class="underline">[[${noOfEmiPaid}]]</span>
+            </div>
+            <div class="field">
+                Amount Recovered (Rs.): <span class="underline">[[${amountRecovered}]]</span> Total Outstanding (Rs.):
+                <span class="underline">[[${loanOs}]]</span> CD Balance (Rs.): <span
+                    class="underline">[[${cdBalance}]]</span>
+            </div>
+        </div>
+
+        <div>
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <td class="td" style="font-weight: bold; font-size: 14px;">To,</td>
+                        <td class="td" style="font-weight: bold; font-size: 14px;">To</td>
+                    </tr>
+                    <tr>
+                        <td class="td" style="font-weight: bold; font-size: 14px;">The Committee of Management,</td>
+                        <td class="td" style="font-weight: bold; font-size: 14px;">Employer: [[${compnayName}]]</td>
+                    </tr>
+                    <tr>
+                        <td class="td" style="font-weight: bold; font-size: 14px;">Telco Co-operative Society Ltd.,
+                            Jamshedpur</td>
+                        <td class="td" style="font-weight: bold; font-size: 14px;"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div>
+            <div class="field">
+                I : <span class="">[[${userName}]]</span> tender this application for Loan of Rupees (in
+                words).........................................................................
+            </div>
+            <div class="field">
+                agreeing to repay it by Monthly Instalment of Rs. <span
+                    class="underline">[[${monthlyInstalment}]]</span> each along with Interest at
+                <span class="underline">[[${interestRate}]]</span> percent per annum payable on my pay days commencing
+                from my next pay day.
+            </div>
+            <div class="field">
+                Having received the above Loan from Society, I hereby authorise my Employer to recover from my salary or
+                wages, month by month or from any other dues or my settlement, if need by any amounts that may be
+                advised to you by the said Society for recovery as due from me and to pay the amount received to the
+                said Society on my account. This authorisation is not revocable as long as the dues to the Society are
+                not fully repaid by me.
+            </div>
+            <div class="field">
+                1. I will undertake to advice this Society promptly, if (a) I am transferred to any other Location. (b)
+                I go on long leave without pay. (c) Any of my loan sureties leave services (d) there be any non-recovery
+                of the loan and / or Interest (e) I leave the services for any reason.
+                <br></br> 2.The below mentioned Signatories will stand sureties for my total amount of loan alongwith
+                interest.
+
+            </div>
+        </div>
+
+        <div class="">
+            <div class="field">
+                Dept. &amp; T. No: <span class="underline">[[${deptNo}]] / [[${ticketNumber}]]</span> Father's /
+                Husband's Name:
+                [[${fathersname}]]
+            </div>
+            <div class="field">
+                Mobile Number: <span class="underline">[[${mobileNumber}]]</span> E-mail ID: <span
+                    class="">[[${email}]]</span>
+            </div>
+            <div class="field">
+                Name of the Bank: <span>[[${bankName}]]</span> Account No.: <span
+                    class="underline">[[${accountNumber}]]</span>
+            </div>
+            <div class="field">
+                Branch: <span class="underline">[[${branch}]]</span> IFSC: <span class="underline">[[${ifsc}]]</span>
+                Full signature of applicant: <span class="underline"></span><span class="underline"></span>
+            </div>
+
+        </div>
+
+        <div class="content bordered">
+            <div class="center sub-header" style="height: 15px;">
+                <u>Current Loan Applied / Sanctioned</u>
+            </div>
+            <div class="field">
+                Loan Amount Applied for: <span class="underline">[[${loanAmount}]]</span> Loan Amount Eligible :<span
+                    class="underline">[[${eligible}]]</span>
+            </div>
+            <div class="field">
+                Loan Amount Sanctioned <span class="underline"></span> Less:C.D / Loan Contra <span
+                    class="underline"></span>
+            </div>
+            <div class="field">
+                Net Amount Payable. <span class="underline"></span> Reason for loan: <span>[[${loanReason}]]</span>
+            </div>
+            <div class="field">
+                Cheque No: <span class="underline"></span> Cheque Date: <span class="underline"></span>
+            </div>
+            <div class="field">
+                Advice/NEFT Date : <span class="underline"></span>
+            </div>
+
+            <br></br>
+            <br></br>
+
+            <div class="field">
+                <span class="spacing">Prepared By</span> <span class="spacing">Checked By</span> <span
+                    class="spacing">Passed By</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- PAGE BREAK FOR PAGE 2 -->
+    <div>
+        <div class="container" style="padding-top: 7px;">
+            <div class="sub-header center">
+                <u>TELCO Co-operative Society Ldt. Jamshedpur</u><br></br>
+                <u>Bond</u>
+            </div>
+            <div class="field">
+                I <span class="">[[${userName}]]</span> a member of the Telco Co-operative Society Ltd.,
+                registered under Co-operative Society Act. (VI of 1935) hereby acknowledge that I have received from the
+                society a loan of Rs <span class="underline"></span> Rupees <span class="underline"></span> only. I
+                undertake to pay Interest on this loan from this date at <span
+                    class="underline">[[${interestRate}]]</span> percent per
+                annum or at such rate as may from time to time be fixed in accordance with the bye laws of the society.
+                The loan is taken under the conditions laid down in the bye laws which I have read and subject to these
+                I agree to repay this in monthly instalments of Rs. <span
+                    class="underline">[[${monthlyInstalment}]]</span>
+                commencing from this month's salary. I also authorise you to receive from my salary or any other money
+                due to me directly from [[${companyName}]], the said amount either in instalments or in
+                full as the committee may find if necessary for the sake of realisation of this amount. I shall take NO
+                OBJECTION to the above-mentioned DEDUCTION.
+            </div>
+            <div class="field">
+                Under the above condition, I execute this bond, after having received the full sum (after adjustment of
+                my previous balance) of Rs <span class="underline"></span> Rupees ( <span class="underline"></span> )
+            </div>
+
+            <div class="field">
+                Date <span class="underline"></span> <span>Full Signature</span> <span class="underline"></span>
+            </div>
+
+            <div>
+                <div class="sub-header">
+                    <u>Authorisation by Sureties</u>
+                </div>
+                <div class="field">
+                    Employer: <strong>Tata Motors/ TTL/ TMLBSL/ Hitachi</strong>
+                </div>
+                <div class="field">
+                    We hereby agree to be sureties for the above mentioned loan &amp; to be jointly and severally liable
+                    (1)
+                    for Its repayment with Interest and any other cost incurred in collection and (2) for its
+                    expenditure on
+                    the purpose mentioned above, should the committee of Management decide that we have become liable
+                    for
+                    above amount, we hereby authorise you to receive from our salaries or any other money due to us
+                    direct
+                    from Tata Motors/ TTL/ TMLBSL/ Hitachi, the said amount in One or more instalments as decided by the
+                    Committee of Management. We shall take NO OBJECTION to the above mentioned DEDUCTIONS when made.
+                </div>
+                <div class="field">
+                    Any omission or error on the part of the Management of the above Company in making recoveries does
+                    not
+                    in any way relieve the responsibility of the borrower as well as sureties.
+                </div>
+                <div class="field">
+                    Having stood Sureties and signed for payment of the said Loan, I/We declare that I am / We are
+                    jointly
+                    and severally liable alongwith the said loanee for all dues to the society. I/We authorise my/our
+                    Employer to recover from my/our salary or wages, month by month and from my/our settlement dues, if
+                    need
+                    be, as advised by the Society, any amounts defaulted by or not recovered from the said loanee for
+                    the
+                    above sanctioned loan. We have put our signature in the first page of this Loan Form as acceptance
+                    of
+                    the above terms and conditions.
+                </div>
+                <div class="field">
+                    We each agree to Stand Surety for the loan applied for above.
+                </div>
+            </div>
+
+            <div class="header">
+                <strong><u>SURETIES</u></strong>
+            </div>
+            <!-- Sureties Section -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <table class="sureties">
+                        <thead>
+                            <tr>
+                                <th>Sl.</th>
+                                <th>Name</th>
+                                <th>Dept. &amp; Tkt. No.</th>
+                                <th>Father/Husband's Name</th>
+                                <th>Signature</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Thymeleaf loop to generate 10 rows -->
+                            <tr th:each="i : ${#numbers.sequence(1, 10)}">
+                                <td th:text="${i}"></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="signature">
+                (Full Signature of Applicant)
+            </div>
+        </div>
+    </div>
+
+    <!-- MANAGEMENT APPROVAL LETTER - PAGE 3 -->
+    <div class="approval-letter-container">
+        <div class="letterhead">
+            <div class="company-name">Telco Co-operative Society Ltd.</div>
+            <div class="company-address">Jamshedpur - 831004</div>
+        </div>
+
+        <div class="letter-content">
+            <div class="salutation">
+                <strong>To,<br></br>
+                    The Management,<br></br>
+                    [[${companyName}]]</strong>
+            </div>
+
+            <div class="society-subject">
+                <strong>REQUEST FOR MANAGEMENT APPROVAL - PERSONAL LOAN APPLICATION</strong>
+            </div>
+
+            <div class="salutation">
+                Dear Sir/Madam,
+            </div>
+
+            <div class="society-body-text">
+                We are writing to request your approval for a personal loan application submitted by one of your
+                employees who is also our society member.
+            </div>
+
+            <!-- TABLE FORMAT TO MATCH SOCIETY LETTER -->
+            <table class="details-grid">
+                <tbody>
+                    <tr>
+                        <td class="member-details">
+                            <h4 style="margin-top: 0;">Member Details:</h4>
+                            <div class="details-row"><strong>Name:</strong> [[${userName}]]</div>
+                            <div class="details-row"><strong>Employee ID/Ticket No:</strong> [[${ticketNumber}]]</div>
+                            <div class="details-row"><strong>Department:</strong> [[${deptNo}]]</div>
+                            <div class="details-row"><strong>Current Address:</strong> [[${address}]]</div>
+                            <div class="details-row"><strong>Service Period:</strong> [[${servicePeriod}]]</div>
+                            <div class="details-row"><strong>Date of Retirement:</strong> [[${dateOfRetirement}]]</div>
+                        </td>
+                        <td class="member-details">
+                            <h4 style="margin-top: 0;">Loan Details:</h4>
+                            <div class="details-row"><strong>Loan Amount Applied:</strong> ₹[[${loanAmount}]]</div>
+                            <div class="details-row"><strong>Monthly Installment:</strong> ₹[[${monthlyInstalment}]]
+                            </div>
+                            <div class="details-row"><strong>Interest Rate:</strong> [[${interestRate}]]% per annum
+                            </div>
+                            <div class="details-row"><strong>Loan Purpose:</strong> [[${loanReason}]]</div>
+                            <div class="details-row"><strong>Current Share Balance:</strong> ₹[[${shareTotal}]]</div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="society-body-text">
+                <strong>Reason for Management Approval Required:</strong><br></br>
+                [[${approvalReason}]]
+            </div>
+
+            <div class="society-body-text">
+                The member has authorized salary deduction for loan repayment. We request your approval to proceed with
+                this loan application and confirm your agreement to facilitate salary deductions as per the repayment
+                schedule.
+            </div>
+
+            <div class="society-body-text">
+                We would appreciate your response at the earliest to process this application.
+            </div>
+
+            <div class="society-body-text">
+                Thank you for your continued cooperation.
+            </div>
+
+            <!-- SIGNATURE SECTION -->
+            <div class="form-header">FOR APPROVAL USE ONLY</div>
+            <table class="committee-section">
+                <tr>
+                    <td colspan="2">
+                        <div class="signature-section">
+                            <div class="signature-box">
+                                <strong>For Telco Co-operative Society Ltd.</strong><br></br>
+                                Secretary/Manager<br></br>
+                            </div>
+                        </div>
+                    </td>
+                    <td colspan="2">
+                        <div class="signature-section">
+                            <strong>Management Approval</strong><br></br>
+                            Authorized Signatory<br></br>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+
+            <div class="society-body-text footer-note">
+                <strong>Note:</strong> This letter is system generated and requires appropriate signatures for
+                validation. Please return the signed copy to Telco Co-operative Society Ltd. for further processing.
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

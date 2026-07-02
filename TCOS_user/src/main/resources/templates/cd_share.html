@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en" class="light" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <link href="../dist/images/logo.svg" rel="shortcut icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>TELCO Co-Operative Society - CD & Share</title>
+    <!-- BEGIN: CSS Assets-->
+    <link rel="stylesheet" href="../dist/css/app.css" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <!-- END: CSS Assets-->
+</head>
+<style>
+    
+    /* Modern badge styles */
+    .badge {
+        display: inline-block;
+        padding: 6px 12px;
+        font-size: 14px;
+        font-weight: 600;
+        border-radius: 20px;
+        letter-spacing: 0.5px;
+    }
+
+    .badge-other {
+        color: white;
+        background: linear-gradient(135deg, #ff5e62, #ff2400);
+        box-shadow: 0 2px 5px rgba(255, 94, 98, 0.3);
+    }
+
+    .badge-active {
+        color: white;
+        background: linear-gradient(135deg, #4facfe, #00f2fe);
+        box-shadow: 0 2px 5px rgba(79, 172, 254, 0.3);
+    }
+
+    /* Dashboard card styling */
+    .dashboard-card {
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s ease;
+        background: white;
+        overflow: hidden;
+    }
+
+    .dashboard-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+    }
+
+    /* Statistic boxes */
+    .stat-box {
+        padding: 25px 20px;
+        border-radius: 10px;
+        margin-bottom: 15px;
+        background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
+    }
+
+    .stat-box .stat-label {
+        font-size: 14px;
+        color: #6b7280;
+        font-weight: 600;
+        margin-bottom: 8px;
+    }
+
+    .stat-box .stat-value {
+        font-size: 28px;
+        font-weight: 700;
+        color: #1f2937;
+    }
+
+    /* Form styling */
+    .form-card {
+        background: white;
+        border-radius: 12px;
+        padding: 25px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    .form-card .form-title {
+        font-size: 18px;
+        font-weight: 600;
+        color: #1f2937;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+    }
+
+    .form-card .form-title i {
+        margin-right: 10px;
+        color: #3b82f6;
+    }
+
+    /* Alert styling */
+    .alert {
+        border-radius: 8px;
+        padding: 12px 15px;
+        margin-top: 15px;
+        font-size: 14px;
+    }
+
+    .alert-success {
+        background-color: #d1fae5;
+        color: #065f46;
+        border-left: 4px solid #10b981;
+    }
+
+    .alert-danger {
+        background-color: #fee2e2;
+        color: #b91c1c;
+        border-left: 4px solid #ef4444;
+    }
+
+    /* Button styling */
+    .btn-warning {
+        background: linear-gradient(135deg, #f59e0b, #f97316);
+        color: white;
+        border: none;
+        font-weight: 600;
+        border-radius: 8px;
+        padding: 10px 20px;
+        transition: all 0.3s ease;
+    }
+
+    .btn-warning:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 10px rgba(249, 115, 22, 0.3);
+    }
+
+    /* Input styling */
+    .form-control {
+        border-radius: 8px;
+        padding: 10px 15px;
+        border: 1px solid #e5e7eb;
+        transition: all 0.3s ease;
+    }
+
+    .form-control:focus {
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+
+    /* Section header */
+    .section-header {
+        font-size: 24px;
+        font-weight: 700;
+        color: #1f2937;
+        margin-bottom: 25px;
+        display: flex;
+        align-items: center;
+    }
+
+    .section-header i {
+        margin-right: 12px;
+        color: #3b82f6;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .stat-box {
+            padding: 20px 15px;
+        }
+
+        .stat-box .stat-value {
+            font-size: 24px;
+        }
+    }
+</style>
+
+<body class="py-5 md:py-0">
+    <div class="flex md:mt-0">
+        <div th:replace="~{/fragments/nav}"></div>
+        <div th:insert="~{/fragments/mob}"></div>
+
+
+
+        <!-- BEGIN: Content -->
+        <div class="content content--top-nav">
+            <div th:replace="~{/fragments/top}"></div>
+
+            <div class="intro-y flex items-center mt-8">
+                <h2 class="section-header">
+                    <i class="fas fa-piggy-bank"></i>
+                    CD & Share Details
+                </h2>
+                <marquee style="color: red; font-weight: bold;">ANNUAL STATEMENT UPTO MARCH 2025 INCLUDE CD INTEREST IN CD AMMOUNT.</marquee>
+            </div>
+
+            <div class="col-span-12 xl:col-span-9 mt-8">
+                <div class="dashboard-card intro-y mt-5">
+                    <div class="box grid grid-cols-12">
+                        <!-- Left Column - Statistics -->
+                        <div class="col-span-12 lg:col-span-4 px-8 py-12 flex flex-col justify-center">
+                            <div class="stat-box">
+                                <div class="stat-label">
+                                    <i class="fas fa-hand-holding-usd mr-2"></i>
+                                    My Total Share Amount
+                                </div>
+                                <div class="stat-value" th:text="'₹' + ${cdShareDeductions.shareDeductionTotal}"></div>
+                            </div>
+
+<!--                            <div class="stat-box">-->
+<!--                                <div class="stat-label">-->
+<!--                                    <i class="fas fa-calendar-alt mr-2"></i>-->
+<!--                                    My CD Cut Per Month-->
+<!--                                </div>-->
+<!--                                <div class="stat-value" th:text="'₹' + ${user.cdCut}"></div>-->
+<!--                            </div>-->
+
+                            <div class="stat-box">
+                                <div class="stat-label">
+                                    <i class="fas fa-wallet mr-2"></i>
+                                    My Total CD Amount
+                                </div>
+                                <div class="stat-value" th:text="'₹' + ${cdShareDeductions.cdDeductionTotal}"></div>
+                            </div>
+
+                            <!-- Total CD Interest -->
+                            <div class="stat-box">
+                                <div class="stat-label">
+                                    <i class="fas fa-percent mr-2"></i>
+                                    My Total CD Interest
+                                </div>
+                                <div class="stat-value"
+                                     th:text="'₹' + ${cdShareDeductions.cdInterestTotal}">
+                                </div>
+                            </div>
+
+                            <!-- Total Personal Loan -->
+                            <div class="stat-box">
+                                <div class="stat-label">
+                                    <i class="fas fa-wallet mr-2"></i>
+                                    My Total Personal Loan
+                                </div>
+
+                                <div class="stat-value"
+                                     th:text="'₹' + ${personalLoanTotal}">
+                                </div>
+
+                                <div style="font-size:14px;color:gray;margin-top:10px;"
+                                     th:if="${personalLoan != null}">
+                                    Approved on :
+                                    <span th:text="${#dates.format(personalLoan.loanApproveDate,'dd-MM-yyyy')}"></span>
+                                </div>
+
+                                <div style="font-size:14px;color:gray;"
+                                     th:if="${personalLoan == null}">
+                                    No Loan
+                                </div>
+                            </div>
+
+                            <!-- Total Commodity Loan -->
+                            <div class="stat-box">
+                                <div class="stat-label">
+                                    <i class="fas fa-wallet mr-2"></i>
+                                    My Total Commodity Loan
+                                </div>
+
+                                <div class="stat-value"
+                                     th:text="'₹' + ${commodityLoanTotal}">
+                                </div>
+
+                                <div style="font-size:14px;color:gray;margin-top:10px;"
+                                     th:if="${commodityLoan != null}">
+                                    Approved on :
+                                    <span th:text="${#dates.format(commodityLoan.loanApproveDate,'dd-MM-yyyy')}"></span>
+                                </div>
+
+                                <div style="font-size:14px;color:gray;"
+                                     th:if="${commodityLoan == null}">
+                                    No Loan
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right Column - Form -->
+                        <div
+                            class="col-span-12 lg:col-span-8 p-8 border-t lg:border-t-0 lg:border-l border-slate-200 dark:border-darkmode-300 border-dashed">
+<!--                            <div class="form-card">-->
+<!--                                <div class="form-title">-->
+<!--                                    <i class="fas fa-edit"></i>-->
+<!--                                    Change Monthly CD Cut Rate-->
+<!--                                </div>-->
+
+<!--                                <form th:action="@{/user/cdshare}" method="post">-->
+<!--                                    <div class="flex items-center gap-4">-->
+<!--                                        <input type="number" th:value="${amt != null ? amt : 0}"-->
+<!--                                            class="form-control w-56 box pr-10" th:name="amt" value="0"-->
+<!--                                            placeholder="Enter amount" id="amt">-->
+<!--                                        <button class="btn btn-warning w-24 mr-1 mb-2" onfocus="setDefaultAmount()">-->
+<!--                                            Update-->
+<!--                                        </button>-->
+<!--                                    </div>-->
+
+<!--                                    <div th:if="${message}" class="alert alert-success" role="alert">-->
+<!--                                        <i class="fas fa-check-circle mr-2"></i>-->
+<!--                                        <span th:text="${message}"></span>-->
+<!--                                    </div>-->
+<!--                                    <div th:if="${messageerr}" class="alert alert-danger" role="alert">-->
+<!--                                        <i class="fas fa-exclamation-circle mr-2"></i>-->
+<!--                                        <span th:text="${messageerr}"></span>-->
+<!--                                    </div>-->
+<!--                                </form>-->
+<!--                            </div>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- END: Content -->
+
+        <!-- END: JS Assets-->
+        <script src="../dist/js/app.js"></script>
+        <script src="../dist/js/jquery-3.6.0.min.js"></script>
+
+        <script>
+            function setDefaultAmount() {
+                var amountInput = document.getElementById('amt');
+                if (!amountInput.value) {
+                    amountInput.value = 0;  // Set to 0 if the input is empty
+                }
+            }
+        </script>
+    </div>
+
+    <div th:insert="~{/fragments/footer}"></div>
+</body>
+
+</html>

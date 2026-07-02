@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Membership Form</title>
+    <style>
+        body {
+            font-size: 9pt;
+            margin: 0;
+            padding: 0;
+            line-height: 5mm;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Container for A4 width */
+        .container {
+            width: 100%;
+            padding: 5px;
+            box-sizing: border-box;
+        }
+
+        h2,
+        h4,
+        h5 {
+            text-align: center;
+            margin: 5px 0;
+        }
+
+        h4 {
+            border-bottom: 1px solid #000;
+            padding-bottom: 5px;
+        }
+
+        .form-group {
+            margin-bottom: 7px;
+            word-break: break-word;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: bold;
+        }
+
+        .row {
+            display: table;
+            width: 100%;
+        }
+
+        .col-md-6,
+        .col-md-4 {
+            display: table-cell;
+            vertical-align: top;
+            padding: 5px;
+        }
+
+        .col-md-6 {
+            width: 50%;
+        }
+
+        .col-md-4 {
+            width: 33%;
+        }
+
+        .col-md-12 {
+            width: 100%;
+        }
+
+        .dark-border {
+            border: 1px solid #333;
+            padding: 7px;
+            margin-bottom: 7px;
+        }
+
+        .witness-section {
+            border: 1px solid #333;
+            padding: 7px;
+            margin-top: 10px;
+        }
+
+        .witness-section .row {
+            display: table;
+            width: 100%;
+        }
+
+        .witness-section .col-md-6 {
+            display: table-cell;
+            width: 50%;
+            padding: 5px;
+        }
+
+        .p-3 {
+            padding: 7px;
+        }
+
+        table {
+            /* border: 2px solid black; */
+            border-collapse: collapse;
+        }
+        th, td {
+            /* border: 1px solid black; */
+            padding: 10px;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="container">
+
+        <div class="form-group">
+            <div class="row">
+                <div class="col-md-1">
+
+                    <div>
+                        <strong>Are you an ex-member? Yes/No</strong>
+                        <strong style="margin-left: 190px;">Months &amp; Year of Registration.
+                            ___________________</strong>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <table>
+            <tr>
+                <td>
+                    <img th:src="${logoPath}" alt="Company Logo" style="width: 90px; height: auto; margin-right: 15px;"></img>
+                </td>
+                <td></td>
+                <td>
+                    <h2 class="mb-1">Telco Co-operative Society Ltd.</h2>
+                    <h5 class="mb-1">P.O. Telco Works, Jamshedpur-4, Pin 831004</h5>
+                    <h5 class="mb-1">Certificate No. 15-SB of 1950 under the Bihar &amp; Orissa Co-operative Society Act, 1935</h5>
+                    <h4 class="mt-2">Application for Existing Member Membership</h4>
+                </td>
+            </tr>
+        </table>
+
+        <div class="form-group">
+            <label>Date: [[${date}]]</label>
+        </div>
+
+        <div class="form-group">
+            <p>To,</p>
+            <p>The Managing Committee</p>
+            <p>I am hereby making an application for admission as a member of the Society. I have read the Bye Laws and
+                Rules of the Society and agree to abide by them. I request you to admit me as a member and allot me
+                _________________ shares of Rs.10/- each. I agree to accept the same or any lesser number.</p>
+            <p>I also hereby authorize the Management/Society to receive directly from my employers by deducting from my
+                Salary a sum equivalent to Rupees One per Share per month till such time as the shares held by me are
+                fully paid up. I also nominate hereby the person named below as the person to whom shall be transferred
+                my shares, deposits, loans and any other interest in the Society in the event of my death.</p>
+            <p>Yours Truly</p>
+        </div>
+
+        <div class="form-group">
+            <label>Full Signature of Applicant: ________________________________________________</label>
+        </div>
+
+        <div class="dark-border">
+            <div class="form-group text-center">
+                <b>Certified that service of</b>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <strong>Mr. / Mrs.</strong> [[${NAME}]]
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <strong> Dept. / T. No. </strong> [[${DEPARTMENT_ID}]] / [[${ticketNumber}]]
+                    </div>
+                </div>
+            </div>
+            <div class="row mb-5">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        was made Permanent / Probationer Trainees with effect from _____________
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <strong>Employer:</strong>[[${employeer}]]<br></br><br></br>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class=" col-md-6">
+                <div class="dark-border p-3">
+                    <strong>Ticket Number:</strong> [[${ticketNumber}]]<br></br>
+                    <strong>BC Number:</strong> [[${BC_NUMBER}]]<br></br>
+                    <strong>Gender:</strong> [[${GENDER}]]<br></br>
+                    <strong>Date of Birth:</strong> [[${DOB}]]<br></br>
+                    <strong>Aadhar Number:</strong> [[${AADHAR_NUMBER}]]<br></br>
+                    <strong>Email ID:</strong> [[${EMAIL}]]<br></br>
+                    <strong>WhatsApp Number:</strong> [[${WHATSAPP_NUMBER}]]<br></br>
+                </div>
+            </div>
+            <div class=" col-md-6">
+                <div class="dark-border p-3">
+                    <strong>Full Name:</strong> [[${NAME}]]<br></br>
+                    <strong>Dept. Name:</strong><br></br>
+                    <strong>Father’s/Husband’s Name:</strong> [[${FATHERS_NAME}]]<br></br>
+                    <strong>Date of Retirement:</strong> [[${DATE_OF_RETIREMENT}]]<br></br>
+                    <strong>PAN Card Number:</strong> [[${PAN_CARD}]]<br></br>
+                    <strong>Mobile Number:</strong> [[${PHONE_NUM}]]<br></br>
+                    <strong>Service Period(in months):</strong> [[${SERVICE_PERIOD}]]<br></br>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class=" col-md-6">
+                <div class="dark-border p-3">
+                    <strong>Permanent Address:</strong> [[${PERMANENT_ADDR}]]<br></br>
+                    <strong>City:</strong> [[${PERMANENT_CITY}]]<br></br>
+                    <strong>State:</strong> [[${PERMANENT_STATE}]]<br></br>
+                    <strong>Pin Code:</strong> [[${PERMANENT_PIN_CODE}]]<br></br>
+                </div>
+            </div>
+            <div class=" col-md-6">
+                <div class="dark-border p-3">
+                    <strong>Current Address:</strong> [[${CURRENT_ADDR}]]<br></br>
+                    <strong>City:</strong> [[${CURRENT_CITY}]]<br></br>
+                    <strong>State:</strong> [[${CURRENT_STATE}]]<br></br>
+                    <strong>Pin Code:</strong> [[${CURRENT_PIN_CODE}]]<br></br>
+                </div>
+            </div>
+        </div>
+
+        <div style="page-break-after: always;"></div>
+
+        <div class="row">
+            <div class=" col-md-6">
+                <div class="dark-border p-3">
+                    <strong><u><label>Permanent Bank Account Details:</label></u></strong><br></br>
+                    <strong>Account Number:</strong> [[${ACCOUNT_NUM}]]<br></br>
+                    <strong>Bank Name:</strong> [[${BANK_NAME}]]<br></br>
+                    <strong>Branch Name:</strong> [[${BRANCH_NAME}]]<br></br>
+                    <strong>IFSC Code:</strong> [[${IFSC_CODE}]]<br></br>
+                </div>
+            </div>
+            <div class=" col-md-6">
+                <div class="dark-border p-3">
+                    <strong><u><label>Nominee Details:</label></u></strong><br></br>
+                    <strong>Name:</strong> [[${NOMINEE_NAME}]]<br></br>
+                    <strong>Relation with Member:</strong> [[${NOMINEE_RELATION}]]<br></br>
+                    <strong>Address:</strong> [[${NOMINEE_ADDR}]]<br></br>
+                    <strong>Aadhar Number:</strong> [[${NOMINEE_AADHAR_NUM}]]<br></br>
+                    <strong>Mobile Number:</strong> [[${NOMINEE_MOBILE_NUM}]]<br></br>
+                </div>
+            </div>
+        </div>
+
+        <br></br>
+        <br></br>
+        <div class="form-group">
+            <label>Membership Approved / Rejected by:</label>
+        </div>
+
+        <br></br>
+        <br></br>
+
+        <div class="form-group">
+            <div class="row">
+                <div class="col-md-6">
+                    <p><strong>Secretary</strong></p>
+                </div>
+                <div class="col-md-6"></div>
+                <div class="col-md-6">
+                    <p><strong>Chairman</strong></p>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <label class="mr-2">Reason for Approval / Rejection (if
+                any):______________________________________________________________</label>
+        </div>
+        <br></br>
+        <br></br>
+        <div class="form-group">
+            <strong><label> # DOCUMENTS REQUIRED FOR MEMBERSHIP PLEASE PROVIDE SELF CERTIFIED PHOTOCOPY OF THE
+                    FOLLOWING
+                </label></strong><br></br>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong><input type="checkbox" />Nominee Aadhar Card(SELF ATTESTED)</strong></p>
+                    </div>
+                    <div class="col-md-4">
+                        <p><strong><input type="checkbox" />PAY SLIP(SELF ATTESTED)</strong></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+
+</html>

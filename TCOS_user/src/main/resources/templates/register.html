@@ -1,0 +1,1977 @@
+<!-- END: JS Assets-->
+<!DOCTYPE html>
+
+<html lang="en" class="light" xmlns:th="http://www.w3.org/1999/xhtml">
+  <!-- BEGIN: Head -->
+
+  <head>
+    <meta charset="utf-8" />
+    <link href="../dist/images/logo.svg" rel="shortcut icon" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="LEFT4CODE" />
+    <title>New/Register Membership</title>
+    <!-- BEGIN: CSS Assets-->
+    <link rel="stylesheet" href="../dist/css/app.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css"
+    />
+    <!-- Include Select2 CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+    <!-- JS -->
+    <style>
+      .step {
+        display: none;
+      }
+
+      .step.active {
+        display: block;
+      }
+
+      #nextBtn {
+        display: none;
+      }
+
+      #previousBtn,
+      #nextBtn2,
+      #previousBtn2,
+      #previousBtn3,
+      #previousBtn4,
+      #previousBtn5 {
+        display: block;
+      }
+
+      .dataTables_length select {
+        width: 60px;
+      }
+
+      .badge {
+        display: inline-block;
+        padding: 5px 10px;
+        font-size: 14px;
+        font-weight: bold;
+        border-radius: 5px;
+      }
+
+      .badge-other {
+        color: white;
+        background-color: red;
+      }
+
+      .badge-active {
+        color: white;
+        background-color: green;
+      }
+
+      /* Style for the form inputs */
+      .form-control {
+        padding: 0.5rem;
+        border-radius: 0.375rem;
+        border: 1px solid #ccc;
+      }
+
+      .font-medium {
+        font-weight: 500;
+      }
+
+      /* Styling for error messages */
+      #passwordError {
+        color: red;
+        display: none;
+      }
+
+      .tab-header {
+        display: flex;
+        background: #f5f5f5;
+        border-bottom: 1px solid #ccc;
+      }
+
+      .tab-header button {
+        flex: 1;
+        padding: 10px;
+        background: #eaeaea;
+        border: none;
+        cursor: pointer;
+        font-weight: bold;
+      }
+
+      .tab-header button.active {
+        background: #ffcc00;
+      }
+
+      .tab-content {
+        display: none;
+        padding: 20px;
+      }
+
+      .tab-content.active {
+        display: block;
+      }
+
+      .is-invalid {
+        border-color: #dc3545 !important;
+      }
+
+      .error-message {
+        color: red;
+        font-size: 0.875rem;
+        display: none;
+      }
+
+      input:invalid,
+      select:invalid {
+        border-color: #ff0000;
+      }
+
+      .border-red-500 {
+        border-color: #ef4444 !important;
+      }
+
+      input:invalid,
+      select:invalid {
+        border-color: #dc3545;
+      }
+
+      #otplog.error-message {
+        display: block;
+        margin-top: 5px;
+        font-size: 0.875rem;
+      }
+
+      #otplog[style*="color: green"] {
+        color: green !important;
+      }
+
+      #otplog[style*="color: red"] {
+        color: red !important;
+      }
+    </style>
+    <!-- END: CSS Assets-->
+  </head>
+  <!-- END: Head -->
+
+  <body class="py-5">
+    <div class="flex md:mt-0">
+      <!-- BEGIN: Content -->
+      <div class="content">
+        <div class="flex items-center mt-4 mb-4">
+          <h2 class="intro-y text-lg font-medium mr-auto">
+            MEMBER REGISTRATION PROCESS FOR NEW MEMBERS
+          </h2>
+          Already have a account?
+          <a class="btn btn-primary" th:href="@{/telco_co/userlogin}"
+            >Sign In</a
+          >
+        </div>
+        <!-- BEGIN: Wizard Layout -->
+        <div class="intro-y box py-10 sm:py-20 mt-2">
+          <form
+            id="updateForm"
+            th:action="@{/telco_co/register}"
+            method="post"
+            th:object="${UserregisterDTO}"
+            enctype="multipart/form-data"
+            class="border border-slate-200/60 dark:border-darkmode-400 rounded-md p-5"
+          >
+            <div class="flex justify-center">
+              <span
+                id="step-1-btn"
+                class="intro-y w-10 h-10 rounded-full btn btn-primary mx-2"
+                >1</span
+              >
+              <span
+                id="step-2-btn"
+                class="intro-y w-10 h-10 rounded-full btn bg-slate-100 dark:bg-darkmode-400 dark:border-darkmode-400 text-slate-500 mx-2"
+                >2</span
+              >
+              <span
+                id="step-3-btn"
+                class="intro-y w-10 h-10 rounded-full btn bg-slate-100 dark:bg-darkmode-400 dark:border-darkmode-400 text-slate-500 mx-2"
+                >3</span
+              >
+            </div>
+            <div id="step-1" class="px-5 mt-5">
+              <div class="font-medium text-center text-lg">User Details</div>
+              <div class="text-slate-500 text-center mt-2">
+                Validate each details.
+              </div>
+            </div>
+            <div
+              id="step-1-form"
+              class="bg-blue-50 border border-blue-200 p-5 rounded-lg mr-2 ml-2 mt-5"
+            >
+              <div class="grid grid-cols-12 gap-4 gap-y-5">
+                <div class="intro-y col-span-12 sm:col-span-6">
+                  <label for="companyId" class="form-label">Company</label
+                  ><span style="font-size: 20px; color: red">*</span>
+                  <select
+                    id="companyIds"
+                    name="companyIdSelect"
+                    class="form-control"
+                    onchange="document.getElementById('companyId').value = this.value"
+                  >
+                    <option value="" disabled selected>Select a company</option>
+                    <option
+                      th:each="company : ${companyList}"
+                      th:value="${company.companyId}"
+                      th:text="${company.companyName}"
+                    ></option>
+                  </select>
+                  <span class="error-message" id="companyIdsError"
+                    >Please select a company</span
+                  >
+                  <input
+                    id="companyId"
+                    type="hidden"
+                    class="form-control"
+                    name="companyId"
+                    th:field="*{companyId}"
+                  />
+                </div>
+                <!-- Ticket Number -->
+                <div class="intro-y col-span-12 sm:col-span-6">
+                  <label for="userId" class="form-label">Ticket Number</label
+                  ><span style="font-size: 20px; color: red">*</span>
+                  <input
+                    id="userId"
+                    type="text"
+                    class="form-control"
+                    name="userId"
+                    th:field="*{userId}"
+                    required
+                  />
+                  <span class="error-message" id="userIdError"></span>
+                </div>
+                <!-- Name -->
+                <div class="intro-y col-span-12 sm:col-span-6">
+                  <label for="name" class="form-label">Name</label
+                  ><span style="font-size: 20px; color: red">*</span>
+                  <input
+                    id="name"
+                    type="text"
+                    th:field="*{name}"
+                    name="name"
+                    class="form-control"
+                    required
+                    pattern="[A-Za-z ]+"
+                    oninput="this.value = this.value.toUpperCase()"
+                  />
+                  <span class="error-message" id="nameError"
+                    >Name is required (letters only)</span
+                  >
+                </div>
+                <!-- Employee ID -->
+                <!-- <div class="intro-y col-span-12 sm:col-span-6">
+                                <label for="empId" class="form-label">Employee Id(not important)</label>
+                                <input id="empId" type="text" name="empId" class="form-control" th:field="*{empId}"
+                                    required>
+                                <span class="error-message" id="empIdError">Employee ID is required</span>
+                            </div> -->
+                <!-- BC Number -->
+                <div class="intro-y col-span-12 sm:col-span-6">
+                  <label for="bcNumber" class="form-label">B.C. Number</label
+                  ><span style="font-size: 20px; color: red">*</span>
+                  <input
+                    id="bcNumber"
+                    type="text"
+                    name="bcNumber"
+                    class="form-control"
+                    th:field="*{bcNumber}"
+                    required
+                  />
+                  <span class="error-message" id="bcNumberError"
+                    >B.C. Number is required</span
+                  >
+                </div>
+                <!-- Gender -->
+                <div class="intro-y col-span-12 sm:col-span-6">
+                  <label for="gender" class="form-label">Gender</label
+                  ><span style="font-size: 20px; color: red">*</span>
+                  <select
+                    id="gender"
+                    name="gender"
+                    class="form-control border-warning"
+                    th:field="*{gender}"
+                    required
+                  >
+                    <option value="" disabled selected>Select gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                  </select>
+                  <span class="error-message" id="genderError"
+                    >Please select gender</span
+                  >
+                </div>
+                <!-- Date of Birth -->
+                <div class="intro-y col-span-12 sm:col-span-6">
+                  <label for="dob" class="form-label">Date of Birth</label
+                  ><span style="font-size: 20px; color: red">*</span>
+                  <input
+                    id="dob"
+                    type="date"
+                    class="form-control"
+                    name="dob"
+                    th:field="*{dob}"
+                    required
+                  />
+                  <span class="error-message" id="dobError"
+                    >Date of Birth is required</span
+                  >
+                </div>
+                <div class="intro-y col-span-12 sm:col-span-6">
+                  <label for="panCard" class="form-label">Pan card</label
+                  ><span style="font-size: 20px; color: red">*</span>
+                  <input
+                    id="panCard"
+                    type="text"
+                    name="panCard"
+                    class="form-control"
+                    th:field="*{panCard}"
+                    required
+                    pattern="[A-Z]{5}[0-9]{4}[A-Z]{1}"
+                    oninput="this.value = this.value.toUpperCase()"
+                  />
+                  <span class="error-message" id="panCardError"
+                    >Invalid PAN format (AAAAA1234A)</span
+                  >
+                </div>
+                <div class="intro-y col-span-12 sm:col-span-6">
+                  <label for="aadharNumber" class="form-label"
+                    >Aadhaar Number</label
+                  ><span style="font-size: 20px; color: red">*</span>
+                  <input
+                    id="aadharNumber"
+                    type="text"
+                    name="aadharNumber"
+                    class="form-control"
+                    th:field="*{aadharNumber}"
+                    required
+                    pattern="[0-9]{12}"
+                    maxlength="12"
+                  />
+                  <span class="error-message" id="aadharNumberError"
+                    >Must be 12 digits</span
+                  >
+                </div>
+                <div class="intro-y col-span-12 sm:col-span-6">
+                  <label for="phoneNum" class="form-label">Phone Number</label
+                  ><span style="font-size: 20px; color: red">*</span>
+                  <div class="input-group">
+                    <div class="input-group-text">+91</div>
+                    <input
+                      id="phoneNum"
+                      type="tel"
+                      name="phoneNum"
+                      class="form-control"
+                      value=""
+                      th:field="*{phoneNum}"
+                      required
+                      pattern="[0-9]{10}"
+                      maxlength="10"
+                    />
+                  </div>
+                  <span class="error-message" id="phoneNumError"
+                    >10 digits required</span
+                  >
+                </div>
+                <!-- WhatsApp Number -->
+                <div class="intro-y col-span-12 sm:col-span-6">
+                  <label for="whatsappNumber" class="form-label"
+                    >WhatsApp Number</label
+                  ><span style="font-size: 20px; color: red">*</span>
+                  <div class="input-group">
+                    <div class="input-group-text">+91</div>
+                    <input
+                      id="whatsappNumber"
+                      type="tel"
+                      name="whatsappNumber"
+                      class="form-control"
+                      th:field="*{whatsappNumber}"
+                      required
+                      pattern="\d{10}"
+                      maxlength="10"
+                    />
+                  </div>
+                  <span class="error-message" id="whatsappNumberError"
+                    >10 digits required</span
+                  >
+                </div>
+                <!-- Email -->
+                <div class="intro-y col-span-12 sm:col-span-6">
+                  <label for="email" class="form-label">Email ID</label>
+
+                  <input
+                          id="email"
+                          name="email"
+                          type="email"
+                          class="form-control"
+                          th:field="*{email}"
+
+                  />
+
+                  <span class="error-message" id="emailError">
+                       Invalid email format
+                  </span>
+                </div>
+                <!-- Fathers Name -->
+                <div class="intro-y col-span-12 sm:col-span-6">
+                  <label for="fathersName" class="form-label"
+                    >Father's Name</label
+                  ><span style="font-size: 20px; color: red">*</span>
+                  <input
+                    id="fathersName"
+                    type="text"
+                    name="fathersName"
+                    class="form-control"
+                    th:field="*{fathersName}"
+                    required
+                  />
+                  <span class="error-message" id="fathersNameError"
+                    >Father's name is required</span
+                  >
+                </div>
+                <!-- Retirement Date -->
+                <div class="intro-y col-span-12 sm:col-span-6">
+                  <label for="dor" class="form-label">Retirement Date</label>
+                  <input
+                    id="dor"
+                    type="date"
+                    class="form-control"
+                    name="dor"
+                    th:field="*{dor}"
+                    readonly
+                  />
+                  <span class="error-message" id="dorError"
+                    >Retirement date is required</span
+                  >
+                </div>
+              </div>
+              <div
+                class="intro-y col-span-12 flex items-center justify-center sm:justify-end mt-5"
+              >
+                <a
+                  th:href="@{/members/user_registration}"
+                  type="button"
+                  class="btn btn-warning w-24 ml-2"
+                  >Cancel</a
+                >
+                <button
+                  type="button"
+                  class="btn btn-primary w-24 ml-2"
+                  onclick="nextStep()"
+                >
+                  Next
+                </button>
+              </div>
+              <div>
+                <span style="background-color: orange"
+                  ><span
+                    ><span style="font-size: 20px; color: red">*</span></span
+                  ><span style="font-size: 15px"
+                    >marked are mandatory fields.</span
+                  ></span
+                >
+              </div>
+            </div>
+            <script>
+              function calculateSeparationDate() {
+                let dobInput = document.getElementById("dob").value;
+                if (dobInput) {
+                  let dob = new Date(dobInput);
+                  dob.setFullYear(dob.getFullYear() + 60); // Add 60 years
+                  let separationDate = dob.toISOString().split("T")[0]; // Format as YYYY-MM-DD
+                  document.getElementById("dor").value = separationDate;
+                }
+              }
+            </script>
+            <script>
+              document.addEventListener("DOMContentLoaded", function () {
+                // This is the valid code that uses existing 'dob' field
+                document
+                  .getElementById("dob")
+                  .addEventListener("change", calculateSeparationDate);
+              });
+              function calculateSeparationDate() {
+                let dobInput = document.getElementById("dob").value;
+                if (dobInput) {
+                  let dob = new Date(dobInput);
+                  dob.setFullYear(dob.getFullYear() + 60);
+                  let separationDate = dob.toISOString().split("T")[0];
+                  document.getElementById("dor").value = separationDate;
+                }
+              }
+            </script>
+            <script>
+              function limitDigits(input) {
+                if (input.value.length > 10) {
+                  input.value = input.value.slice(0, 10); // Ensure max 10 digits
+                }
+              }
+            </script>
+            <div id="step-2" class="px-5 mt-10" style="display: none">
+              <div class="font-medium text-center text-lg">
+                Nominees & Personal Details
+              </div>
+              <div class="text-slate-500 text-center mt-2">
+                Validate each details.
+              </div>
+            </div>
+            <!--            <form th:action="@{/members/user/user_status/details/updated}" method="POST" class="border border-slate-200/60 dark:border-darkmode-400 rounded-md p-5">-->
+            <div
+              id="step-2-form"
+              class="px-5 sm:px-20 mt-10 pt-10 border-t border-slate-200/60 dark:border-darkmode-400"
+              style="display: none"
+            >
+              <div class="grid grid-cols-12 gap-4 gap-y-5">
+                <!-- Permanent Address -->
+                <div class="intro-y col-span-12 sm:col-span-6">
+                  <label for="permanentAddr" class="form-label"
+                    >Permanent Address</label
+                  ><span style="font-size: 20px; color: red">*</span>
+                  <input
+                    id="permanentAddr"
+                    type="text"
+                    class="form-control"
+                    name="permanentAddr"
+                    th:field="*{permanentAddr}"
+                    required
+                  />
+                  <span class="error-message" id="permanentAddrError"
+                    >Address is required</span
+                  >
+                </div>
+                <!-- Permanent City -->
+                <div class="intro-y col-span-12 sm:col-span-6">
+                  <label for="permanentCity" class="form-label"
+                    >Permanent City</label
+                  ><span style="font-size: 20px; color: red">*</span>
+                  <input
+                    id="permanentCity"
+                    type="text"
+                    th:field="*{permanentCity}"
+                    name="permanentCity"
+                    class="form-control"
+                    required
+                  />
+                  <span class="error-message" id="permanentCityError"
+                    >City is required</span
+                  >
+                </div>
+                <!-- Permanent State -->
+                <div class="intro-y col-span-12 sm:col-span-6">
+                  <label for="permanentState" class="form-label"
+                    >Permanent State</label
+                  ><span style="font-size: 20px; color: red">*</span>
+                  <input
+                    id="permanentState"
+                    type="text"
+                    class="form-control"
+                    name="permanentState"
+                    th:field="*{permanentState}"
+                    required
+                  />
+                  <span class="error-message" id="permanentStateError"
+                    >State is required</span
+                  >
+                </div>
+                <div class="intro-y col-span-12 sm:col-span-6">
+                  <label for="permanentPinCode" class="form-label"
+                    >Permanent PinCode</label
+                  ><span style="font-size: 20px; color: red">*</span>
+                  <input
+                    id="permanentPinCode"
+                    type="text"
+                    class="form-control"
+                    name="permanentPinCode"
+                    th:field="*{permanentPinCode}"
+                    required
+                    pattern="\d{6}"
+                    maxlength="6"
+                  />
+                  <span class="error-message" id="permanentPinCodeError"
+                    >Must be 6 digits</span
+                  >
+                </div>
+
+                <!-- Checkbox to Copy Permanent Address -->
+                <div class="intro-y col-span-12 flex items-center">
+                  <input
+                    type="checkbox"
+                    id="sameAsPermanent"
+                    class="mr-2"
+                    onchange="copyPermanentAddress()"
+                  />
+                  <label for="sameAsPermanent" class="form-label"
+                    >Same as permanent</label
+                  >
+                </div>
+
+                <!-- Current Address -->
+                <div class="intro-y col-span-12 sm:col-span-6">
+                  <label for="currentAddr" class="form-label"
+                    >Current Address</label
+                  ><span style="font-size: 20px; color: red">*</span>
+                  <input
+                    id="currentAddr"
+                    type="text"
+                    class="form-control"
+                    name="currentAddr"
+                    th:field="*{currentAddr}"
+                    required
+                  />
+                  <span class="error-message" id="currentAddrError"
+                    >Address is required</span
+                  >
+                </div>
+                <!-- Current City -->
+                <div class="intro-y col-span-12 sm:col-span-6">
+                  <label for="currentCity" class="form-label"
+                    >Current City</label
+                  ><span style="font-size: 20px; color: red">*</span>
+                  <input
+                    id="currentCity"
+                    type="text"
+                    class="form-control"
+                    name="currentCity"
+                    th:field="*{currentCity}"
+                    required
+                  />
+                  <span class="error-message" id="currentCityError"
+                    >City is required</span
+                  >
+                </div>
+                <!-- Current State -->
+                <div class="intro-y col-span-12 sm:col-span-6">
+                  <label for="currentState" class="form-label"
+                    >Current State</label
+                  ><span style="font-size: 20px; color: red">*</span>
+                  <input
+                    id="currentState"
+                    type="text"
+                    name="currentState"
+                    class="form-control"
+                    th:field="*{currentState}"
+                    required
+                  />
+                  <span class="error-message" id="currentStateError"
+                    >State is required</span
+                  >
+                </div>
+                <div class="intro-y col-span-12 sm:col-span-6">
+                  <label for="currentPinCode" class="form-label"
+                    >Current PinCode</label
+                  ><span style="font-size: 20px; color: red">*</span>
+                  <input
+                    id="currentPinCode"
+                    type="text"
+                    name="currentPinCode"
+                    class="form-control"
+                    th:field="*{currentPinCode}"
+                    required
+                    pattern="\d{6}"
+                    maxlength="6"
+                  />
+                  <span class="error-message" id="currentPinCodeError"
+                    >Must be 6 digits</span
+                  >
+                </div>
+                <!-- Nominee Name -->
+                <div class="intro-y col-span-12 sm:col-span-6">
+                  <label for="nomineeName" class="form-label"
+                    >Nominee Name</label
+                  ><span style="font-size: 20px; color: red">*</span>
+                  <input
+                    id="nomineeName"
+                    type="text"
+                    name="nomineeName"
+                    class="form-control"
+                    th:field="*{nomineeName}"
+                    required
+                  />
+                  <span class="error-message" id="nomineeNameError"
+                    >Nominee name is required</span
+                  >
+                </div>
+                <!-- Checkbox to Copy Current Address for nominee -->
+                <div class="intro-y col-span-12 flex items-center">
+                  <input
+                    type="checkbox"
+                    id="sameAsCurrent"
+                    class="mr-2"
+                    onchange="copyCurrentAddressForNominee()"
+                  />
+                  <label for="sameAsCurrent" class="form-label"
+                    >Same as current</label
+                  >
+                </div>
+                <!-- Nominee Address -->
+                <div class="intro-y col-span-12 sm:col-span-6">
+                  <label for="nomineeAddress" class="form-label"
+                    >Nominee Address</label
+                  ><span style="font-size: 20px; color: red">*</span>
+                  <input
+                    id="nomineeAddress"
+                    type="text"
+                    name="nomineeAddress"
+                    class="form-control"
+                    th:field="*{nomineeAddress}"
+                    required
+                  />
+                  <span class="error-message" id="nomineeAddressError"
+                    >Nominee Address is required</span
+                  >
+                </div>
+                <!-- Relation -->
+                <div class="intro-y col-span-12 sm:col-span-6">
+                  <label for="relation" class="form-label"
+                    >Nominee Relation</label
+                  ><span style="font-size: 20px; color: red">*</span>
+                  <select
+                    id="relation"
+                    name="relation"
+                    class="form-control"
+                    th:field="*{relation}"
+                    required
+                  >
+                    <option value="" disabled selected>Select Relation</option>
+                    <option value="Father">Father</option>
+                    <option value="Mother">Mother</option>
+                    <option value="Wife">Wife</option>
+                    <option value="Son">Son</option>
+                    <option value="Daughter">Daughter</option>
+                  </select>
+                  <span class="error-message" id="relationError"
+                    >Relation is required</span
+                  >
+                </div>
+                <div class="intro-y col-span-12 sm:col-span-6">
+                  <label for="aadharNum" class="form-label"
+                    >Nominee Aadhaar Number</label
+                  ><span style="font-size: 20px; color: red">*</span>
+                  <input
+                    id="aadharNum"
+                    type="text"
+                    name="aadharNum"
+                    class="form-control"
+                    th:field="*{aadharNum}"
+                    required
+                    pattern="\d{12}"
+                    maxlength="12"
+                  />
+                  <span class="error-message" id="aadharNumError"
+                    >Must be 12 digits</span
+                  >
+                </div>
+                <div class="intro-y col-span-12 sm:col-span-6">
+                  <label for="mobileNum" class="form-label"
+                    >Nominee Mobile Number</label
+                  ><span style="font-size: 20px; color: red">*</span>
+                  <div class="input-group">
+                    <div class="input-group-text">+91</div>
+                    <input
+                      id="mobileNum"
+                      type="tel"
+                      name="mobileNum"
+                      class="form-control"
+                      th:field="*{mobileNum}"
+                      required
+                      pattern="\d{10}"
+                      maxlength="10"
+                    />
+                  </div>
+                  <span class="error-message" id="mobileNumError"
+                    >10 digits required</span
+                  >
+                </div>
+                <div class="intro-y col-span-12 sm:col-span-6">
+                  <label for="accountNum" class="form-label"
+                    >Member's Account Number</label
+                  ><span style="font-size: 20px; color: red">*</span>
+                  <input
+                    id="accountNum"
+                    type="text"
+                    name="accountNum"
+                    class="form-control"
+                    th:field="*{accountNum}"
+                    required
+                    pattern="\d{9,18}"
+                  />
+                  <span class="error-message" id="accountNumError"
+                    >9-18 digits required</span
+                  >
+                </div>
+                <!-- Bank Name -->
+                <div class="intro-y col-span-12 sm:col-span-6">
+                  <label for="bankName" class="form-label"
+                    >Member's Bank Name</label
+                  ><span style="font-size: 20px; color: red">*</span>
+                  <input
+                    id="bankName"
+                    type="text"
+                    name="bname"
+                    class="form-control"
+                    th:field="*{bname}"
+                    required
+                  />
+                  <span class="error-message" id="bankNameError"
+                    >Bank name is required</span
+                  >
+                </div>
+
+                <!-- Branch Name -->
+                <div class="intro-y col-span-12 sm:col-span-6">
+                  <label for="branchName" class="form-label">Branch Name</label
+                  ><span style="font-size: 20px; color: red">*</span>
+                  <input
+                    id="branchName"
+                    type="text"
+                    name="branch"
+                    class="form-control"
+                    th:field="*{branch}"
+                    required
+                  />
+                  <span class="error-message" id="branchNameError"
+                    >Branch name is required</span
+                  >
+                </div>
+                <div class="intro-y col-span-12 sm:col-span-6">
+                  <label for="payableAt" class="form-label">Payable At</label
+                  ><span style="font-size: 20px; color: red">*</span>
+                  <input
+                    id="payableAt"
+                    type="text"
+                    name="payableAt"
+                    class="form-control"
+                    th:field="*{payableAt}"
+                  />
+                  <span class="error-message" id="payableAtError"
+                    >payableAt is required</span
+                  >
+                </div>
+                <div class="intro-y col-span-12 sm:col-span-6">
+                  <label for="ifscCode" class="form-label">Ifsc Code</label
+                  ><span style="font-size: 20px; color: red">*</span>
+                  <input
+                    id="ifscCode"
+                    type="text"
+                    name="ifscode"
+                    class="form-control"
+                    th:field="*{ifscode}"
+                    required
+                    pattern="^[A-Z]{4}0[A-Z0-9]{6}$"
+                  />
+                  <span class="error-message" id="ifscCodeError"
+                    >Invalid IFSC format (ex: ABCD0123456)</span
+                  >
+                </div>
+              </div>
+              <div
+                class="intro-y col-span-12 flex items-center justify-center sm:justify-end mt-5"
+              >
+                <button
+                  type="button"
+                  class="btn btn-secondary w-24"
+                  onclick="prevStep()"
+                >
+                  Previous
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-primary w-24 ml-2"
+                  onclick="nextStep()"
+                >
+                  Next
+                </button>
+              </div>
+              <div>
+                <span style="background-color: orange"
+                  ><span
+                    ><span style="font-size: 20px; color: red">*</span></span
+                  ><span style="font-size: 15px"
+                    >marked are mandatory fields.</span
+                  ></span
+                >
+              </div>
+            </div>
+
+            <div id="step-3" class="px-5 mt-10" style="display: none">
+              <div class="font-medium text-center text-lg">
+                Membership Payment & Confirmation
+              </div>
+              <div class="text-slate-500 text-center mt-2">
+                Validate each details.
+              </div>
+            </div>
+
+            <div
+              id="step-3-form"
+              class="px-5 sm:px-20 mt-10 pt-10 border-t border-slate-200/60 dark:border-darkmode-400"
+              style="display: none"
+            >
+              <script>
+                function copyPermanentAddress() {
+                  const isChecked =
+                    document.getElementById("sameAsPermanent").checked;
+                  const currentAddr = document.getElementById("currentAddr");
+                  const currentCity = document.getElementById("currentCity");
+                  const currentState = document.getElementById("currentState");
+                  const currentPinCode =
+                    document.getElementById("currentPinCode");
+
+                  if (isChecked) {
+                    currentAddr.value =
+                      document.getElementById("permanentAddr").value;
+                    currentCity.value =
+                      document.getElementById("permanentCity").value;
+                    currentState.value =
+                      document.getElementById("permanentState").value;
+                    currentPinCode.value =
+                      document.getElementById("permanentPinCode").value;
+
+                    // Clear any errors for current address fields
+                    setErrorMessage("currentAddr", "");
+                    setErrorMessage("currentCity", "");
+                    setErrorMessage("currentState", "");
+                    setErrorMessage("currentPinCode", "");
+                  }
+
+                  // Toggle required attribute based on checkbox
+                  [
+                    currentAddr,
+                    currentCity,
+                    currentState,
+                    currentPinCode,
+                  ].forEach((field) => {
+                    field.required = !isChecked;
+                  });
+                }
+                function copyCurrentAddressForNominee() {
+                  const isChecked =
+                    document.getElementById("sameAsCurrent").checked;
+                  const nomineeAddr = document.getElementById("nomineeAddress");
+
+                  if (isChecked) {
+                    nomineeAddr.value =
+                      document.getElementById("currentAddr").value +
+                      ", " +
+                      document.getElementById("currentCity").value +
+                      ", " +
+                      document.getElementById("currentState").value +
+                      ", " +
+                      document.getElementById("currentPinCode").value;
+
+                    setErrorMessage("nomineeAddress", "");
+                  }
+
+                  nomineeAddr.required = !isChecked;
+                }
+              </script>
+              <script>
+                function updateUserType() {
+                  const cashRadio = document.getElementById("existing");
+                  const onlineRadio = document.getElementById("new");
+                  const paymentInput = document.getElementById("userType");
+
+                  // Set input value based on selected payment mode
+                  if (cashRadio.checked) {
+                    paymentInput.value = "Existing User";
+                  } else if (onlineRadio.checked) {
+                    paymentInput.value = "New User";
+                  } else {
+                    paymentInput.value = ""; // Clear value when nothing is selected
+                  }
+                }
+              </script>
+
+              <div
+                class="alert alert-outline-warning alert-dismissible show flex items-center bg-warning/20 dark:bg-darkmode-400 dark:border-darkmode-400 mt-5"
+                role="alert"
+              >
+                <span
+                  ><i data-lucide="alert-triangle" class="w-6 h-6 mr-3"></i
+                ></span>
+                <span class="text-slate-800 dark:text-slate-500"
+                  >Make sure you have filled all the fields. All fields are
+                  important.
+                </span>
+                <button
+                  type="button"
+                  class="btn-close dark:text-white"
+                  data-tw-dismiss="alert"
+                  aria-label="Close"
+                >
+                  <i data-lucide="x" class="w-4 h-4"></i>
+                </button>
+              </div>
+              <!-- Password Section -->
+              <div class="intro-y col-span-12 sm:col-span-6">
+                <label for="password" class="form-label">Password</label
+                ><span style="font-size: 20px; color: red">*</span>
+                <div class="input-group">
+                  <input
+                    id="password"
+                    type="password"
+                    name="password"
+                    class="form-control"
+                    th:field="*{password}"
+                    required
+                    pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%^&+=]).{8,}$"
+                    oninput="validatePassword()"
+                  />
+                  <div
+                    class="input-group-text"
+                    style="cursor: pointer"
+                    onclick="togglePasswordVisibility()"
+                  >
+                    <i id="toggleIcon" data-lucide="shield-off"></i>
+                  </div>
+                </div>
+                <span class="error-message" id="passwordError"
+                  >Must contain: 8+ chars, 1 uppercase, 1 lowercase, 1 number, 1
+                  special char</span
+                >
+              </div>
+
+              <div class="intro-y col-span-12 sm:col-span-6">
+                <label for="confirmPassword" class="form-label"
+                  >Confirm Password</label
+                ><span style="font-size: 20px; color: red">*</span>
+                <div class="input-group">
+                  <input
+                    id="confirmPassword"
+                    type="password"
+                    class="form-control"
+                    required
+                    oninput="validatePassword()"
+                  />
+                  <div
+                    class="input-group-text"
+                    style="cursor: pointer"
+                    onclick="toggleConfirmPasswordVisibility()"
+                  >
+                    <i id="toggleConfirmIcon" data-lucide="shield-off"></i>
+                  </div>
+                </div>
+                <span class="error-message" id="confirmPasswordError"
+                  >Passwords do not match</span
+                >
+              </div>
+
+              <div class="intro-y col-span-12 sm:col-span-6">
+                <label for="otpbox" class="form-label">OTP Verification</label
+                ><span style="font-size: 20px; color: red">*</span>
+                <div class="input-group">
+                  <input
+                    id="otpbox"
+                    type="text"
+                    class="form-control"
+                    required
+                    disabled
+                  />
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    id="sendOtpBtn"
+                    onclick="sendOtp()"
+                  >
+                    Send OTP
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-primary ml-2"
+                    id="verifyOtpBtn"
+                    onclick="verifyOtp()"
+                    disabled
+                  >
+                    Verify OTP
+                  </button>
+                </div>
+                <span id="otplog" class="error-message"></span>
+                <input type="hidden" id="otpVerified" value="false" />
+              </div>
+
+              <div
+                class="intro-y col-span-12 flex items-center justify-center sm:justify-end mt-5"
+              >
+                <button
+                  type="button"
+                  class="btn btn-secondary w-24"
+                  onclick="prevStep()"
+                >
+                  Previous
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-primary w-24 ml-2"
+                  onclick="nextStep()"
+                >
+                  Submit
+                </button>
+              </div>
+              <div>
+                <span style="background-color: orange"
+                  ><span
+                    ><span style="font-size: 20px; color: red">*</span></span
+                  ><span style="font-size: 15px"
+                    >marked are mandatory fields.</span
+                  ></span
+                >
+              </div>
+            </div>
+
+            <!-- Error message alert -->
+            <div
+              id="error-message"
+              class="alert alert-outline-warning alert-dismissible show flex items-center bg-warning/20 dark:bg-darkmode-400 dark:border-darkmode-400 mt-5"
+              role="alert"
+              style="display: none"
+            >
+              <span
+                ><i data-lucide="alert-triangle" class="w-6 h-6 mr-3"></i
+              ></span>
+              <span class="text-slate-800 dark:text-slate-500"
+                >Please fill in all required fields on this page.</span
+              >
+              <button
+                type="button"
+                class="btn-close dark:text-white"
+                data-tw-dismiss="alert"
+                aria-label="Close"
+              >
+                <i data-lucide="x" class="w-4 h-4"></i>
+              </button>
+            </div>
+            <script>
+              function updateCurrentStatus() {
+                const membershipSelect =
+                  document.getElementById("membershipStatus");
+                const currentStatusInput =
+                  document.getElementById("current_status");
+
+                // Update the current status based on the selected option
+                currentStatusInput.value = membershipSelect.value;
+              }
+            </script>
+          </form>
+        </div>
+      </div>
+    </div>
+    <script src="../dist/js/app.js"></script>
+    <!-- Include jQuery and DataTables JS -->
+    <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+    <!-- Include Select2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+      document.getElementById("phoneNum").value = "";
+      document.getElementById("whatsappNumber").value = "";
+
+      function validatePassword() {
+        const password = document.getElementById("password");
+        const confirm = document.getElementById("confirmPassword");
+        const error = document.getElementById("passwordError");
+        const confirmError = document.getElementById("confirmPasswordError");
+
+        // Reset errors
+        error.style.display = "none";
+        confirmError.style.display = "none";
+
+        // Password pattern validation
+        const passwordRegex =
+          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%^&+=]).{8,}$/;
+        if (!passwordRegex.test(password.value)) {
+          error.style.display = "block";
+          return false;
+        }
+
+        // Confirm password match
+        if (password.value !== confirm.value) {
+          confirmError.style.display = "block";
+          return false;
+        }
+
+        return true;
+      }
+
+      function toggleConfirmPasswordVisibility() {
+        const confirmPasswordInput = document.getElementById("confirmPassword");
+        const toggleConfirmIcon = document.getElementById("toggleConfirmIcon");
+
+        if (confirmPasswordInput.type === "password") {
+          confirmPasswordInput.type = "text";
+          toggleConfirmIcon.setAttribute("data-lucide", "shield");
+        } else {
+          confirmPasswordInput.type = "password";
+          toggleConfirmIcon.setAttribute("data-lucide", "shield-off");
+        }
+
+        // Refresh Lucide icons (if using Lucide library)
+        if (typeof lucide !== "undefined" && lucide.createIcons) {
+          lucide.createIcons();
+        }
+      }
+
+      function togglePasswordVisibility() {
+        const passwordInput = document.getElementById("password");
+        const toggleIcon = document.getElementById("toggleIcon");
+
+        if (passwordInput.type === "password") {
+          passwordInput.type = "text";
+          toggleIcon.setAttribute("data-lucide", "shield"); // Change icon when visible
+        } else {
+          passwordInput.type = "password";
+          toggleIcon.setAttribute("data-lucide", "shield-off"); // Revert icon when hidden
+        }
+
+        // Refresh Lucide icons (if using Lucide library)
+        if (typeof lucide !== "undefined" && lucide.createIcons) {
+          lucide.createIcons();
+        }
+      }
+    </script>
+
+    <script>
+      let currentStep = 1;
+      // Track OTP state
+      let otpSent = false;
+      let otpVerified = false;
+
+      // Main navigation functions
+      function goToStep(step) {
+        if (step === 1) {
+          currentStep = 1;
+          updateStep();
+        } else if (step === 2 && validateStep1()) {
+          currentStep = 2;
+          updateStep();
+        } else if (step === 3 && validateStep2()) {
+          currentStep = 3;
+          updateStep();
+        } else {
+          showError("Please fix all validation errors before proceeding");
+        }
+      }
+
+      function nextStep() {
+        let isValid = false;
+        if (currentStep === 1) isValid = validateStep1();
+        else if (currentStep === 2) isValid = validateStep2();
+        else if (currentStep === 3) isValid = validateStep3();
+
+        if (isValid) {
+          if (currentStep < 3) {
+            currentStep++;
+            updateStep();
+          } else {
+            submitFormAndRedirect();
+          }
+        }
+      }
+
+      async function sendOtp() {
+        const phno = document.getElementById("phoneNum").value;
+        const otplog = document.getElementById("otplog");
+        const otpbox = document.getElementById("otpbox");
+        const verifyBtn = document.getElementById("verifyOtpBtn");
+
+        if (!phno || phno.length !== 10) {
+          otplog.textContent = "Please enter a valid phone number first";
+          otplog.style.color = "red";
+          otplog.style.display = "block";
+          return;
+        }
+
+        try {
+          // Disable send button during request
+          document.getElementById("sendOtpBtn").disabled = true;
+          otplog.textContent = "Sending OTP...";
+          otplog.style.color = "black";
+          otplog.style.display = "block";
+
+          const response = await fetch(`/telco_co/sendOtp?phoneNum=${phno}`);
+          const result = await response.json();
+
+          if (result.msg) {
+            otplog.textContent =
+              "OTP sent successfully! Enter the OTP and click Verify";
+            otplog.style.color = "green";
+            otpbox.disabled = false;
+            verifyBtn.disabled = false;
+            otpSent = true;
+            document.getElementById("otpVerified").value = "false";
+          } else {
+            otplog.textContent = "Unable to send OTP. Please try again.";
+            otplog.style.color = "red";
+          }
+        } catch (error) {
+          console.error("Error sending OTP:", error);
+          otplog.textContent = "An error occurred while sending OTP.";
+          otplog.style.color = "red";
+        } finally {
+          document.getElementById("sendOtpBtn").disabled = false;
+        }
+      }
+
+      async function verifyOtp() {
+        const otp = document.getElementById("otpbox").value.trim();
+        const otplog = document.getElementById("otplog");
+
+        if (!otp) {
+          otplog.textContent = "Please enter the OTP first";
+          otplog.style.color = "red";
+          return;
+        }
+
+        try {
+          document.getElementById("verifyOtpBtn").disabled = true;
+          otplog.textContent = "Verifying OTP...";
+          otplog.style.color = "black";
+
+          const response = await fetch(`/telco_co/confirm-otp?otp=${otp}`);
+          const result = await response.json();
+
+          if (result.msg) {
+            otplog.textContent = "OTP verified successfully!";
+            otplog.style.color = "green";
+            otpVerified = true;
+            document.getElementById("otpVerified").value = "true";
+          } else {
+            otplog.textContent = "Invalid OTP. Please try again.";
+            otplog.style.color = "red";
+            otpVerified = false;
+            document.getElementById("otpVerified").value = "false";
+          }
+        } catch (error) {
+          console.error("Error verifying OTP:", error);
+          otplog.textContent = "Error verifying OTP. Please try again.";
+          otplog.style.color = "red";
+        } finally {
+          document.getElementById("verifyOtpBtn").disabled = false;
+        }
+      }
+
+      function submitFormAndRedirect() {
+        const form = document.getElementById("updateForm");
+        const formData = new FormData(form);
+
+        fetch(form.action, {
+          method: "POST",
+          body: formData,
+        })
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("PDF generation failed");
+            }
+            return response.blob();
+          })
+          .then((blob) => {
+            const downloadUrl = window.URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = downloadUrl;
+            a.download = "registration_application.pdf";
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+
+            // Release the blob after download
+            setTimeout(() => {
+              window.URL.revokeObjectURL(downloadUrl);
+            }, 100);
+
+            // Redirect to login after short delay
+            setTimeout(() => {
+              window.location.href = "/telco_co/userlogin";
+            }, 1500); // You can adjust this delay if needed
+          })
+          .catch((error) => {
+            console.error("Submission error:", error);
+            alert("Error submitting form or downloading PDF.");
+          });
+      }
+
+      function prevStep() {
+        if (currentStep > 1) {
+          currentStep--;
+          updateStep();
+        }
+      }
+
+      // Modified validateStep1 function with proper async handling
+      async function validateStep1() {
+        // Show loading state
+        const nextBtn = document.querySelector(
+          '#step-1-form button[onclick="nextStep()"]'
+        );
+        const originalText = nextBtn.textContent;
+        nextBtn.disabled = true;
+        nextBtn.innerHTML =
+          '<i class="fa fa-spinner fa-spin"></i> Validating...';
+
+        try {
+          // 1. Validate basic fields
+          const basicValid = validateBasicFields();
+          if (!basicValid) return false;
+
+          // 2. Validate email format and uniqueness
+          const emailValid = await validateEmail();
+          if (!emailValid) return false;
+
+          // 3. Validate PAN/Aadhar formats
+          const { panValid, aadharValid } = validatePanAndAadhar();
+          if (!panValid || !aadharValid) return false;
+
+          // Ticket number validation
+          const ticketValid = await validateTicketNumber();
+          if (!ticketValid) return false;
+
+          // 4. Check PAN/Aadhar uniqueness
+          return await checkPanAadharUniqueness();
+        } catch (error) {
+          console.error("Validation error:", error);
+          showError("Error during validation. Please try again.");
+          return false;
+        } finally {
+          nextBtn.disabled = false;
+          nextBtn.textContent = originalText;
+        }
+      }
+
+      async function validateTicketNumber() {
+        const ticketNumber = document.getElementById("userId").value.trim();
+
+        // Basic validation
+        if (!ticketNumber) {
+          setErrorMessage("userId", "Ticket number is required");
+          return false;
+        }
+
+        // Uniqueness check
+        try {
+          const response = await fetch(
+            `/telco_co/ticketnum/${encodeURIComponent(ticketNumber)}`
+          );
+          const result = await response.json();
+
+          if (result.exists) {
+            setErrorMessage("userId", "Ticket number already exists");
+            return false;
+          }
+          return true;
+        } catch (error) {
+          console.error("Ticket validation error:", error);
+          setErrorMessage("userId", "Error verifying ticket number");
+          return false;
+        }
+      }
+
+      // Helper functions:
+
+      function validateBasicFields() {
+        let isValid = true;
+        isValid &= validateField("companyIds", "Company", "select");
+        // isValid &= validateField('userId', 'Ticket Number');
+        isValid &= validateField("name", "Name", "text", /^[A-Z\s]+$/);
+        // isValid &= validateField('empId', 'Employee ID');
+        isValid &= validateField("bcNumber", "B.C. Number");
+        isValid &= validateField("gender", "Gender", "select");
+        isValid &= validateField("dob", "Date of Birth");
+        //isValid &= validateField("email", "Email ID");
+        isValid &= validateField(
+          "phoneNum",
+          "Phone Number",
+          "text",
+          /^\d{10}$/
+        );
+        isValid &= validateField(
+          "whatsappNumber",
+          "WhatsApp Number",
+          "text",
+          /^\d{10}$/
+        );
+        isValid &= validateField("fathersName", "Father's Name");
+
+        // Validate hidden fields
+        const companyId = document.getElementById("companyId").value.trim();
+        const dor = document.getElementById("dor").value.trim();
+        if (!companyId || !dor) {
+          console.error("Hidden fields validation failed");
+          return false;
+        }
+
+        return isValid;
+      }
+
+      async function validateEmail() {
+        const emailInput = document.getElementById("email");
+        const emailError = document.getElementById("emailError");
+        const email = emailInput.value.trim();
+
+        // Hide error initially
+        emailError.style.display = "none";
+
+         //Allow empty email (optional field)
+         if (email === "") {
+         return true;
+        }
+
+       // if (email === "") {
+        //emailError.textContent = "Email is required";
+       // emailError.style.display = "block";
+       // return false;
+       // }
+
+        // Basic email format validation
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailPattern.test(email)) {
+          emailError.textContent = "Please enter a valid email address.";
+          emailError.style.display = "block";
+          return false;
+        }
+
+        // Check if email already exists via API
+        try {
+          const response = await fetch(
+            `/telco_co/user-email/${encodeURIComponent(email)}`
+          );
+          const result = await response.json();
+
+          if (result.exists) {
+            emailError.textContent = "Email already exists.";
+            emailError.style.display = "block";
+            return false;
+          }
+          return true;
+        } catch (error) {
+          emailError.textContent = "Error checking email.";
+          emailError.style.display = "block";
+          return false;
+        }
+      }
+
+      function validatePanAndAadhar() {
+        const pan = document.getElementById("panCard").value.trim();
+        const aadhar = document.getElementById("aadharNumber").value.trim();
+
+        const panValid = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/.test(pan);
+        const aadharValid = /^\d{12}$/.test(aadhar);
+
+        setErrorMessage(
+          "panCard",
+          !panValid ? "Invalid PAN format (AAAAA1234A)" : ""
+        );
+        setErrorMessage(
+          "aadharNumber",
+          !aadharValid ? "Must be 12 digits" : ""
+        );
+
+        return { panValid, aadharValid };
+      }
+
+      async function checkPanAadharUniqueness() {
+        const pan = document.getElementById("panCard").value.trim();
+        const aadhar = document.getElementById("aadharNumber").value.trim();
+
+        try {
+          const response = await fetch(
+            `/telco_co/user-adrpan?aadhar=${encodeURIComponent(
+              aadhar
+            )}&pan=${encodeURIComponent(pan)}`
+          );
+          const result = await response.json();
+
+          let isValid = true;
+          if (result.pan) {
+            setErrorMessage("panCard", "PAN card already exists");
+            isValid = false;
+          }
+          if (result.aadhar) {
+            setErrorMessage("aadharNumber", "Aadhaar number already exists");
+            isValid = false;
+          }
+          return isValid;
+        } catch (error) {
+          console.error("PAN/Aadhar check failed:", error);
+          setErrorMessage("panCard", "Error verifying PAN");
+          setErrorMessage("aadharNumber", "Error verifying Aadhaar");
+          return false;
+        }
+      }
+
+      async function checkUniquenessWithBackend() {
+        const pan = document.getElementById("panCard").value.trim();
+        const aadhar = document.getElementById("aadharNumber").value.trim();
+
+        try {
+          const response = await fetch(
+            `/telco_co/user-adrpan?aadhar=${encodeURIComponent(
+              aadhar
+            )}&pan=${encodeURIComponent(pan)}`
+          );
+          const result = await response.json();
+
+          let isValid = true;
+          if (result.pan) {
+            setErrorMessage("panCard", "PAN card already exists");
+            isValid = false;
+          }
+          if (result.aadhar) {
+            setErrorMessage("aadharNumber", "Aadhaar number already exists");
+            isValid = false;
+          }
+          return isValid;
+        } catch (error) {
+          console.error("Error checking PAN/Aadhar uniqueness:", error);
+          setErrorMessage("panCard", "Error verifying PAN");
+          setErrorMessage("aadharNumber", "Error verifying Aadhaar");
+          return false;
+        }
+      }
+
+      // Modified nextStep function to handle async validation
+      // Unified nextStep function
+      async function nextStep() {
+        // Show loading state
+        const nextBtn = document.querySelector(
+          `#step-${currentStep}-form button[onclick="nextStep()"]`
+        );
+        const originalText = nextBtn.textContent;
+        nextBtn.disabled = true;
+        nextBtn.innerHTML =
+          '<i class="fa fa-spinner fa-spin"></i> Processing...';
+
+        try {
+          let isValid = false;
+
+          if (currentStep === 1) {
+            isValid = await validateStep1();
+          } else if (currentStep === 2) {
+            isValid = await validateStep2();
+          } else if (currentStep === 3) {
+            isValid = await validateStep3();
+          }
+
+          if (isValid) {
+            if (currentStep < 3) {
+              currentStep++;
+              updateStep();
+            } else {
+              await submitForm();
+            }
+          }
+        } catch (error) {
+          console.error("Error:", error);
+          showError("An error occurred during validation");
+        } finally {
+          nextBtn.disabled = false;
+          nextBtn.innerHTML = originalText;
+        }
+      }
+
+      // Form submission function
+      async function submitForm() {
+        // Final verification check
+        if (document.getElementById("otpVerified").value !== "true") {
+          showError("Please verify OTP before submitting");
+          return;
+        }
+
+        const form = document.getElementById("updateForm");
+        const submitBtn = form.querySelector(
+          'button[type="button"][onclick="nextStep()"]'
+        );
+        const originalText = submitBtn.innerHTML;
+
+        try {
+          submitBtn.disabled = true;
+          submitBtn.innerHTML =
+            '<i class="fa fa-spinner fa-spin"></i> Submitting...';
+
+          const formData = new FormData(form);
+          const response = await fetch(form.action, {
+            method: "POST",
+            body: formData,
+          });
+
+          if (!response.ok) {
+            throw new Error("Server responded with error");
+          }
+
+          const blob = await response.blob();
+          const downloadUrl = window.URL.createObjectURL(blob);
+
+          // Trigger download
+          const a = document.createElement("a");
+          a.href = downloadUrl;
+          a.download = "registration.pdf";
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+
+          // Redirect after download
+          setTimeout(() => {
+            window.location.href = "/telco_co/userlogin";
+          }, 1500);
+        } catch (error) {
+          console.error("Submission error:", error);
+          showError("Failed to submit form. Please try again.");
+        } finally {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = originalText;
+        }
+      }
+
+      // Error message handler
+      function setErrorMessage(fieldId, message) {
+        const errorElement = document.getElementById(`${fieldId}Error`);
+        const inputField = document.getElementById(fieldId);
+
+        if (errorElement) {
+          errorElement.textContent = message;
+          errorElement.style.display = message ? "block" : "none";
+        }
+
+        if (inputField) {
+          inputField.classList.toggle("is-invalid", !!message);
+        }
+      }
+
+      async function validateStep2() {
+        let isValid = true;
+
+        // Address Information
+        isValid &= validateField("permanentAddr", "Permanent Address");
+        isValid &= validateField("permanentCity", "Permanent City");
+        isValid &= validateField("permanentState", "Permanent State");
+        isValid &= validateField(
+          "permanentPinCode",
+          "Permanent Pincode",
+          "text",
+          /^\d{6}$/
+        );
+
+        // Current Address (only validate if "Same as permanent" is not checked)
+        // if (!document.getElementById('sameAsPermanent').checked) {
+        //     isValid &= validateField('currentAddr', 'Current Address');
+        //     isValid &= validateField('currentCity', 'Current City');
+        //     isValid &= validateField('currentState', 'Current State');
+        //     isValid &= validateField('currentPinCode', 'Current Pincode', 'text', /^\d{6}$/);
+        // }
+
+        // Nominee Information
+        isValid &= validateField("nomineeName", "Nominee Name");
+        isValid &= validateField("relation", "Nominee Relation");
+        isValid &= validateField(
+          "aadharNum",
+          "Nominee Aadhaar",
+          "text",
+          /^\d{12}$/
+        );
+        isValid &= validateField(
+          "mobileNum",
+          "Nominee Mobile",
+          "text",
+          /^\d{10}$/
+        );
+
+        // Bank Information
+        isValid &= validateField(
+          "accountNum",
+          "Account Number",
+          "text",
+          /^\d{9,18}$/
+        );
+        isValid &= validateField("bankName", "Bank Name");
+        isValid &= validateField("branchName", "Branch Name");
+        isValid &= validateField(
+          "ifscCode",
+          "IFSC Code",
+          "text",
+          /^[A-Z]{4}0[A-Z0-9]{6}$/
+        );
+        isValid &= validateField("payableAt", "Payable At");
+
+        return isValid;
+      }
+
+      async function validateStep3() {
+        let isValid = true;
+
+        // 1. First validate password requirements (don't proceed if these fail)
+        const password = document.getElementById("password");
+        const confirmPassword = document.getElementById("confirmPassword");
+        const passwordRegex =
+          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%^&+=]).{8,}$/;
+
+        if (!passwordRegex.test(password.value)) {
+          setErrorMessage(
+            "password",
+            "Password must contain: 8+ characters, 1 uppercase, 1 lowercase, 1 number, 1 special character"
+          );
+          isValid = false;
+        }
+
+        if (password.value !== confirmPassword.value) {
+          setErrorMessage("confirmPassword", "Passwords do not match");
+          isValid = false;
+        }
+
+        // If passwords are invalid, stop here
+        if (!isValid) return false;
+
+        // 2. OTP Validation (only check if passwords are valid)
+        const otp = document.getElementById("otpbox").value.trim();
+        const otplog = document.getElementById("otplog");
+
+        if (!otp) {
+          setErrorMessage(
+            "otplog",
+            "Please enter the OTP received on your phone"
+          );
+          return false;
+        }
+
+        // 3. Verify OTP via API only if not already verified
+        if (document.getElementById("otpVerified").value !== "true") {
+          try {
+            otplog.textContent = "Verifying OTP...";
+            otplog.style.color = "black";
+            otplog.style.display = "block";
+
+            const response = await fetch(`/telco_co/confirm-otp?otp=${otp}`);
+            const result = await response.json();
+
+            if (result.msg) {
+              document.getElementById("otpVerified").value = "true";
+              setErrorMessage("otplog", "");
+              return true;
+            } else {
+              setErrorMessage(
+                "otplog",
+                "Invalid OTP. Please try again or resend OTP."
+              );
+              return false;
+            }
+          } catch (error) {
+            console.error("Error confirming OTP:", error);
+            setErrorMessage(
+              "otplog",
+              "Error verifying OTP. Please check your connection."
+            );
+            return false;
+          }
+        }
+
+        // If we get here, OTP was already verified
+        return true;
+      }
+
+      // Generic validation helper
+      function validateField(id, fieldName, type = "text", pattern = null) {
+        const field = document.getElementById(id);
+        const value = field.value.trim();
+        const errorId = id + "Error";
+
+        // Clear previous error
+        setErrorMessage(id, "");
+
+        // Check required field
+        if (!value) {
+          setErrorMessage(id, `${fieldName} is required`);
+          return false;
+        }
+
+        // Check pattern if provided
+        if (pattern && !pattern.test(value)) {
+          setErrorMessage(id, `Invalid ${fieldName} format`);
+          return false;
+        }
+
+        // Special handling for select elements
+        if (type === "select" && value === "") {
+          setErrorMessage(id, `Please select ${fieldName}`);
+          return false;
+        }
+
+        return true;
+      }
+
+      function showError(message, elementId = "error-message") {
+        const errorElement = document.getElementById(elementId);
+        if (errorElement) {
+          errorElement.textContent = message;
+          errorElement.style.display = "block";
+        }
+      }
+
+      function hideError(elementId = "error-message") {
+        const errorElement = document.getElementById(elementId);
+        if (errorElement) {
+          errorElement.textContent = "";
+          errorElement.style.display = "none";
+        }
+      }
+
+      // UI Update function
+      function updateStep() {
+        // Hide all steps
+        document.getElementById("step-1").style.display = "none";
+        document.getElementById("step-1-form").style.display = "none";
+        document.getElementById("step-2").style.display = "none";
+        document.getElementById("step-2-form").style.display = "none";
+        document.getElementById("step-3").style.display = "none";
+        document.getElementById("step-3-form").style.display = "none";
+        document.getElementById("error-message").style.display = "none";
+
+        // Update step indicator buttons using correct IDs
+        const stepButtons = [
+          document.getElementById("step-1-btn"),
+          document.getElementById("step-2-btn"),
+          document.getElementById("step-3-btn"),
+        ];
+
+        stepButtons.forEach((btn, index) => {
+          if (btn) {
+            btn.classList.toggle("btn-primary", currentStep === index + 1);
+            btn.classList.toggle("bg-slate-100", currentStep !== index + 1);
+          }
+        });
+
+        // Show current step
+        if (currentStep === 1) {
+          document.getElementById("step-1").style.display = "block";
+          document.getElementById("step-1-form").style.display = "block";
+        } else if (currentStep === 2) {
+          document.getElementById("step-2").style.display = "block";
+          document.getElementById("step-2-form").style.display = "block";
+        } else {
+          document.getElementById("step-3").style.display = "block";
+          document.getElementById("step-3-form").style.display = "block";
+        }
+      }
+
+      // Initial setup
+      document.addEventListener("DOMContentLoaded", () => {
+        // Add input formatting
+        document
+          .getElementById("panCard")
+          .addEventListener("input", function (e) {
+            this.value = this.value.toUpperCase();
+          });
+
+        document.getElementById("name").addEventListener("input", function (e) {
+          this.value = this.value.toUpperCase();
+        });
+
+        // Add automatic retirement date calculation
+        document
+          .getElementById("dob")
+          .addEventListener("change", calculateSeparationDate);
+      });
+    </script>
+    <!-- END: JS Assets-->
+  </body>
+</html>

@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en" class="light" xmlns:th="http://www.thymeleaf.org">
+<!-- BEGIN: Head -->
+
+<head>
+    <meta charset="utf-8">
+    <link href="../dist/images/logo.svg" rel="shortcut icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>TELCO - Commodity Loan Terms</title>
+    <!-- BEGIN: CSS Assets-->
+    <link rel="stylesheet" href="../dist/css/app.css" />
+    <link rel="stylesheet" href="../dist/css/jquery.dataTables.min.css" />
+    <!-- END: CSS Assets-->
+
+</head>
+<style>
+    /* Keep only essential styles that won't interfere with navigation */
+    .dataTables_length select {
+        width: 60px;
+    }
+
+    /* Badge styles */
+    .badge {
+        display: inline-block;
+        padding: 5px 10px;
+        font-size: 14px;
+        font-weight: bold;
+        border-radius: 5px;
+    }
+
+    .badge-other {
+        color: white;
+        background-color: red;
+    }
+
+    .badge-active {
+        color: white;
+        background-color: green;
+    }
+
+    /* Very specific selectors to avoid navigation conflicts */
+    .loan-terms-page ul.loan-conditions {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .loan-terms-page ul.loan-conditions li {
+        margin-bottom: 15px;
+        line-height: 1.6;
+        padding: 10px;
+        background: #f8f9fa;
+        border-left: 4px solid #28a745;
+        border-radius: 5px;
+    }
+
+    .loan-terms-page .highlight {
+        background-color: #fff3cd;
+        padding: 2px 5px;
+        border-radius: 3px;
+        font-weight: bold;
+        color: #856404;
+    }
+
+    .loan-terms-page .warning {
+        background-color: #f8d7da;
+        padding: 2px 5px;
+        border-radius: 3px;
+        font-weight: bold;
+        color: #721c24;
+    }
+
+    .loan-terms-page .success {
+        background-color: #d4edda;
+        padding: 2px 5px;
+        border-radius: 3px;
+        font-weight: bold;
+        color: #155724;
+    }
+
+    .loan-terms-page .commodity {
+        background-color: #e7f3ff;
+        padding: 2px 5px;
+        border-radius: 3px;
+        font-weight: bold;
+        color: #0056b3;
+    }
+
+    .loan-terms-page .terms-header {
+        background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+        color: white;
+        padding: 20px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .loan-terms-page .condition-section {
+        margin-bottom: 25px;
+        border: 1px solid #e9ecef;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    .loan-terms-page .section-header {
+        background: linear-gradient(135deg, #fd7e14 0%, #e8590c 100%);
+        color: white;
+        padding: 15px 20px;
+        font-size: 18px;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .loan-terms-page .section-content {
+        padding: 20px;
+        background: white;
+    }
+
+    .loan-terms-page .checkbox-container {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 10px;
+        border: 2px solid #28a745;
+        margin: 20px 0;
+    }
+
+    .loan-terms-page .checkbox-container input[type="checkbox"] {
+        margin-right: 10px;
+        transform: scale(1.2);
+    }
+
+    .loan-terms-page .checkbox-container label {
+        font-size: 16px;
+        font-weight: 500;
+        color: #495057;
+    }
+
+    .loan-terms-page .btn-container {
+        margin: 20px 0;
+    }
+
+    .loan-terms-page .icon {
+        font-size: 20px;
+    }
+
+    .loan-terms-page .important-note {
+        background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
+        color: white;
+        padding: 20px;
+        border-radius: 10px;
+        margin: 20px 0;
+        text-align: center;
+    }
+
+    .loan-terms-page .sub-conditions {
+        margin-left: 20px;
+        margin-top: 10px;
+    }
+
+    .loan-terms-page .sub-conditions li {
+        background: #e9ecef;
+        border-left: 3px solid #6c757d;
+        margin-bottom: 8px;
+        padding: 8px 12px;
+    }
+
+    .loan-terms-page .commodity-special {
+        background: linear-gradient(135deg, #6f42c1 0%, #5a32a3 100%);
+        color: white;
+        padding: 15px;
+        border-radius: 8px;
+        margin: 15px 0;
+    }
+</style>
+<!-- END: Head -->
+
+<body class="py-5 md:py-0">
+    <div class="flex md:mt-0">
+
+        <div th:replace="~{/fragments/nav}"></div>
+        <div th:insert="~{/fragments/mob}"></div>
+        <!-- BEGIN: Content -->
+        <div class="content content--top-nav">
+
+            <div th:replace="~{/fragments/top}"></div>
+            <div class="intro-y flex items-center mt-8">
+                <h2 class="text-lg font-medium mr-auto">
+                    Commodity Loan Application
+                </h2>
+            </div>
+
+            <div class="intro-y box px-5 pt-5 mt-5 mb-3">
+                <div class="loan-terms-page">
+                    <div class="terms-header">
+                        <h1> Commodity Loan Terms & Conditions</h1>
+                    </div>
+
+                    <!-- Eligibility Section -->
+                    <div class="condition-section">
+                        <div class="section-header">
+                            <span class="icon">✅</span>
+                            <span>Eligibility Requirements</span>
+                        </div>
+                        <div class="section-content">
+                            <ul class="loan-conditions">
+                                <li><b>Account Status:</b> Your account must be in <span class="success">ACTIVE</span>
+                                    status. Pending or inactive accounts cannot apply for commodity loans.</li>
+                                <li><b>Minimum Enrollment Period:</b> You must complete <span class="highlight">4
+                                        Months</span> before you can apply for a commodity loan.</li>
+                                <li><b>Share Amount Requirement:</b> Your total share deduction amount must be at least
+                                    <span class="highlight">₹16,000</span> before you can apply for a commodity loan.
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Loan Amount Section -->
+                    <div class="condition-section">
+                        <div class="section-header">
+                            <span class="icon">💰</span>
+                            <span>Loan Amount & Limits</span>
+                        </div>
+                        <div class="section-content">
+                            <ul class="loan-conditions">
+                                <li><b>New Members:</b> Fixed loan amount of <span class="highlight">₹50,000</span> (as
+                                    per system configuration).
+                                    <ul class="sub-conditions">
+                                        <li>This amount is predetermined and cannot be customized</li>
+                                    </ul>
+                                </li>
+                                <li><b>Existing Members:</b> Fixed loan amount of <span
+                                        class="highlight">₹1,00,000</span>.
+                                    <ul class="sub-conditions">
+                                        <li>Higher limit for experienced members with established trading history</li>
+                                    </ul>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Restrictions Section -->
+                    <div class="condition-section">
+                        <div class="section-header">
+                            <span class="icon">🚫</span>
+                            <span>Restrictions & Important Conditions</span>
+                        </div>
+                        <div class="section-content">
+                            <ul class="loan-conditions">
+                                <li><b>Outstanding Loan Restriction:</b> If you have any <span
+                                        class="warning">outstanding commodity loan</span>, you cannot apply for a new
+                                    commodity loan until the previous one is fully repaid.</li>
+                                <li><b>Cannot Apply If:</b>
+                                    <ul class="sub-conditions">
+                                        <li>Your account status is not ACTIVE</li>
+                                        <li>Your Society joining date is less than 4 months</li>
+                                        <li>Your share amount is below ₹16,000</li>
+                                        <li>You have an existing commodity loan with outstanding balance</li>
+                                        <li>Previous commodity loan application is in PENDING status</li>
+                                    </ul>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </div>
+
+                    <center>
+                        <div class="checkbox-container mb-3">
+                            <span style="font-size: 20px;color: red;">*</span>
+                            <input type="checkbox" id="acceptCheckbox" onclick="toggleButton()">
+                            <label for="acceptCheckbox"><strong>I have read, understood, and accept all the terms and
+                                    conditions mentioned above for Commodity Loan</strong></label>
+                        </div>
+                        <div class="btn-container">
+                            <button id="acceptButton" class="btn btn-pending w-24 mr-1 mb-2" disabled
+                                onclick="proceed()">Accept & Proceed</button>
+                        </div>
+
+                    </center>
+                    <div>
+                        <span style="background-color: orange;"><span><span
+                                    style="font-size: 20px;color: red;">*</span></span><span
+                                style="font-size: 15px;">marked are mandatory fields.</span></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- END: Content -->
+
+        <!-- BEGIN: View Modal -->
+        <div class="intro-y box mt-5 hidden">
+            <div
+                class="flex flex-col sm:flex-row items-center p-5 border-b border-slate-200/60 dark:border-darkmode-400">
+                <h2 class="font-medium text-base mr-auto">
+                    Header & Footer Modal
+                </h2>
+            </div>
+        </div>
+        <!-- END: View Modal -->
+
+        <!-- BEGIN: JS Assets-->
+        <!-- END: JS Assets-->
+        <script src="../dist/js/app.js"></script>
+        <script src="../dist/js/jquery-3.6.0.min.js"></script>
+        <script src="../dist/js/jquery.dataTables.min.js"></script>
+        <script>
+            function toggleButton() {
+                const checkbox = document.getElementById('acceptCheckbox');
+                const button = document.getElementById('acceptButton');
+
+                if (checkbox.checked) {
+                    button.disabled = false;
+                    button.className = "btn btn-success w-32 mr-1 mb-2";
+                    button.textContent = "Accept & Proceed";
+                } else {
+                    button.disabled = true;
+                    button.className = "btn btn-pending w-24 mr-1 mb-2";
+                    button.textContent = "Accept & Proceed";
+                }
+            }
+
+            function proceed() {
+                // Show confirmation before proceeding
+                // if (confirm("Are you sure you want to proceed with the Commodity Loan application? Please ensure you have all required commodity documentation and meet storage requirements.")) {
+                // Redirect to the next step - matches your controller mapping
+                window.location.href = "/telco_co/user/termscom/commodityloan";
+                // }
+            }
+        </script>
+    </div>
+
+    <div th:insert="~{/fragments/footer}"></div>
+
+</body>
+
+</html>

@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en" class="light" xmlns:th="http://www.thymeleaf.org">
+<!-- BEGIN: Head -->
+
+<head>
+    <meta charset="utf-8">
+    <link href="../../../dist/images/logo.svg" rel="shortcut icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TELCO - Demo</title>
+
+    <!-- BEGIN: CSS Assets -->
+    <link rel="stylesheet" href="../../../dist/css/app.css" />
+    <link rel="stylesheet" href="../../../dist/css/jquery.dataTables.min.css" />
+    <!-- END: CSS Assets -->
+
+    <style>
+        .dataTables_length select {
+            width: 60px;
+        }
+
+
+        #error {
+            display: none;
+            /* Hidden by default */
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #ffebee;
+            border-radius: 4px;
+            border: 1px solid #ef9a9a;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 5px 10px;
+            font-size: 14px;
+            font-weight: bold;
+            border-radius: 5px;
+        }
+
+        .badge-other {
+            color: white;
+            background-color: red;
+        }
+
+        .badge-active {
+            color: white;
+            background-color: green;
+        }
+    </style>
+</head>
+<!-- END: Head -->
+
+<body class="min-h-screen bg-gray-100 text-sm">
+    <div class="flex">
+
+        <div th:replace="~{/fragments/nav}"></div>
+        <div th:insert="~{/fragments/mob}"></div>
+
+        <!-- BEGIN: Content -->
+        <div class="content content--top-nav">
+            <div th:replace="~{/fragments/top}"></div>
+
+            <div class="intro-y mt-8">
+                <div class="container mx-auto px-4">
+
+                    <h2 class="text-lg font-medium mb-6">
+                        Change Your Monthly EMI
+                    </h2>
+
+                    <div id="FormData" th:if="${loan!=null}" th:object="${loan}">
+
+                        <!-- BEGIN: Personal Details -->
+                        <div id="step1" class="intro-y box col-span-12 2xl:col-span-6 step tab-content active">
+
+                            <div
+                                class="flex items-center px-5 py-5 sm:py-3 border-b border-slate-200/60 dark:border-darkmode-400">
+                                <h2 class="font-medium text-base mr-auto">Personal Loan Details</h2>
+                            </div>
+
+                            <!-- Personal Loan Details Section -->
+                            <div class="p-5 grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div class="mb-4">
+                                    <label class="block font-medium" for="name">Loan ID:</label>
+                                    <input type="text" id="name" name="name" th:field="*{loanId}"
+                                        class="form-control w-full box pr-10" disabled>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label class="block font-medium" for="ticket_no">Loan taken amount:</label>
+                                    <input type="text" id="ticket_no" name="ticket_no" th:field="*{loanAmount}"
+                                        class="form-control w-full box pr-10" disabled>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label class="block font-medium" for="bank_name">Interest Rate:</label>
+                                    <input type="text" id="bank_name" name="bank_name" th:field="*{intrestRate}"
+                                        class="form-control w-full box pr-10" disabled>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label class="block font-medium" for="branch_name">Loan Balance:</label>
+                                    <input type="text" id="branch_name" name="branch_name" th:field="*{loanBalance}"
+                                        class="form-control w-full box pr-10" disabled>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label class="block font-medium" for="ifsc_code">Current EMI amount:</label>
+                                    <input type="text" id="currEmi" name="ifsc_code" th:field="*{instalmentAmount}"
+                                        class="form-control w-full box pr-10" disabled>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label class="block font-medium" for="account_no">EMI's left:</label>
+                                    <input type="text" id="account_no" name="account_no" th:field="*{emiBalance}"
+                                        class="form-control w-full box pr-10" disabled>
+                                </div>
+                            </div>
+
+
+                            <div
+                                class="flex items-center px-5 py-5 sm:py-3 border-b border-slate-200/60 dark:border-darkmode-400">
+                                <h2 class="font-medium text-base mr-auto">Change Instalment Amount</h2>
+                            </div>
+
+                            <div class="p-5 grid grid-cols-1 md:grid-cols-2 gap-5">
+                                <div class="mb-4">
+                                    <label class="block font-medium" for="amount">Enter new desired Instalment
+                                        amount:</label>
+                                    <input type="number" id="amount" name="amount"
+                                        class="form-control w-full box pr-10">
+                                </div>
+                            </div>
+
+                            <div id="pass" class="px-5 text-green-600"></div>
+                            <div id="error" class="px-5 mb-4 text-red-600"></div>
+
+                            <!-- Submit Button -->
+                            <div class="flex items-center mb-4 px-5">
+                                <input type="submit" id="submitBtn" name="submit" class="btn btn-warning w-24 mr-1 m-5"
+                                    value="Submit">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- If no active loan -->
+                    <div th:if="${loan}==null">
+                        <div
+                            class="flex items-center px-5 py-5 sm:py-3 border-b border-slate-200/60 dark:border-darkmode-400">
+                            <div class="mb-4 text-red-600">
+                                There are no active loans. EMI can be changed only for active loans.
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!-- END: Content -->
+    </div>
+    <input type="hidden" id="loanType" th:value="${loan?.loanType?.toString()?.toLowerCase()}">
+    <!-- BEGIN: JS Assets -->
+    <script src="../../../dist/js/app.js"></script>
+    <script src="../../../dist/js/jquery-3.6.0.min.js"></script>
+    <script src="../../../dist/js/jquery.dataTables.min.js"></script>
+
+    <!-- Submit EMI Update -->
+    <script>
+        document.getElementById('submitBtn').addEventListener('click', function (event) {
+            event.preventDefault();
+            const amount = parseFloat(document.getElementById("amount").value);
+
+            // Get loan type - you should add this to your HTML
+            const loanType = document.getElementById("loanType").value; // or "commodity" - should match your loan type
+
+            if (!amount || isNaN(amount)) {
+                $("#error").text("Please enter a valid amount!");
+                return;
+            }
+
+            $.ajax({
+                url: '/telco_co/user/updateEmi',
+                type: 'GET',
+                data: {
+                    amount: amount,
+                    loanType: loanType
+                },
+                success: function (response) {
+                    if (response.status === 1.0) {
+                        $("#pass").text('EMI updated successfully to ₹' + response.amount);
+                        $("#currEmi").val(response.amount);
+                        $("#error").text("");
+                    } else {
+                        $("#pass").text("");
+                        // Display the message from backend if available, otherwise default message
+                        const errorMsg = response.message ||
+                            "EMI can only be updated between 1st-15th of month";
+                        $("#error").text(errorMsg).show();
+                    }
+                },
+                error: function (xhr, status, error) {
+                    $("#pass").text("");
+                    $("#error").text("Error updating EMI: " +
+                        (xhr.responseJSON?.message || error)).show();
+                    console.error("AJAX Error:", status, error, xhr.responseJSON);
+                }
+            });
+        });
+    </script>
+
+    <div th:insert="~{/fragments/footer}"></div>
+</body>
+
+</html>

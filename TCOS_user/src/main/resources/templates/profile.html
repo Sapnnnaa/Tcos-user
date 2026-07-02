@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en" class="light" xmlns:th="http://www.thymeleaf.org">
+<!-- BEGIN: Head -->
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>TELCO - Profile</title>
+    <link rel="icon" type="image/x-icon" href="../dist/images/favicon.ico">
+    <!-- BEGIN: CSS Assets-->
+    <link rel="stylesheet" href="../dist/css/app.css" />
+    <link rel="stylesheet" href="../dist/css/sweetalert2.min.css" />
+    <link rel="stylesheet" href="../dist/css/jquery.dataTables.min.css" />
+    <!-- END: CSS Assets-->
+</head>
+<style>
+    .dataTables_length select {
+        width: 60px;
+    }
+
+    /* Enhanced badge styles */
+    .badge {
+        display: inline-block;
+        padding: 5px 12px;
+        font-size: 14px;
+        font-weight: bold;
+        border-radius: 20px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .badge-other {
+        color: white;
+        background: linear-gradient(135deg, #ff416c, #ff4b2b);
+    }
+
+    .badge-active {
+        color: white;
+        background: linear-gradient(135deg, #4facfe, #00f2fe);
+    }
+
+    /* Profile card enhancements */
+    .profile-card {
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s ease;
+        background: white;
+    }
+
+    .profile-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+    }
+
+    /* Tab styling */
+    .nav-tabs {
+        background: white;
+        border-radius: 10px;
+        padding: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .nav-tabs .nav-item {
+        margin-right: 8px;
+    }
+
+    .nav-tabs .nav-link {
+        border-radius: 8px;
+        padding: 10px 20px;
+        font-weight: 600;
+        color: #6b7280;
+        transition: all 0.3s ease;
+        border: none;
+    }
+
+    .nav-tabs .nav-link:hover {
+        background: rgba(59, 130, 246, 0.1);
+        color: #3b82f6;
+    }
+
+    .nav-tabs .nav-link.active {
+        background: #3b82f6;
+        color: white;
+    }
+
+    /* Detail item styling */
+    .detail-item {
+        display: flex;
+        align-items: center;
+        padding: 12px 0;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .detail-item:last-child {
+        border-bottom: none;
+    }
+
+    .detail-label {
+        font-weight: 600;
+        color: #4b5563;
+        min-width: 180px;
+    }
+
+    .detail-value {
+        color: #1f2937;
+        font-weight: 500;
+        text-align: right;
+        flex-grow: 1;
+    }
+
+    /* Section headers */
+    .section-header {
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        padding-bottom: 12px;
+        margin-bottom: 20px;
+        color: #111827;
+        font-weight: 700;
+        font-size: 1.25rem;
+        display: flex;
+        align-items: center;
+    }
+
+    .section-header i {
+        margin-right: 10px;
+        font-size: 1.5rem;
+        color: #3b82f6;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .detail-item {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .detail-value {
+            text-align: left;
+            margin-top: 5px;
+        }
+    }
+
+    /* Animation for tab switching */
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .all-d {
+        animation: fadeIn 0.3s ease-out forwards;
+    }
+
+    /* Welcome message styling */
+    .welcome-message {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
+        border-radius: 12px;
+        padding: 20px;
+        margin-top: 20px;
+    }
+
+    .welcome-message h2 {
+        color: white;
+        margin-bottom: 10px;
+    }
+</style>
+<!-- END: Head -->
+
+<body class="py-5 md:py-0" onload="hideAll();visible('perosnal')">
+    <div class="flex md:mt-0">
+        <div th:insert="~{/fragments/nav}"></div>
+        <div th:insert="~{/fragments/mob}"></div>
+
+        <!-- BEGIN: Content -->
+        <div class="content">
+            <div th:insert="~{/fragments/top}"></div>
+
+            <div class="intro-y flex items-center mt-8">
+                <h2 class="text-2xl font-bold text-gray-800 mr-auto">
+                    Member Profile
+                </h2>
+            </div>
+
+            <div class="grid grid-cols-12 gap-6 mt-5 intro-x">
+                <!-- BEGIN: Profile Menu -->
+                <div class="col-span-12 lg:col-span-4 2xl:col-span-3 flex lg:block flex-col-reverse">
+                    <div class="profile-card intro-y box mt-5 lg:mt-0">
+                        <div class="relative flex items-center p-5">
+                            <div
+                                class="w-16 h-16 rounded-full bg-gradient-to-r from-blue-500 to-blue-300 flex items-center justify-center  text-2xl font-bold">
+                                <span th:text="${user.name.substring(0,1)}"></span>
+                            </div>
+                            <div class="ml-4 mr-auto">
+                                <div class="font-bold text-lg text-gray-800" th:text="${user.name}">User Name</div>
+                                <div class="flex items-center mt-1">
+                                    <span class="text-slate-500 mr-1">Ticket Number:</span>
+                                    <span class="text-slate-600 font-medium" th:text="${user.userId}"></span>
+                                </div>
+                                <div class="flex items-center mt-1">
+                                    <span class="text-slate-500 mr-1">Company Name:</span>
+                                    <span class="text-slate-600 font-medium" th:text="${company.companyName}"></span>
+                                </div>
+                                <div class="flex items-center mt-1">
+                                    <span class="text-slate-500 mr-1">BC Number:</span>
+                                    <span class="text-slate-600 font-medium" th:text="${user.bcNumber}"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="welcome-message">
+                            <h2 class="font-bold text-xl">Welcome to TELCO Co-operative Society</h2>
+                            <div class="text-blue-50">
+                                We are here as a society to help each other and make our dreams come true. Together we
+                                grow stronger.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- END: Profile Menu -->
+
+                <div class="col-span-12 lg:col-span-8 2xl:col-span-9">
+                    <div class="overflow-x-auto">
+                        <ul class="nav nav-tabs flex-nowrap whitespace-nowrap overflow-x-auto scrollbar-hide"
+                            role="tablist">
+                            <li class="nav-item flex-shrink-0" onclick="visible('perosnal')">
+                                <button class="nav-link w-full py-2 active" type="button" role="tab">
+                                    <i class="fas fa-user mr-2"></i>Personal
+                                </button>
+                            </li>
+                            <li class="nav-item flex-shrink-0" onclick="visible('share')">
+                                <button class="nav-link w-full py-2" type="button" role="tab">
+                                    <i class="fas fa-chart-pie mr-2"></i>Shares
+                                </button>
+                            </li>
+                            <li class="nav-item flex-shrink-0" onclick="visible('bank')">
+                                <button class="nav-link w-full py-2" type="button" role="tab">
+                                    <i class="fas fa-university mr-2"></i>Bank
+                                </button>
+                            </li>
+                            <li class="nav-item flex-shrink-0" onclick="visible('cd')">
+                                <button class="nav-link w-full py-2" type="button" role="tab">
+                                    <i class="fas fa-piggy-bank mr-2"></i>CD
+                                </button>
+                            </li>
+                            <li class="nav-item flex-shrink-0" onclick="visible('nominiee')">
+                                <button class="nav-link w-full py-2" type="button" role="tab">
+                                    <i class="fas fa-users mr-2"></i>Nominee
+                                </button>
+                            </li>
+                            <li class="nav-item flex-shrink-0" onclick="visible('company')">
+                                <button class="nav-link w-full py-2" type="button" role="tab">
+                                    <i class="fas fa-building mr-2"></i>Company
+                                </button>
+                            </li>
+                            <li class="nav-item flex-shrink-0" onclick="visible('address')">
+                                <button class="nav-link w-full py-2" type="button" role="tab">
+                                    <i class="fas fa-map-marker-alt mr-2"></i>Address
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="grid grid-cols-24 gap-6 mt-6">
+                        <!-- BEGIN: Personal Details -->
+                        <div id="perosnal" class="all-d intro-y box col-span-12 2xl:col-span-6 profile-card">
+                            <div class="section-header px-5 py-3">
+                                <i class="fas fa-user"></i>
+                                <h2>Personal Details</h2>
+                            </div>
+                            <div class="p-5">
+                                <div class="detail-item">
+                                    <div class="detail-label">Employee ID</div>
+                                    <div class="detail-value" th:text="${user.empId}">+$19</div>
+                                </div>
+
+                                <div class="detail-item">
+                                    <div class="detail-label">Aadhar Number</div>
+                                    <div class="detail-value" th:text="${user.aadharNumber}">+$25</div>
+                                </div>
+
+                                <div class="detail-item">
+                                    <div class="detail-label">PAN Number</div>
+                                    <div class="detail-value" th:text="${user.panCard}">+$25</div>
+                                </div>
+
+                                <div class="detail-item">
+                                    <div class="detail-label">Phone Number</div>
+                                    <div class="detail-value" th:text="${user.phoneNum}">+$25</div>
+                                </div>
+
+                                <div class="detail-item">
+                                    <div class="detail-label">WhatsApp Number</div>
+                                    <div class="detail-value" th:text="${user.whatsappNumber}">+$25</div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- END: Personal Details -->
+
+                        <!-- BEGIN: Share Details -->
+                        <div id="share" class="all-d intro-y box col-span-12 2xl:col-span-6 profile-card">
+                            <div class="section-header px-5 py-3">
+                                <i class="fas fa-chart-pie"></i>
+                                <h2>Share Details</h2>
+                            </div>
+                            <div class="p-5">
+                                <div class="detail-item">
+                                    <div class="detail-label">Per Month Share Deduction</div>
+                                    <div class="detail-value" th:text="'₹' + ${user.shareCut}">+$19</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">Total Share Deducted</div>
+                                    <div class="detail-value" th:text="'₹' + ${cdshare.shareDeductionTotal}">+$25</div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- END: Share Details -->
+
+                        <!-- BEGIN: Bank Details -->
+                        <div id="bank" class="all-d intro-y box col-span-12 2xl:col-span-6 profile-card">
+                            <div class="section-header px-5 py-3">
+                                <i class="fas fa-university"></i>
+                                <h2>Bank Details</h2>
+                            </div>
+                            <div class="p-5">
+                                <div class="detail-item">
+                                    <div class="detail-label">Bank Name</div>
+                                    <div class="detail-value" th:text="${bank.bankName}">+$19</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">Account Number</div>
+                                    <div class="detail-value" th:text="${bank.accountNum}">+$25</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">Branch Name</div>
+                                    <div class="detail-value" th:text="${bank.branchName}">+$21</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">IFSC Code</div>
+                                    <div class="detail-value" th:text="${bank.ifscCode}">+$21</div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- END: Bank Details -->
+
+                        <!-- BEGIN: CD Details -->
+                        <div id="cd" class="all-d intro-y box col-span-12 2xl:col-span-6 profile-card">
+                            <div class="section-header px-5 py-3">
+                                <i class="fas fa-piggy-bank"></i>
+                                <h2>CD Details</h2>
+                            </div>
+                            <div class="p-5">
+                                <div class="detail-item">
+                                    <div class="detail-label">Per Month CD Deduction</div>
+                                    <div class="detail-value" th:text="'₹' + ${user.cdCut}">+$19</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">Total CD Deducted</div>
+                                    <div class="detail-value" th:text="'₹' + ${cdshare.cdDeductionTotal}">+$25</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">Interest Rate on CD</div>
+                                    <div class="detail-value" th:text="${loanInfo.interestOnCD}+'% P.A.'">interest rate
+                                        per year</div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- END: CD Details -->
+
+                        <!-- BEGIN: Nominiee Details -->
+                        <div id="nominiee" class="all-d intro-y box col-span-12 2xl:col-span-6 profile-card">
+                            <div class="section-header px-5 py-3">
+                                <i class="fas fa-users"></i>
+                                <h2>Nominee Details</h2>
+                            </div>
+                            <div class="p-5">
+                                <div class="detail-item">
+                                    <div class="detail-label">Nominee's Name</div>
+                                    <div class="detail-value" th:text="${nominiees.nomineeName}">+$19</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">Relation</div>
+                                    <div class="detail-value" th:text="${nominiees.relation}">+$25</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">Address</div>
+                                    <div class="detail-value" th:text="${nominiees.addr}">+$21</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">Aadhar Number</div>
+                                    <div class="detail-value" th:text="${nominiees.aadharNum}">+$21</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">Mobile Number</div>
+                                    <div class="detail-value" th:text="${nominiees.mobileNum}">+$21</div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- END: Nominiee Details -->
+
+                        <!-- BEGIN: Company Details -->
+                        <div id="company" class="all-d intro-y box col-span-12 2xl:col-span-6 profile-card">
+                            <div class="section-header px-5 py-3">
+                                <i class="fas fa-building"></i>
+                                <h2>Company Details</h2>
+                            </div>
+                            <div class="p-5">
+                                <div class="detail-item">
+                                    <div class="detail-label">Company Name</div>
+                                    <div class="detail-value" th:text="${company.companyName}">company name</div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- END: Company Details -->
+
+                        <!-- BEGIN: Address Details -->
+                        <div id="address" class="all-d intro-y box col-span-12 2xl:col-span-6 profile-card">
+                            <div class="section-header px-5 py-3">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <h2>Permanent Address</h2>
+                            </div>
+                            <div class="p-5">
+                                <div class="detail-item">
+                                    <div class="detail-label">Address</div>
+                                    <div class="detail-value" th:text="${user.permanentAddr}">+$19</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">State</div>
+                                    <div class="detail-value" th:text="${user.permanentState}">+$25</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">Pin Code</div>
+                                    <div class="detail-value" th:text="${user.permanentPinCode}">+$25</div>
+                                </div>
+                            </div>
+
+                            <div class="section-header px-5 py-3">
+                                <i class="fas fa-map-marked-alt"></i>
+                                <h2>Current Address</h2>
+                            </div>
+                            <div class="p-5">
+                                <div class="detail-item">
+                                    <div class="detail-label">Address</div>
+                                    <div class="detail-value" th:text="${user.currentAddr}">+$19</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">State</div>
+                                    <div class="detail-value" th:text="${user.currentState}">+$25</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">Pin Code</div>
+                                    <div class="detail-value" th:text="${user.currentPinCode}">+$25</div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- END: Address Details -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- END: Content -->
+
+        <!-- END: JS Assets-->
+        <script src="../dist/js/app.js"></script>
+        <script src="../dist/js/jquery-3.6.0.min.js"></script>
+        <script src="../dist/js/jquery.dataTables.min.js"></script>
+        <script src="../dist/js/sweetalert2.min.js"></script>
+        <!-- Font Awesome for icons -->
+
+        <script>
+            function hideAll() {
+                const divs = document.querySelectorAll('.all-d');
+                divs.forEach(div => {
+                    div.style.display = 'none';
+                });
+            }
+
+            function visible(div, event) {
+                hideAll();
+                const targetDiv = document.getElementById(div);
+                if (targetDiv) {
+                    targetDiv.style.display = 'block';
+                }
+
+                // Update active tab styling
+                const tabs = document.querySelectorAll('.nav-link');
+                tabs.forEach(tab => {
+                    tab.classList.remove('active');
+                });
+
+                if (event && event.currentTarget) {
+                    event.currentTarget.querySelector('.nav-link').classList.add('active');
+                }
+            }
+
+        </script>
+    </div>
+    <div th:insert="~{/fragments/footer}"></div>
+</body>
+
+</html>

@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en" class="light" xmlns:th="http://www.thymeleaf.org">
+    <!-- BEGIN: Head -->
+    <head>
+        <meta charset="utf-8">
+        <link href="../dist/images/logo.svg" rel="shortcut icon">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+        <title>TELCO - CD Share History</title>
+        <!-- BEGIN: CSS Assets-->
+        <link rel="stylesheet" href="../dist/css/app.css" />
+		<link rel="stylesheet" href="../dist/css/jquery.dataTables.min.css" />
+        <!-- END: CSS Assets-->
+    </head>
+	<style>
+        .dataTables_length select {
+            width: 60px;
+        }
+        
+        /* Enhanced table styling */
+        .table-report {
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            background: white;
+        }
+        
+        .table-dark {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .table-dark th {
+            padding: 18px 12px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            border: none;
+            font-size: 14px;
+        }
+        
+        tbody tr {
+            transition: all 0.2s ease;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        
+        tbody tr:hover {
+            background: linear-gradient(90deg, #f8fafc 0%, #f1f5f9 100%);
+            transform: translateX(2px);
+        }
+        
+        tbody td {
+            padding: 16px 12px;
+            font-weight: 500;
+            color: #334155;
+            vertical-align: middle;
+        }
+        
+        /* Header enhancements */
+        .page-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 24px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
+        }
+        
+        .page-header h2 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+        }
+        
+        .header-icon {
+            width: 36px;
+            height: 36px;
+            margin-right: 12px;
+            opacity: 0.9;
+        }
+        
+        .stats-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+            border-left: 4px solid #667eea;
+            margin-bottom: 20px;
+        }
+        
+        .stats-text {
+            color: #64748b;
+            font-size: 14px;
+            margin: 0;
+        }
+        
+        /* Amount styling */
+        .amount-positive {
+            color: #059669;
+            font-weight: 600;
+        }
+        
+        .amount-negative {
+            color: #dc2626;
+            font-weight: 600;
+        }
+        
+        /* Responsive improvements */
+        @media (max-width: 768px) {
+            .table-report {
+                font-size: 14px;
+            }
+            
+            .table-dark th,
+            tbody td {
+                padding: 12px 8px;
+            }
+            
+            .page-header {
+                padding: 18px;
+                text-align: center;
+            }
+            
+            .page-header h2 {
+                font-size: 24px;
+            }
+        }
+        
+        /* Loading animation */
+        .table-container {
+            position: relative;
+            min-height: 300px;
+        }
+        
+        /* Subtle animations */
+        .intro-y {
+            animation: slideUp 0.5s ease-out;
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .intro-x {
+            animation: fadeIn 0.3s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+    <!-- END: Head -->
+    <body class="py-5 md:py-0">
+    <div class="flex md:mt-0">
+        
+        <div th:replace="~{/fragments/nav}"></div>
+        <div th:insert="~{/fragments/mob}"></div>
+        <!-- BEGIN: Content -->
+        <div class="content content--top-nav">
+           
+            <div th:replace="~{/fragments/top}"></div>
+            
+            <!-- Enhanced Header -->
+            <div class="intro-y page-header">
+                <h2>
+                    <svg class="header-icon" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4zM18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z"/>
+                    </svg>
+                    CD & Share Deduction Records
+                </h2>
+            </div>
+            
+            <div class="grid grid-cols-12 gap-6 mt-5">
+                <div class="intro-y col-span-12 flex flex-wrap sm:flex-nowrap items-center mt-2">
+                    <div class="hidden md:block mx-auto text-slate-500">Showing your complete CD and Share transaction history</div>
+                    <div class="w-full sm:w-auto mt-3 sm:mt-0 sm:ml-auto md:ml-0">
+                        <!-- Add any action buttons here if needed -->
+                    </div>
+                </div>
+                
+                <!-- BEGIN: Enhanced Data List with DataTables -->
+                <div class="col-span-12 overflow-x-auto table-container">
+                    <table id="cdShareTable" class="table table-report -mt-2">
+                        <thead class="table-dark">
+                            <tr>
+                                <th class="text-center whitespace-nowrap">
+                                    <div style="display: flex; align-items: center; justify-content: center;">
+                                        <svg width="16" height="16" fill="currentColor" style="margin-right: 6px;" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"/>
+                                        </svg>
+                                        Payment Date
+                                    </div>
+                                </th>
+                                <th class="text-center whitespace-nowrap">
+                                    <div style="display: flex; align-items: center; justify-content: center;">
+                                        <svg width="16" height="16" fill="currentColor" style="margin-right: 6px;" viewBox="0 0 20 20">
+                                            <path d="M8.433 7.418c.155-.103.346-.196.567-.267v1.698a2.305 2.305 0 01-.567-.267C8.07 8.34 8 8.114 8 8c0-.114.07-.34.433-.582zM11 12.849v-1.698c.22.071.412.164.567.267.364.243.433.468.433.582 0 .114-.07.34-.433.582a2.305 2.305 0 01-.567.267z"/>
+                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.092a4.535 4.535 0 00-1.676.662C6.602 6.234 6 7.009 6 8c0 .99.602 1.765 1.324 2.246.48.32 1.054.545 1.676.662v1.941c-.391-.127-.68-.317-.843-.504a1 1 0 10-1.51 1.31c.562.649 1.413 1.076 2.353 1.253V15a1 1 0 102 0v-.092a4.535 4.535 0 001.676-.662C13.398 13.766 14 12.991 14 12c0-.99-.602-1.765-1.324-2.246A4.535 4.535 0 0011 9.092V7.151c.391.127.68.317.843.504a1 1 0 101.511-1.31c-.563-.649-1.413-1.076-2.354-1.253V5z" clip-rule="evenodd"/>
+                                        </svg>
+                                        CD Deduction
+                                    </div>
+                                </th>
+                                <th class="text-center whitespace-nowrap">
+                                    <div style="display: flex; align-items: center; justify-content: center;">
+                                        <svg width="16" height="16" fill="currentColor" style="margin-right: 6px;" viewBox="0 0 20 20">
+                                            <path d="M8.433 7.418c.155-.103.346-.196.567-.267v1.698a2.305 2.305 0 01-.567-.267C8.07 8.34 8 8.114 8 8c0-.114.07-.34.433-.582zM11 12.849v-1.698c.22.071.412.164.567.267.364.243.433.468.433.582 0 .114-.07.34-.433.582a2.305 2.305 0 01-.567.267z"/>
+                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.092a4.535 4.535 0 00-1.676.662C6.602 6.234 6 7.009 6 8c0 .99.602 1.765 1.324 2.246.48.32 1.054.545 1.676.662v1.941c-.391-.127-.68-.317-.843-.504a1 1 0 10-1.51 1.31c.562.649 1.413 1.076 2.353 1.253V15a1 1 0 102 0v-.092a4.535 4.535 0 001.676-.662C13.398 13.766 14 12.991 14 12c0-.99-.602-1.765-1.324-2.246A4.535 4.535 0 0011 9.092V7.151c.391.127.68.317.843.504a1 1 0 101.511-1.31c-.563-.649-1.413-1.076-2.354-1.253V5z" clip-rule="evenodd"/>
+                                        </svg>
+                                        Share Deduction
+                                    </div>
+                                </th>
+                                <th class="text-center whitespace-nowrap">
+                                    <div style="display: flex; align-items: center; justify-content: center;">
+                                        <svg width="16" height="16" fill="currentColor" style="margin-right: 6px;" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
+                                        </svg>
+                                        Total Deduction
+                                    </div>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Thymeleaf loop to iterate over the 'cdshare' list -->
+                            <tr th:each="data : ${cdshare}" class="intro-x">
+                                <td class="text-center whitespace-nowrap font-medium" th:text="${#dates.format(data.paymentDate, 'dd-MM-yyyy')}"></td>
+                                <td class="text-center whitespace-nowrap amount-negative" th:text="'₹' + ${data.cdDeduction}"></td>
+                                <td class="text-center whitespace-nowrap amount-negative" th:text="'₹' + ${data.shareDeduction}"></td>
+                                <td class="text-center whitespace-nowrap amount-negative font-bold" th:text="'₹' + ${data.totalDeduction}"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- END: Data List -->
+            </div>
+            
+        </div>
+        <!-- END: Content -->
+
+		<script src="../dist/js/app.js"></script>
+		<script src="../dist/js/jquery-3.6.0.min.js"></script>
+		<script src="../dist/js/jquery.dataTables.min.js"></script>
+    </div>
+
+    <div th:insert="~{/fragments/footer}"></div>
+    
+    </body>
+	<script>
+        // Simple fade-in animation for table rows
+        document.addEventListener('DOMContentLoaded', function() {
+            const rows = document.querySelectorAll('tbody tr');
+            rows.forEach((row, index) => {
+                row.style.animationDelay = (index * 0.05) + 's';
+            });
+        });
+    </script>
+</html>

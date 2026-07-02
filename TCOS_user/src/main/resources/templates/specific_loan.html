@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" class="light" xmlns:th="http://www.thymeleaf.org">
+    <!-- BEGIN: Head -->
+    <head>
+        <meta charset="utf-8">
+        <link href="../../../dist/images/logo.svg" rel="shortcut icon">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+        <title>TELCO - Demo</title>
+        <!-- BEGIN: CSS Assets-->
+        <link rel="stylesheet" href="../../../dist/css/app.css" />
+		<link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css" />
+        <!-- END: CSS Assets-->
+
+
+    </head>
+	<style>
+        .dataTables_length select
+        {
+            width:60px;
+        }
+        /* Hard-coded styles for badges */
+        .badge {
+            display: inline-block;
+            padding: 5px 10px;
+            font-size: 14px;
+            font-weight: bold;
+            border-radius: 5px;
+        }
+
+        /* Custom badge styles for "Transferred, InActive and Resigned" status */
+        .badge-other {
+            color: white;
+            background-color: red;
+        }
+
+        /* Custom badge styles for "Active" statuses */
+        .badge-active {
+            color: white;
+            background-color: green;
+        }
+    </style>
+    <!-- END: Head -->
+    <body class="py-5 md:py-0">
+    <div class="flex md:mt-0">
+        
+        <div th:replace="~{/fragments/nav}"></div>
+        <div th:insert="~{/fragments/mob}"></div>
+        <!-- BEGIN: Content -->
+        <div class="content content--top-nav">
+           
+            <div th:replace="~{/fragments/top}"></div>
+            <div class="intro-y flex items-center mt-8">
+                <h2 class="text-lg font-medium mr-auto">
+                EMI History 
+                </h2>
+
+            </div>
+
+            <!-- BEGIN: Data List -->
+            <div class="col-span-12 overflow-x-auto">
+                <table class="table table-report -mt-2">
+                    <thead class="table-dark">
+                        <tr>
+                            <th class="text-center whitespace-nowrap">Payment Id</th>
+                            <th class="text-center whitespace-nowrap">Loan ID</th>
+                            <th class="text-center whitespace-nowrap">Payment Date</th>
+                            <th class="text-center whitespace-nowrap">EMI Amount</th>
+                            <th class="text-center whitespace-nowrap">Principal Remaining</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Thymeleaf loop to iterate over the 'personalloan' list -->
+                        <tr th:each="emi : ${allemi}" class="intro-x">
+                            <td class="text-center whitespace-nowrap" th:text="${emi.paymentId}"></td>
+                            <td class="text-center whitespace-nowrap" th:text="${emi.loanId}"></td>
+                            <td class="text-center whitespace-nowrap" th:text="${emi.paymentDate != null ? #dates.format(emi.paymentDate, 'dd-MM-yyyy') : 'N/A'}"></td>
+                            <td class="text-center whitespace-nowrap" th:text="${emi.emiAmount}"></td>
+                            <td class="text-center whitespace-nowrap" th:text="${emi.principalRemaing}"></td>                                
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- END: Data List -->
+            
+        </div>
+        <!-- END: Content -->
+
+        <!-- BEGIN: Delete Confirmation Modal -->
+                
+        
+
+                    
+				
+        <!-- BEGIN: JS Assets-->
+		
+        <!-- END: JS Assets-->
+		<script src="../../../dist/js/app.js"></script>
+		<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+		<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    </div>
+
+    <div th:insert="~{/fragments/footer}"></div>
+    
+    </body>
+	<script>
+        
+    </script>
+</html>

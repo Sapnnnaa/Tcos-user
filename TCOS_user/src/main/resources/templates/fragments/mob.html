@@ -1,0 +1,104 @@
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
+</head>
+
+<div class="mobile-menu md:hidden">
+    <div class="mobile-menu-bar">
+        <a href="" class="flex mr-auto">
+            <span class="xl:block text-white text-lg ml-3"
+                style="margin:auto 20px; padding: 10px; font-size: 4vh; letter-spacing: 5px; text-shadow: 2px 2px 5px black;">TCOS</span>
+        </a>
+        <a href="javascript:;" class="mobile-menu-toggler">
+            <i class="fas fa-bars w-8 h-8 text-white"></i> <!-- Menu toggle icon -->
+        </a>
+    </div>
+
+    <div class="scrollable">
+        <a href="javascript:;" class="mobile-menu-toggler">
+            <i class="fas fa-times w-8 h-8 text-white"></i> <!-- Close icon -->
+        </a>
+
+        <ul class="scrollable__content py-2">
+
+            <!-- Loan -->
+            <li>
+                <a href="javascript:;" class="menu">
+                    <div class="menu__icon"><i class="fas fa-hand-holding-usd"></i></div>
+                    <div class="menu__title">
+                        Loan
+                        <div class="menu__sub-icon"><i class="fas fa-chevron-down"></i></div>
+                    </div>
+                </a>
+                <ul>
+                    <li>
+                        <a th:href="@{/user/termscom}" class="menu">
+                            <div class="menu__icon"><i class="fas fa-boxes-stacked"></i></div>
+                            <div class="menu__title">Commodity Loan</div>
+                        </a>
+                    </li>
+                    <li>
+                        <a th:href="@{/user/termsper}" class="menu">
+                            <div class="menu__icon"><i class="fas fa-user-tag"></i></div>
+                            <div class="menu__title">Normal Loan</div>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <!-- CD & Share -->
+            <li>
+                <a th:href="@{/user/cdshare}" class="menu">
+                    <div class="menu__icon"><i class="fas fa-file-invoice-dollar"></i></div>
+                    <div class="menu__title">CD & Share</div>
+                </a>
+            </li>
+
+            <!-- Loan History -->
+            <li>
+                <a href="javascript:;" class="menu">
+                    <div class="menu__icon"><i class="fas fa-history"></i></div>
+                    <div class="menu__title">
+                        Loan History
+                        <div class="menu__sub-icon"><i class="fas fa-chevron-down"></i></div>
+                    </div>
+                </a>
+                <ul>
+                    <li>
+                        <a th:href="@{/user/history}" class="menu">
+                            <div class="menu__icon"><i class="fas fa-clipboard-list"></i></div>
+                            <div class="menu__title">All Loan</div>
+                        </a>
+                    </li>
+                    <li>
+                        <a th:href="@{/user/history/commodityloan}" class="menu">
+                            <div class="menu__icon"><i class="fas fa-boxes-stacked"></i></div>
+                            <div class="menu__title">Commodity Loan</div>
+                        </a>
+                    </li>
+                    <li>
+                        <a th:href="@{/user/history/personalloan}" class="menu">
+                            <div class="menu__icon"><i class="fas fa-user-tag"></i></div>
+                            <div class="menu__title">Normal Loan</div>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <!-- EMI Payment History -->
+            <li>
+                <a th:href="@{/user/emi}" class="menu">
+                    <div class="menu__icon"><i class="fas fa-money-check-alt"></i></div>
+                    <div class="menu__title">EMI Payment History</div>
+                </a>
+            </li>
+
+            <!-- CD and Share History -->
+            <li>
+                <a th:href="@{/user/cdsharehis}" class="menu">
+                    <div class="menu__icon"><i class="fas fa-archive"></i></div>
+                    <div class="menu__title">CD and Share History</div>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>

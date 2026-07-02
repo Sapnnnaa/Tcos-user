@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en" class="light" xmlns:th="http://www.thymeleaf.org">
+<!-- BEGIN: Head -->
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>TELCO - COMMODITY LOAN</title>
+    <!-- BEGIN: CSS Assets-->
+    <link rel="stylesheet" href="../../dist/css/app.css" />
+    <link rel="stylesheet" href="../../dist/css/jquery.dataTables.min.css" />
+    <!-- END: CSS Assets-->
+
+</head>
+<style>
+    .dataTables_length select {
+        width: 60px;
+    }
+
+    /* Hard-coded styles for badges */
+    .badge {
+        display: inline-block;
+        padding: 5px 10px;
+        font-size: 14px;
+        font-weight: bold;
+        border-radius: 5px;
+    }
+
+    /* Custom badge styles for "Transferred, InActive and Resigned" status */
+    .badge-other {
+        color: white;
+        background-color: red;
+    }
+
+    /* Custom badge styles for "Active" statuses */
+    .badge-active {
+        color: white;
+        background-color: green;
+    }
+
+    /* Enhanced Commodity Loan Form Styles */
+    .commodity-form-container {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 20px;
+        padding: 2px;
+        margin: 20px 0;
+        box-shadow: 0 20px 40px rgba(102, 126, 234, 0.3);
+    }
+
+    .commodity-form-inner {
+        background: white;
+        border-radius: 18px;
+        padding: 40px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .commodity-form-inner::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 5px;
+        background: linear-gradient(90deg, #28a745, #20c997, #17a2b8, #6f42c1);
+    }
+
+    .form-header {
+        text-align: center;
+        margin-bottom: 40px;
+        position: relative;
+    }
+
+    .form-header h1 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        background: linear-gradient(135deg, #28a745, #20c997);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 10px;
+    }
+
+    .form-header p {
+        color: #6c757d;
+        font-size: 1.1rem;
+        margin: 0;
+    }
+
+    .form-header .icon-badge {
+        display: inline-block;
+        background: linear-gradient(135deg, #28a745, #20c997);
+        color: white;
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        margin: 0 auto 20px;
+        box-shadow: 0 10px 30px rgba(40, 167, 69, 0.3);
+        animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+        0% {
+            transform: scale(1);
+        }
+
+        50% {
+            transform: scale(1.05);
+        }
+
+        100% {
+            transform: scale(1);
+        }
+    }
+
+    .enhanced-form-group {
+        margin-bottom: 30px;
+        position: relative;
+    }
+
+    .enhanced-form-group label {
+        display: block;
+        font-weight: 600;
+        color: #495057;
+        margin-bottom: 8px;
+        font-size: 1rem;
+        position: relative;
+        padding-left: 30px;
+    }
+
+    .enhanced-form-group label::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #28a745, #20c997);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .enhanced-form-group label[for="loanamt"]::before {
+        content: '💰';
+        font-size: 12px;
+        background: none;
+    }
+
+    .enhanced-form-group label[for="emiamt"]::before {
+        content: '📅';
+        font-size: 12px;
+        background: none;
+    }
+
+    .enhanced-form-group label[for="loanReason"]::before {
+        content: '📝';
+        font-size: 12px;
+        background: none;
+    }
+
+    .enhanced-form-group label[for="otherReason"]::before {
+        content: '✏️';
+        font-size: 12px;
+        background: none;
+    }
+
+    .enhanced-form-control {
+        width: 100%;
+        padding: 15px 20px;
+        border: 2px solid #e9ecef;
+        border-radius: 12px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        background: #f8f9fa;
+        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+
+    .enhanced-form-control:focus {
+        outline: none;
+        border-color: #28a745;
+        background: white;
+        box-shadow: 0 0 0 4px rgba(40, 167, 69, 0.1), inset 0 2px 4px rgba(0, 0, 0, 0.05);
+        transform: translateY(-2px);
+    }
+
+    .enhanced-form-control:disabled {
+        background: linear-gradient(135deg, #e9ecef, #dee2e6);
+        color: #495057;
+        font-weight: 600;
+        cursor: not-allowed;
+        border-color: #28a745;
+    }
+
+
+
+    .form-help-text {
+        font-size: 0.875rem;
+        color: #6c757d;
+        margin-top: 5px;
+        padding-left: 30px;
+        font-style: italic;
+    }
+
+    .loan-amount-display {
+        text-align: center;
+        padding: 20px;
+        background: linear-gradient(135deg, #28a745, #20c997);
+        border-radius: 15px;
+        margin: 20px 0;
+        color: white;
+        box-shadow: 0 10px 30px rgba(40, 167, 69, 0.3);
+    }
+
+    .loan-amount-display .amount {
+        font-size: 2.5rem;
+        font-weight: 700;
+        display: block;
+    }
+
+    .loan-amount-display .label {
+        font-size: 1rem;
+        opacity: 0.9;
+        margin-top: 5px;
+    }
+
+    .enhanced-submit-btn {
+        background: linear-gradient(135deg, #28a745, #20c997);
+        border: none;
+        color: white;
+        padding: 15px 40px;
+        border-radius: 50px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 10px 30px rgba(40, 167, 69, 0.3);
+        position: relative;
+        overflow: hidden;
+        min-width: 160px;
+    }
+
+    .enhanced-submit-btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: left 0.5s;
+    }
+
+    .enhanced-submit-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 40px rgba(40, 167, 69, 0.4);
+    }
+
+    .enhanced-submit-btn:hover::before {
+        left: 100%;
+    }
+
+    .enhanced-submit-btn:active {
+        transform: translateY(-1px);
+    }
+
+    .enhanced-alert {
+        padding: 20px;
+        border-radius: 15px;
+        margin: 20px 0;
+        border: none;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .enhanced-alert.alert-danger {
+        background: linear-gradient(135deg, #dc3545, #c82333);
+        color: white;
+        box-shadow: 0 10px 30px rgba(220, 53, 69, 0.3);
+    }
+
+    .enhanced-alert::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 5px;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.3);
+    }
+
+    .calculation-info {
+        background: linear-gradient(135deg, #17a2b8, #138496);
+        color: white;
+        padding: 20px;
+        border-radius: 15px;
+        margin: 20px 0;
+        text-align: center;
+        box-shadow: 0 10px 30px rgba(23, 162, 184, 0.3);
+    }
+
+    .calculation-info h4 {
+        margin-bottom: 10px;
+        font-size: 1.2rem;
+    }
+
+    .calculation-info p {
+        margin: 0;
+        font-size: 0.95rem;
+        opacity: 0.9;
+    }
+
+    .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        align-items: end;
+    }
+
+    /* Smooth slide animation for the other reason container */
+    .slide-container {
+        overflow: hidden;
+        transition: all 0.3s ease-in-out;
+        max-height: 0;
+        opacity: 0;
+    }
+
+    .slide-container.show {
+        max-height: 200px;
+        opacity: 1;
+        margin-top: 10px;
+    }
+
+    @media (max-width: 768px) {
+        .form-row {
+            grid-template-columns: 1fr;
+        }
+
+        .commodity-form-inner {
+            padding: 20px;
+        }
+
+        .form-header h1 {
+            font-size: 2rem;
+        }
+
+        .loan-amount-display .amount {
+            font-size: 2rem;
+        }
+    }
+
+    .info-card {
+        background: linear-gradient(135deg, #6f42c1, #5a32a3);
+        color: white;
+        padding: 20px;
+        border-radius: 15px;
+        margin: 20px 0;
+        text-align: center;
+        box-shadow: 0 10px 30px rgba(111, 66, 193, 0.3);
+    }
+
+    .info-card h4 {
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .floating-elements {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        overflow: hidden;
+    }
+
+    .floating-elements::before,
+    .floating-elements::after {
+        content: '';
+        position: absolute;
+        background: linear-gradient(135deg, #28a745, #20c997);
+        border-radius: 50%;
+        opacity: 0.1;
+    }
+
+    .floating-elements::before {
+        width: 100px;
+        height: 100px;
+        top: 20%;
+        right: 10%;
+        animation: float 6s ease-in-out infinite;
+    }
+
+    .floating-elements::after {
+        width: 60px;
+        height: 60px;
+        bottom: 20%;
+        left: 10%;
+        animation: float 4s ease-in-out infinite reverse;
+    }
+
+    @keyframes float {
+
+        0%,
+        100% {
+            transform: translateY(0px);
+        }
+
+        50% {
+            transform: translateY(-20px);
+        }
+    }
+</style>
+<!-- END: Head -->
+
+<body class="py-5 md:py-0">
+    <div class="flex md:mt-0">
+
+        <div th:replace="~{/fragments/nav}"></div>
+        <div th:insert="~{/fragments/mob}"></div>
+        <!-- BEGIN: Content -->
+        <div class="content content--top-nav">
+
+            <div th:replace="~{/fragments/top}"></div>
+
+            <div class="intro-y flex items-center mt-8">
+                <h2 class="text-lg font-medium mr-auto">
+                    Apply for Commodity Loan
+                </h2>
+            </div>
+
+            <div class="intro-y col-span-12 lg:col-span-8 mx-auto">
+                <div class="commodity-form-container">
+                    <div class="commodity-form-inner">
+                        <div class="floating-elements"></div>
+
+                        <form th:action="@{/user/termscom/commodityloan}" method="post">
+
+                            <div class="enhanced-form-group">
+                                <label for="loanamt">Loan Amount (Fixed)<span style="font-size: 20px;color: red;">*</span></label>
+                                <input id="loanamt" th:value="${maxcomloan}" type="number" class="enhanced-form-control"
+                                    disabled>
+                                <div class="form-help-text">This amount is pre-determined based on your membership type
+                                    and cannot be modified</div>
+                            </div>
+
+                            <div class="enhanced-form-group">
+                                <label for="emiamt">Monthly Installment Amount<span style="font-size: 20px;color: red;">*</span></label>
+                                <input id="emiamt" type="number" th:name="instalmentAmt" class="enhanced-form-control"
+                                    placeholder="Enter your preferred EMI amount" required>
+                                <div class="form-help-text">Minimum EMI is automatically calculated. You can choose a
+                                    higher amount for faster repayment</div>
+                            </div>
+
+                            <div class="calculation-info" id="calculationInfo" style="display: none;">
+                                <h4>📈 Repayment Schedule</h4>
+                                <p id="calculationText"></p>
+                            </div>
+
+                            <div class="enhanced-form-group">
+                                <label>Purpose of Loan<span style="font-size: 20px;color: red;">*</span></label>
+                                <div class="form-help-text">Please select the primary purpose for your commodity loan
+                                </div>
+                                <div class="flex flex-col gap-2 mt-3">
+                                    <label>
+                                        <input type="radio" name="loanReason" value="Education" required
+                                            onclick="toggleOtherReasonInput(this)">
+                                        Education
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="loanReason" value="Marriage"
+                                            onclick="toggleOtherReasonInput(this)">
+                                        Marriage
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="loanReason" value="Medical"
+                                            onclick="toggleOtherReasonInput(this)">
+                                        Medical
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="loanReason" id="other" value="Other"
+                                            onclick="toggleOtherReasonInput(this)">
+                                        Other
+                                    </label>
+                                </div>
+                            </div>
+
+
+                            <!-- Container with smooth animation for 'Other' reason input -->
+                            <div class="slide-container" id="otherReasonContainer">
+                                <div class="enhanced-form-group">
+                                    <label for="otherReason">Please specify your reason</label>
+                                    <input type="text" id="otherReason" name="otherReasonText"
+                                        class="enhanced-form-control"
+                                        placeholder="Please describe the specific purpose of your loan"
+                                        maxlength="200" />
+                                    <div class="form-help-text">Provide a detailed description of why you need this loan
+                                        (max 200 characters)</div>
+                                </div>
+                            </div>
+
+                            <div class="text-center mt-8">
+                                <button type="submit" class="enhanced-submit-btn">
+                                    🚀 Proceed
+                                </button>
+                            </div>
+                        </form>
+
+                        <div th:if="${messageerr}" class="enhanced-alert alert-danger">
+                            <h4 style="margin-bottom: 10px;">⚠️ Application Error</h4>
+                            <p th:text="${messageerr}" style="margin: 0;"></p>
+                        </div>
+                        <div>
+                            <span style="background-color: orange;"><span><span style="font-size: 20px;color: red;">*</span></span><span style="font-size: 15px;">marked are mandatory fields.</span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- END: Content -->
+
+        <!-- END: JS Assets-->
+        <script src="../../dist/js/app.js"></script>
+        <script src="../../dist/js/jquery-3.6.0.min.js"></script>
+        <script src="../../dist/js/jquery.dataTables.min.js"></script>
+    </div>
+
+    <div th:insert="~{/fragments/footer}"></div>
+
+</body>
+<script>
+    // Enhanced auto-fill function with visual feedback
+    window.onload = function () {
+        autoFill();
+        setupEMICalculator();
+        formatLoanAmount();
+    };
+
+    function autoFill() {
+        const loanAmtInput = document.getElementById('loanamt');
+        const emiAmtInput = document.getElementById('emiamt');
+
+        if (loanAmtInput.value !== '') {
+            const minEMI = Math.ceil(loanAmtInput.value / 50);
+            emiAmtInput.value = minEMI;
+            emiAmtInput.setAttribute('min', minEMI);
+
+            updateCalculationInfo();
+        }
+    }
+
+    function setupEMICalculator() {
+        const emiAmtInput = document.getElementById('emiamt');
+        emiAmtInput.addEventListener('input', function () {
+            updateCalculationInfo();
+            validateEMI();
+        });
+    }
+
+    function updateCalculationInfo() {
+        const loanAmt = document.getElementById('loanamt').value;
+        const emiAmt = document.getElementById('emiamt').value;
+        const calculationInfo = document.getElementById('calculationInfo');
+        const calculationText = document.getElementById('calculationText');
+
+        if (loanAmt && emiAmt && emiAmt > 0) {
+            const months = Math.ceil(loanAmt / emiAmt);
+            const totalPayment = months * emiAmt;
+            const interestApprox = totalPayment - loanAmt;
+
+            if (months <= 50) {
+                calculationText.innerHTML = `
+                    <strong>Repayment Period:</strong> ${months} months
+                `;
+                calculationInfo.style.display = 'block';
+                calculationInfo.style.background = 'linear-gradient(135deg, #28a745, #20c997)';
+            } else {
+                calculationText.innerHTML = `
+                    <strong>⚠️ Warning:</strong> Repayment period (${months} months) exceeds maximum limit of 50 months. 
+                    Please increase your EMI amount.
+                `;
+                calculationInfo.style.display = 'block';
+                calculationInfo.style.background = 'linear-gradient(135deg, #dc3545, #c82333)';
+            }
+        } else {
+            calculationInfo.style.display = 'none';
+        }
+    }
+
+    function validateEMI() {
+        const loanAmt = document.getElementById('loanamt').value;
+        const emiAmt = document.getElementById('emiamt');
+        const submitBtn = document.querySelector('.enhanced-submit-btn');
+
+        if (loanAmt && emiAmt.value) {
+            const minEMI = Math.ceil(loanAmt / 50);
+            const months = Math.ceil(loanAmt / emiAmt.value);
+
+            if (emiAmt.value < minEMI) {
+                emiAmt.style.borderColor = '#dc3545';
+                emiAmt.style.background = '#fff5f5';
+                submitBtn.style.opacity = '0.6';
+                submitBtn.style.pointerEvents = 'none';
+            } else if (months > 50) {
+                emiAmt.style.borderColor = '#ffc107';
+                emiAmt.style.background = '#fffdf0';
+                submitBtn.style.opacity = '0.8';
+                submitBtn.style.pointerEvents = 'none';
+            } else {
+                emiAmt.style.borderColor = '#28a745';
+                emiAmt.style.background = '#f8fff8';
+                submitBtn.style.opacity = '1';
+                submitBtn.style.pointerEvents = 'auto';
+            }
+        }
+    }
+
+    function formatLoanAmount() {
+        const displayAmount = document.getElementById('displayAmount');
+        const loanAmt = document.getElementById('loanamt').value;
+
+        if (loanAmt && displayAmount) {
+            displayAmount.textContent = `₹${parseInt(loanAmt).toLocaleString('en-IN')}`;
+        }
+    }
+
+    // Enhanced toggle function with smooth animation and validation
+    function toggleOtherReasonInput(selectedRadio) {
+        const otherContainer = document.getElementById("otherReasonContainer");
+        const otherInput = document.getElementById("otherReason");
+        const isOtherSelected = selectedRadio && selectedRadio.value === "Other";
+
+        if (isOtherSelected) {
+            otherContainer.classList.add("show");
+            otherInput.setAttribute("required", "required");
+            setTimeout(() => {
+                otherInput.focus();
+            }, 300);
+        } else {
+            otherContainer.classList.remove("show");
+            otherInput.removeAttribute("required");
+            otherInput.value = "";
+        }
+    }
+
+
+    // Add smooth form validation feedback
+    document.addEventListener('DOMContentLoaded', function () {
+        const form = document.querySelector('form');
+        const inputs = form.querySelectorAll('input, select');
+
+        inputs.forEach(input => {
+            input.addEventListener('focus', function () {
+                this.style.transform = 'translateY(-2px)';
+            });
+
+            input.addEventListener('blur', function () {
+                this.style.transform = 'translateY(0)';
+            });
+        });
+
+        // Form submission handling
+        form.addEventListener('submit', function (e) {
+            const otherRadio = document.getElementById("other");
+            const otherReasonText = document.getElementById("otherReason").value.trim();
+
+            // Validate "Other" input
+            if (otherRadio.checked && !otherReasonText) {
+                e.preventDefault();
+                alert("Please specify your reason for the loan.");
+                document.getElementById("otherReason").focus();
+                return false;
+            }
+
+            // Assign text value to the radio button
+            if (otherRadio.checked && otherReasonText) {
+                otherRadio.value = otherReasonText;
+            }
+        });
+
+    });
+</script>
+
+</html>

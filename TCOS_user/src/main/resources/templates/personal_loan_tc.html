@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en" class="light" xmlns:th="http://www.thymeleaf.org">
+<!-- BEGIN: Head -->
+
+<head>
+    <meta charset="utf-8">
+    <link href="../dist/images/logo.svg" rel="shortcut icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>TELCO - Personal Loan Terms</title>
+    <!-- BEGIN: CSS Assets-->
+    <link rel="stylesheet" href="../dist/css/app.css" />
+    <link rel="stylesheet" href="../dist/css/jquery.dataTables.min.css" />
+    <!-- END: CSS Assets-->
+
+</head>
+<style>
+    /* Keep only essential styles that won't interfere with navigation */
+    .dataTables_length select {
+        width: 60px;
+    }
+
+    /* Badge styles */
+    .badge {
+        display: inline-block;
+        padding: 5px 10px;
+        font-size: 14px;
+        font-weight: bold;
+        border-radius: 5px;
+    }
+
+    .badge-other {
+        color: white;
+        background-color: red;
+    }
+
+    .badge-active {
+        color: white;
+        background-color: green;
+    }
+
+    /* Very specific selectors to avoid navigation conflicts */
+    .loan-terms-page ul.loan-conditions {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .loan-terms-page ul.loan-conditions li {
+        margin-bottom: 15px;
+        line-height: 1.6;
+        padding: 10px;
+        background: #f8f9fa;
+        border-left: 4px solid #007bff;
+        border-radius: 5px;
+    }
+
+    .loan-terms-page .highlight {
+        background-color: #fff3cd;
+        padding: 2px 5px;
+        border-radius: 3px;
+        font-weight: bold;
+        color: #856404;
+    }
+
+    .loan-terms-page .warning {
+        background-color: #f8d7da;
+        padding: 2px 5px;
+        border-radius: 3px;
+        font-weight: bold;
+        color: #721c24;
+    }
+
+    .loan-terms-page .success {
+        background-color: #d4edda;
+        padding: 2px 5px;
+        border-radius: 3px;
+        font-weight: bold;
+        color: #155724;
+    }
+
+    .loan-terms-page .terms-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 20px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .loan-terms-page .condition-section {
+        margin-bottom: 25px;
+        border: 1px solid #e9ecef;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    .loan-terms-page .section-header {
+        background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+        color: white;
+        padding: 15px 20px;
+        font-size: 18px;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .loan-terms-page .section-content {
+        padding: 20px;
+        background: white;
+    }
+
+    .loan-terms-page .checkbox-container {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 10px;
+        border: 2px solid #007bff;
+        margin: 20px 0;
+    }
+
+    .loan-terms-page .checkbox-container input[type="checkbox"] {
+        margin-right: 10px;
+        transform: scale(1.2);
+    }
+
+    .loan-terms-page .checkbox-container label {
+        font-size: 16px;
+        font-weight: 500;
+        color: #495057;
+    }
+
+    .loan-terms-page .btn-container {
+        margin: 20px 0;
+    }
+
+    .loan-terms-page .icon {
+        font-size: 20px;
+    }
+
+    .loan-terms-page .important-note {
+        background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+        color: white;
+        padding: 20px;
+        border-radius: 10px;
+        margin: 20px 0;
+        text-align: center;
+    }
+
+    .loan-terms-page .sub-conditions {
+        margin-left: 20px;
+        margin-top: 10px;
+    }
+
+    .loan-terms-page .sub-conditions li {
+        background: #e9ecef;
+        border-left: 3px solid #6c757d;
+        margin-bottom: 8px;
+        padding: 8px 12px;
+    }
+</style>
+<!-- END: Head -->
+
+<body class="py-5 md:py-0">
+    <div class="flex md:mt-0">
+
+        <div th:replace="~{/fragments/nav}"></div>
+        <div th:insert="~{/fragments/mob}"></div>
+        <!-- BEGIN: Content -->
+        <div class="content content--top-nav">
+
+            <div th:replace="~{/fragments/top}"></div>
+            <div class="intro-y flex items-center mt-8">
+                <h2 class="text-lg font-medium mr-auto">
+                    Personal Loan Application
+                </h2>
+            </div>
+
+            <div class="intro-y box px-5 pt-5 mt-5 mb-3">
+                <div class="loan-terms-page">
+                    <div class="terms-header">
+                        <h1>💰 Personal/Normal Loan Terms & Conditions</h1>
+                        <p>Please read all conditions carefully before proceeding with your application</p>
+                    </div>
+
+                    <!-- Eligibility Section -->
+                    <div class="condition-section">
+                        <div class="section-header">
+                            <span class="icon">✅</span>
+                            <span>Eligibility Requirements</span>
+                        </div>
+                        <div class="section-content">
+                            <ul class="loan-conditions">
+                                <li><b>Minimum Enrollment Period:</b> You must wait <span class="highlight">4 months
+                                        minimum</span> from your account approval date before applying for any loan.
+                                </li>
+                                <li><b>Account Status:</b> Your account must be in <span class="success">ACTIVE</span>
+                                    status. Pending or inactive accounts cannot apply.</li>
+                                <li><b>Share Amount Requirement:</b> Your total share deduction amount must be at least
+                                    <span class="highlight">₹16,000</span> before you can apply for a loan.
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Loan Amount Section -->
+                    <div class="condition-section">
+                        <div class="section-header">
+                            <span class="icon">💵</span>
+                            <span>Loan Amount & Limits</span>
+                        </div>
+                        <div class="section-content">
+                            <ul class="loan-conditions">
+                                <li><b>New Members:</b> Maximum loan amount is <span class="highlight">5 times</span>
+                                    your total share deduction amount.
+                                    <ul class="sub-conditions">
+                                        <li>Example: If your share amount is ₹20,000, maximum loan = ₹1,00,000</li>
+                                    </ul>
+                                </li>
+                                <li><b>Existing Members:</b> Maximum loan amount is <span class="highlight">10
+                                        times</span> your total share deduction amount.
+                                    <ul class="sub-conditions">
+                                        <li>Example: If your share amount is ₹30,000, maximum loan = ₹3,00,000</li>
+                                    </ul>
+                                </li>
+                                <li><b>Minimum Amount:</b> Loan amount must be <span class="warning">greater than
+                                        ₹0</span>.</li>
+                                <li><b>Final Amount:</b> The system will calculate your eligible amount considering your
+                                    outstanding dues and membership type.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Application Process Section -->
+                    <div class="condition-section">
+                        <div class="section-header">
+                            <span class="icon">📋</span>
+                            <span>Application Process & Approval</span>
+                        </div>
+                        <div class="section-content">
+                            <ul class="loan-conditions">
+                                <li><b>No Application Required:</b> If your share amount ≥ ₹16,000 and it's been <span
+                                        class="success">12+ months</span> since your last loan, no separate application
+                                    is needed.</li>
+                                <li><b>Application Required:</b> If your share amount ≥ ₹16,000 but only <span
+                                        class="warning">4-12 months</span> have passed since your last loan, you need to
+                                    submit a formal application.</li>
+                                <li><b>Management Approval:</b> If your share amount is below ₹16,000 or other
+                                    restrictive conditions apply, you need <span class="warning">management
+                                        approval</span>.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Loan Frequency Section -->
+                    <div class="condition-section">
+                        <div class="section-header">
+                            <span class="icon">🔄</span>
+                            <span>Loan Frequency & Timing Rules</span>
+                        </div>
+                        <div class="section-content">
+                            <ul class="loan-conditions">
+                                <li><b>First Loan:</b> Can apply after <span class="highlight">4 months</span> from
+                                    account approval and ₹16,000 share amount.</li>
+                                <li><b>Subsequent Loans:</b> You must wait for one of the following conditions:
+                                    <ul class="sub-conditions">
+                                        <li><span class="success">60 days</span> from complete repayment of previous
+                                            loan, OR</li>
+                                        <li><span class="success">4 months</span> from the last loan approval date</li>
+                                        <li><em>(Whichever condition is met first)</em></li>
+                                    </ul>
+                                </li>
+                                <li><b>Outstanding Loans:</b> If you have any pending loan with status <span
+                                        class="warning">PENDING, CHECKED, or VERIFIED</span>, you cannot apply for a new
+                                    loan until the previous one is approved or rejected.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Restrictions Section -->
+                    <div class="condition-section">
+                        <div class="section-header">
+                            <span class="icon">🚫</span>
+                            <span>Restrictions & Important Notes</span>
+                        </div>
+                        <div class="section-content">
+                            <ul class="loan-conditions">
+                                <li><b>Cannot Apply If:</b>
+                                    <ul class="sub-conditions">
+                                        <li>Your account status is not ACTIVE</li>
+                                        <li>You haven't completed 4 months from enrollment</li>
+                                        <li>Your share amount is below ₹16,000</li>
+                                        <li>You have a previous loan in PENDING, CHECKED, or VERIFIED status</li>
+                                    </ul>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="important-note">
+                        <h3>⚠️ Important Reminder</h3>
+                        <p><strong>The system will automatically verify your eligibility based on these conditions. If
+                                you don't meet any requirement, your application may be rejected or require additional
+                                approvals. Please ensure you meet all criteria before proceeding.</strong></p>
+                    </div>
+
+                    <center>
+                        <div class="checkbox-container mb-3">
+                            <span style="font-size: 20px;color: red;">*</span>
+                            <input type="checkbox" id="acceptCheckbox" onclick="toggleButton()">
+                            <label for="acceptCheckbox"><strong>I have read, understood, and accept all the terms and
+                                    conditions mentioned above for Personal Loan</strong></label>
+                        </div>
+                        <div class="btn-container">
+                            <button id="acceptButton" class="btn btn-pending w-24 mr-1 mb-2" disabled
+                                onclick="proceed()">Accept & Proceed</button>
+                        </div>
+                    </center>
+
+                </div>
+                <div>
+                    <span style="background-color: orange;"><span><span
+                                style="font-size: 20px;color: red;">*</span></span><span style="font-size: 15px;">marked
+                            are mandatory fields.</span></span>
+                </div>
+            </div>
+
+        </div>
+        <!-- END: Content -->
+
+        <!-- BEGIN: View Modal -->
+        <div class="intro-y box mt-5 hidden">
+            <div
+                class="flex flex-col sm:flex-row items-center p-5 border-b border-slate-200/60 dark:border-darkmode-400">
+                <h2 class="font-medium text-base mr-auto">
+                    Header & Footer Modal
+                </h2>
+            </div>
+        </div>
+        <!-- END: View Modal -->
+
+        <!-- BEGIN: JS Assets-->
+        <!-- END: JS Assets-->
+        <script src="../dist/js/app.js"></script>
+        <script src="../dist/js/jquery-3.6.0.min.js"></script>
+        <script src="../dist/js/jquery.dataTables.min.js"></script>
+        <script>
+            function toggleButton() {
+                const checkbox = document.getElementById('acceptCheckbox');
+                const button = document.getElementById('acceptButton');
+
+                if (checkbox.checked) {
+                    button.disabled = false;
+                    button.className = "btn btn-primary w-32 mr-1 mb-2";
+                    button.textContent = "Accept & Proceed";
+                } else {
+                    button.disabled = true;
+                    button.className = "btn btn-pending w-24 mr-1 mb-2";
+                    button.textContent = "Accept & Proceed";
+                }
+            }
+
+            function proceed() {
+                // Show confirmation before proceeding
+                // if (confirm("Are you sure you want to proceed with the Personal Loan application? Please ensure you meet all the eligibility criteria.")) {
+                // Redirect to the next step
+                window.location.href = "/telco_co/user/termsper/personalloan";
+                // }
+            }
+        </script>
+    </div>
+
+    <div th:insert="~{/fragments/footer}"></div>
+
+</body>
+
+</html>

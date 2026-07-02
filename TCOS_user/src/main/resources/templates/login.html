@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en" class="light" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="utf-8">
+	<link th:href="@{/dist/images/logo.svg}" rel="shortcut icon">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>TELCO MEMBERS LOGIN</title>
+	<link rel="stylesheet" th:href="@{/dist/css/app.css}" />
+	<style>
+		/* Fix for password input with toggle button */
+		.input-group {
+			position: relative;
+			display: flex;
+			flex-wrap: wrap;
+			align-items: stretch;
+			width: 100%;
+		}
+
+		.input-group .form-control {
+			position: relative;
+			flex: 1 1 auto;
+			width: 1%;
+			min-width: 0;
+			margin-bottom: 0;
+		}
+
+		.input-group-text {
+			display: flex;
+			align-items: center;
+			padding: 0.375rem 0.75rem;
+			margin-bottom: 0;
+			font-size: 1rem;
+			font-weight: 400;
+			line-height: 1.5;
+			color: #6c757d;
+			text-align: center;
+			white-space: nowrap;
+			background-color: #f8f9fa;
+			border: 1px solid #ced4da;
+			border-radius: 0.375rem;
+		}
+
+		/* Make sure input and button are on same line */
+		.input-group>.form-control:not(:last-child) {
+			border-top-right-radius: 0;
+			border-bottom-right-radius: 0;
+			border-right: 0;
+		}
+
+		.input-group>.input-group-text:not(:first-child) {
+			border-top-left-radius: 0;
+			border-bottom-left-radius: 0;
+			border-left: 0;
+		}
+
+		/* Mobile UI Improvements */
+@media (max-width: 768px) {
+
+    /* Reduce overall page padding */
+    .container {
+        padding: 8px 15px !important;
+    }
+
+    /* Reduce white login box padding */
+    .xl\:h-auto .my-auto {
+        padding: 15px !important;
+    }
+
+    /* Smaller logo */
+    #logo {
+        width: 90px !important;
+        height: 70px !important;
+    }
+
+    /* Smaller title */
+    h2.intro-x {
+        font-size: 20px !important;
+        line-height: 1.2;
+    }
+
+    /* Reduce spacing above inputs */
+    .intro-x.mt-8 {
+        margin-top: 15px !important;
+    }
+
+    /* Smaller input fields */
+    .login__input {
+        padding: 10px 12px !important;
+        font-size: 14px !important;
+    }
+
+    /* Smaller buttons */
+    .btn {
+        padding: 10px 12px !important;
+        font-size: 14px !important;
+        margin-top: 8px !important;
+    }
+
+    /* Smaller forgot password text */
+    .intro-x.mt-4 {
+        margin-top: 10px !important;
+        font-size: 13px;
+    }
+
+    /* Reduce spacing below buttons */
+    .mt-15 {
+        margin-top: 15px !important;
+    }
+
+    /* Reduce vertical spacing */
+    .py-2 {
+        padding-top: 5px !important;
+        padding-bottom: 5px !important;
+    }
+
+    .py-8 {
+        padding-top: 15px !important;
+        padding-bottom: 15px !important;
+    }
+
+    /* Make buttons full width with less spacing */
+    .xl\:w-32 {
+        width: 100% !important;
+    }
+
+    /* Reduce gap between buttons */
+    .btn + .btn {
+        margin-top: 8px !important;
+    }
+}
+
+		/* Mobile specific fixes */
+		@media (max-width: 768px) {
+			.input-group {
+				display: flex !important;
+				flex-direction: row !important;
+				align-items: stretch !important;
+				margin-top: 1rem;
+			}
+
+			.input-group .form-control {
+				flex: 1 !important;
+				margin-top: 0 !important;
+				border-radius: 0.375rem 0 0 0.375rem !important;
+			}
+
+			.input-group-text {
+				margin-top: 0 !important;
+				border-radius: 0 0.375rem 0.375rem 0 !important;
+				min-width: 50px !important;
+				justify-content: center !important;
+			}
+
+			.input-group-text img {
+				width: 20px;
+				height: 20px;
+			}
+		}
+
+		/* Ensure proper spacing */
+		.input-group .form-control+.input-group-text {
+			margin-left: 0;
+		}
+
+		/* Dark mode support */
+		.dark .input-group-text {
+			background-color: #374151;
+			border-color: #4b5563;
+			color: #d1d5db;
+		}
+
+	</style>
+</head>
+
+<body class="login">
+	<div class="container sm:px-10">
+		<div class="block xl:grid grid-cols-2 gap-4">
+			<div class="hidden xl:flex flex-col min-h-screen">
+				<div class="my-auto">
+					<img alt="Midone - HTML Admin Template" class="-intro-x -mt-15 img-85" id="myImage"
+						style="padding-right: 67px;margin-left: -48px;">
+					<div class="-intro-x text-white font-medium text-4xl leading-tight mt-10">
+						TELCO
+						<br>
+						Co-operative Society Ltd.
+					</div>
+					<div class="-intro-x mt-5 text-lg text-white text-opacity-70 dark:text-slate-400">Be a part of it.
+					</div>
+				</div>
+			</div>
+			<div class="xl:h-auto flex py-1 xl:py-0 my-2 xl:my-0">
+				<div
+					class="my-auto mx-auto xl:ml-20 bg-white dark:bg-darkmode-600 xl:bg-transparent px-5 sm:px-8 py-8 xl:p-0 rounded-md shadow-md xl:shadow-none w-full sm:w-3/4 lg:w-2/4 xl:w-auto">
+					<div class="-intro-x flex items-center pt-2">
+						<img style="height: 100px; width: 130px;" alt="Midone - HTML Admin Template"
+							class="mx-auto h-24 w-auto" id="logo">
+
+					</div>
+					<div class="-intro-x flex items-center justify-center pt-2">
+						<h2 class="intro-x font-bold text-2xl xl:text-3xl text-center xl:text-left">
+							Society Members Login
+						</h2>
+					</div>
+					<div class="intro-x mt-2  xl:hidden text-center">TELCO Co-operative Society Ltd.</div>
+
+					<form th:action="@{/userlogin}" method="post">
+						<div class="intro-x mt-8">
+							<input type="text" class="intro-x login__input form-control py-3 px-4 block" name="userId"
+								placeholder="Ticket Number">
+							<div class="input-group mt-4">
+								<input type="password" class="intro-x login__input form-control py-3 px-4"
+									id="passwordInput" name="password" placeholder="Password">
+								<div class="input-group-text" style="cursor: pointer;"
+									onclick="togglePasswordVisibility()">
+									<img th:src="@{/dist/images/hide.png}" alt="Toggle Password" id="toggleIcon">
+								</div>
+							</div>
+						</div>
+						<div class="intro-x flex text-slate-600 dark:text-slate-500 text-xs sm:text-sm mt-4">
+							<a th:href="@{/forgotpassword}">Forgot Password?</a>
+						</div>
+						<div class="intro-x mt-5 xl:mt-8 text-center xl:text-left">
+							<button type="submit"
+								class="btn btn-primary py-3 px-4 w-full xl:w-32 xl:mr-3 align-top">Login</button>
+							<a th:href="@{/telco_co/register}"
+								class="btn btn-outline-secondary py-3 px-4 w-full xl:w-32 mt-3 xl:mt-0 align-top">New
+								Registration</a>
+							<a th:href="@{/telco_co/registerOld}"
+								class="btn btn-outline-secondary py-3 px-4 w-full xl:w-32 mt-3 xl:mt-0 align-top">Old
+								Member Registration</a>
+							<a th:href="@{/telco_co/offlineform}"
+								class="btn btn-outline-secondary py-3 px-4 w-full xl:w-32 mt-3 xl:mt-0 align-top">Download
+								offline form</a>
+							<a th:href="@{/dist/androidApp/TCOS_v1.0.apk}"
+								class="btn btn-outline-secondary py-3 px-4 w-full xl:w-32 mt-3 xl:mt-0 align-top">Download
+								Android Application</a>
+						</div>
+					</form>
+
+					<div class="relative flex items-center mt-15">
+						<div th:if="${logoutMessage != null}" th:text="${logoutMessage}" style="color: green;"></div>
+						<div th:if="${errorMessage != null}" th:text="${errorMessage}" style="color: red;"></div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+	<div th:insert="~{/fragments/footer}"></div>
+	<script>
+		const baseUrl = window.location.origin;
+		const logoImage = document.getElementById('logo');
+		logoImage.src = `${baseUrl}/telco_co/dist/images/company_logo.png`;
+
+		const backgroundImage = document.getElementById('myImage');
+		backgroundImage.src = `${baseUrl}/telco_co/dist/images/jrd_ratantata.png`;
+
+	</script>
+
+	<script>
+		function togglePasswordVisibility() {
+			const passwordInput = document.getElementById("passwordInput");
+			const toggleIcon = document.getElementById("toggleIcon");
+
+			if (passwordInput.type === "password") {
+				passwordInput.type = "text";
+			} else {
+				passwordInput.type = "password";
+			}
+		}
+	</script>
+
+</body>
+
+</html>

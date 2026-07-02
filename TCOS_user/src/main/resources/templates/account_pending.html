@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en" class="light" xmlns:th="http://www.thymeleaf.org">
+    <!-- BEGIN: Head -->
+    <head>
+        <meta charset="utf-8">
+        <link href="../dist/images/logo.svg" rel="shortcut icon">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="Enigma admin is super flexible, powerful, clean & modern responsive tailwind admin template with unlimited possibilities.">
+        <meta name="keywords" content="admin template, Enigma Admin Template, dashboard template, flat admin template, responsive admin template, web app">
+        <meta name="author" content="LEFT4CODE">
+        <title>TELCO - Profile</title>
+        <!-- BEGIN: CSS Assets-->
+        <link rel="stylesheet" href="../dist/css/app.css" />
+		<link rel="stylesheet" href="../dist/css/sweetalert2.min.css" />
+		<link rel="stylesheet" href="../static/dist/js/jquery.dataTables.min.js" />
+        <!-- END: CSS Assets-->
+
+
+    </head>
+	<style>
+        .dataTables_length select
+        {
+            width:60px;
+        }
+        /* Hard-coded styles for badges */
+        .badge {
+            display: inline-block;
+            padding: 5px 10px;
+            font-size: 14px;
+            font-weight: bold;
+            border-radius: 5px;
+        }
+
+        /* Custom badge styles for "Transferred, InActive and Resigned" status */
+        .badge-other {
+            color: white;
+            background-color: red;
+        }
+
+        /* Custom badge styles for "Active" statuses */
+        .badge-active {
+            color: white;
+            background-color: green;
+        }
+    </style>
+    <!-- END: Head -->
+    <body class="py-5 md:py-0">
+    <div class="flex md:mt-0">
+        
+        <div th:replace="~{/fragments/nav}"></div>
+        <div th:insert="~{/fragments/mob}"></div>
+        <!-- BEGIN: Content -->
+        <div class="content content--top-nav">
+           
+            <div th:replace="~{/fragments/top}"></div>
+            <div class="intro-y flex items-center mt-8">
+                <h2 class="text-lg font-medium mr-auto">
+                Profile
+                </h2>
+
+            </div>
+            <div class="intro-y box px-5 pt-5 mt-5">
+                <div class="flex flex-col lg:flex-row border-b border-slate-200/60 dark:border-darkmode-400 pb-5 -mx-5">
+                    <div class="flex flex-1 px-5 items-center justify-center lg:justify-start">
+                        
+                        <div class="ml-5">
+                            <div class="w-24 sm:w-40 truncate sm:whitespace-normal font-medium text-lg"
+                                th:text="${user.name}">User name</div>
+                            <div class="text-slate-500" th:text="${user.bcNumber}">Frontend Engineer</div>
+                        </div>
+                    </div>
+                    <div
+                        class="mt-6 lg:mt-0 flex-1 px-5 border-l border-r border-slate-200/60 dark:border-darkmode-400 border-t lg:border-t-0 pt-5 lg:pt-0">
+                        <div class="font-medium text-center lg:text-left lg:mt-3">Contact Details</div>
+                        <div class="flex flex-col justify-center items-center lg:items-start mt-4">
+                            <div class="truncate sm:whitespace-normal flex items-center"><b>E-mail id: </b>
+                                <div th:text="' '+${user.email}"></div>
+                            </div>
+                            <div class="truncate sm:whitespace-normal flex items-center"><b>Phone Number: </b>
+                                <div th:text="' '+${user.phoneNum}"></div>
+                            </div>
+                            <div class="truncate sm:whitespace-normal flex items-center"
+                                ><b>Address: </b>
+                                <div th:text="' '+${user.currentAddr}"></div> </div>
+
+                        </div>
+                    </div>
+                    <div
+                        class="mt-6 lg:mt-0 flex-1 flex items-center justify-center px-5 border-t lg:border-0 border-slate-200/60 dark:border-darkmode-400 pt-5 lg:pt-0">
+                        <div class="text-center rounded-md w-20 py-3">
+                            <div class="font-medium text-primary text-xl">Account Status</div>
+                            <div class="text-slate-500" th:text="${user.accountStatus}">status</div>
+                        </div>
+                        <div class="text-center rounded-md w-20 py-3">
+                            <div class="font-medium text-primary text-xl">..</div>
+                            <div class="text-slate-500">..</div>
+                        </div>
+                        <div class="text-center rounded-md w-20 py-3">
+                            <div class="font-medium text-primary text-xl">..</div>
+                            <div class="text-slate-500">..</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- END: Content -->
+
+        <!-- BEGIN: JS Assets-->
+		
+        <!-- END: JS Assets-->
+		<script src="../dist/js/app.js"></script>
+		<script src="../static/dist/js/jquery-3.6.0.min.js"></script>
+		<script src="../dist/js/sweetalert2.min.js"></script>
+    </div>
+    
+    <div th:insert="~{/fragments/footer}"></div>
+
+    </body>
+	<script>
+        
+    </script>
+</html>

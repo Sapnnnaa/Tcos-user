@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Opening PDF...</title>
+</head>
+<body>
+    <h2>Opening your registration details...</h2>
+    <!-- Display PDF URL to check if it's passed correctly -->
+    <p>PDF URL: <span th:text="${pdfUrl}"></span></p> <!-- This will render the pdfUrl passed from the controller -->
+
+    <script>
+        window.onload = function() {
+            var pdfUrl = [[${pdfUrl}]];// Ensure Thymeleaf renders the value of pdfUrl correctly
+            console.log(pdfUrl); // Check the value of pdfUrl in the console
+            if (pdfUrl) {
+                window.open(pdfUrl, '_blank'); // Open the PDF in a new tab
+            }
+        };
+    </script>
+</body>
+</html>

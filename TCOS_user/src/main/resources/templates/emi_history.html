@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en" class="light" xmlns:th="http://www.thymeleaf.org">
+<!-- BEGIN: Head -->
+
+<head>
+    <meta charset="utf-8">
+    <link href="../dist/images/logo.svg" rel="shortcut icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>TELCO - EMI History</title>
+    <!-- BEGIN: CSS Assets-->
+    <link rel="stylesheet" href="../dist/css/app.css" />
+    <link rel="stylesheet" href="../dist/css/jquery.dataTables.min.css" />
+    <!-- END: CSS Assets-->
+</head>
+
+<style>
+    /* Page header */
+    .page-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 20px;
+        color: white;
+    }
+
+    .page-header h2 {
+        margin: 0;
+        font-size: 24px;
+        font-weight: 600;
+    }
+
+    /* Table container with scroll */
+    .table-container {
+        background: white;
+        max-height: 70vh;
+        overflow-y: auto;
+    }
+
+    .table-report thead th {
+        background: #2d3748;
+        color: white;
+        padding: 12px 8px;
+        font-weight: 600;
+        font-size: 13px;
+        text-align: center;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
+
+    .table-report tbody tr {
+        border-bottom: 1px solid #e2e8f0;
+        transition: background-color 0.2s ease;
+    }
+
+    .table-report tbody tr:hover {
+        background-color: #f7fafc;
+    }
+
+    .table-report tbody td {
+        padding: 12px 8px;
+        text-align: center;
+        font-size: 14px;
+        vertical-align: middle;
+    }
+
+    /* Action links */
+    .action-link {
+        display: inline-block;
+        padding: 6px 12px;
+        background: #667eea;
+        color: white;
+        text-decoration: none;
+        border-radius: 4px;
+        font-size: 12px;
+        transition: background-color 0.2s ease;
+    }
+
+    .action-link:hover {
+        background: #5a6fd8;
+        color: white;
+        text-decoration: none;
+    }
+
+    .action-link.secondary {
+        background: #48bb78;
+    }
+
+    .action-link.secondary:hover {
+        background: #38a169;
+    }
+
+    /* Responsive design */
+    @media (max-width: 768px) {
+        .page-header {
+            padding: 15px;
+        }
+        
+        .page-header h2 {
+            font-size: 20px;
+        }
+     
+    }
+</style>
+
+<body class="py-5 md:py-0">
+    <div class="flex md:mt-0">
+        <div th:replace="~{/fragments/nav}"></div>
+        <div th:insert="~{/fragments/mob}"></div>
+
+        <!-- BEGIN: Content -->
+        <div class="content content--top-nav">
+            <div th:replace="~{/fragments/top}"></div>
+
+            <!-- Page header -->
+            <div class="page-header">
+                <h2>EMI Records</h2>
+            </div>
+
+            <div class="grid grid-cols-12 gap-6 mt-5">
+                <div class="intro-y col-span-12 flex flex-wrap sm:flex-nowrap items-center mt-2">
+                    <div class="hidden md:block mx-auto text-slate-500">Showing your EMI history</div>
+                </div>
+
+                <!-- BEGIN: Data List -->
+                <div class="col-span-12">
+                    <div class="table-container">
+                        <div class="table-responsive">
+                            <table class="table table-report display nowrap">
+                                <thead>
+                                    <tr>
+                                        <th class="whitespace-nowrap">Payment Id</th>
+                                        <th class="whitespace-nowrap">Loan ID</th>
+                                        <th class="whitespace-nowrap">Payment Date</th>
+                                        <th class="whitespace-nowrap">EMI Paid</th>
+                                        <th class="whitespace-nowrap">Principal Remaining</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Thymeleaf loop to iterate over the 'details' list -->
+                                    <tr th:each="detail : ${details}" class="intro-x">
+                                        <td class="whitespace-nowrap font-medium" th:text="${detail.paymentId}"></td>
+                                        <td class="whitespace-nowrap font-medium" th:text="${detail.loanId}"></td>
+                                        <td class="whitespace-nowrap"
+                                            th:text="${#dates.format(detail.paymentDate, 'dd-MM-yyyy')}"></td>
+                                        <td class="whitespace-nowrap font-medium" th:text="${detail.emiAmount}"></td>
+                                        <td class="whitespace-nowrap" th:text="${detail.principalRemaing}"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <!-- END: Data List -->
+            </div>
+        </div>
+        <!-- END: Content -->
+
+        <!-- BEGIN: JS Assets-->
+        <script src="../dist/js/app.js"></script>
+        <script src="../dist/js/jquery-3.6.0.min.js"></script>
+        <script src="../dist/js/jquery.dataTables.min.js"></script>
+        <!-- END: JS Assets-->
+    </div>
+
+    <div th:insert="~{/fragments/footer}"></div>
+
+    <script>
+        // Simple DataTable initialization
+        $('.table-report').DataTable({
+            "pageLength": 10,
+            "responsive": true
+        });
+
+
+
+    </script>
+</body>
+
+</html>

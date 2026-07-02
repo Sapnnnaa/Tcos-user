@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" class="light" xmlns:th="http://www.thymeleaf.org">
+    <!-- BEGIN: Head -->
+    <head>
+        <meta charset="utf-8">
+        <link href="../dist/images/logo.svg" rel="shortcut icon">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="Enigma admin is super flexible, powerful, clean & modern responsive tailwind admin template with unlimited possibilities.">
+        <meta name="keywords" content="admin template, Enigma Admin Template, dashboard template, flat admin template, responsive admin template, web app">
+        <meta name="author" content="LEFT4CODE">
+        <title>TELCO - Demo</title>
+        <!-- BEGIN: CSS Assets-->
+        <link rel="stylesheet" href="../dist/css/app.css" />
+		<link rel="stylesheet" href="../dist/css/sweetalert2.min.css" />
+		<link rel="stylesheet" href="../dist/css/jquery.dataTables.min.css" />
+        <!-- END: CSS Assets-->
+
+
+    </head>
+	<style>
+        .dataTables_length select
+        {
+            width:60px;
+        }
+        /* Hard-coded styles for badges */
+        .badge {
+            display: inline-block;
+            padding: 5px 10px;
+            font-size: 14px;
+            font-weight: bold;
+            border-radius: 5px;
+        }
+
+        /* Custom badge styles for "Transferred, InActive and Resigned" status */
+        .badge-other {
+            color: white;
+            background-color: red;
+        }
+
+        /* Custom badge styles for "Active" statuses */
+        .badge-active {
+            color: white;
+            background-color: green;
+        }
+    </style>
+    <!-- END: Head -->
+    <body class="py-5 md:py-0">
+    <div class="flex md:mt-0">
+        
+        <div th:replace="~{/fragments/nav}"></div>
+        <div th:insert="~{/fragments/mob}"></div>
+        <!-- BEGIN: Content -->
+        <div class="content content--top-nav">
+           
+            <div th:replace="~{/fragments/top}"></div>
+            <div class="intro-y flex items-center mt-8">
+                <h2 class="text-lg font-medium mr-auto">
+                Help
+                </h2>
+
+            </div>
+            
+        </div>
+        <!-- END: Content -->
+
+        <!-- BEGIN: Delete Confirmation Modal -->
+                
+				
+        <!-- BEGIN: JS Assets-->
+		
+        <!-- END: JS Assets-->
+		<script src="../dist/js/app.js"></script>
+		<script src="../dist/js/jquery-3.6.0.min.js"></script>
+		<script src="../dist/js/jquery.dataTables.min.js"></script>
+		<script src="../dist/js/sweetalert2.min.js"></script>
+    </div>
+
+    <div th:insert="~{/fragments/footer}"></div>
+    
+    </body>
+	<script>
+        
+    </script>
+</html>

@@ -1,0 +1,12 @@
+{"properties": [
+  {
+    "name": "server.contextPath",
+    "type": "java.lang.String",
+    "description": "A description for 'server.contextPath'"
+  },
+  {
+    "name": "spring.web.mvc.throw-exception-if-no-handler-found",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.web.mvc.throw-exception-if-no-handler-found'"
+  }
+]}
