@@ -11,7 +11,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
-    <packaging>jar</packaging>
+    <packaging>war</packaging>
     <groupId>com.telco</groupId>
     <artifactId>telco_co</artifactId>
     <version>0.0.1-SNAPSHOT</version>
