@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.Calendar;
+import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -43,9 +45,17 @@ import com.telco.telco_co_app.service.LoanInfoService;
 import com.telco.telco_co_app.service.LoanService;
 import com.telco.telco_co_app.service.NominieesService;
 import com.telco.telco_co_app.service.UserService;
+import com.telco.telco_co_app.service.PdfService;
+import com.telco.telco_co_app.service.AnnualStatementPdfService;
+
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.http.ContentDisposition;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 
 import org.springframework.transaction.annotation.Transactional;
 
@@ -85,6 +95,12 @@ public class HomeController {
 
 	@Autowired
 	private LoanRespository loanRepository;
+
+	@Autowired
+	private PdfService pdfService;
+
+	@Autowired
+	private AnnualStatementPdfService annualStatementPdfService;
 
 	// Helper method to get current authenticated user with request-level caching
 	private User getCurrentUser(HttpServletRequest request, HttpSession session) {
@@ -357,19 +373,194 @@ public class HomeController {
 	}
 
 	@GetMapping("/cdsharehis")
-	public String cdShareHistory(Model model, HttpSession session, HttpServletRequest request) {
-		User currentUser = getCurrentUser(request,session);
+	public String cdShareHistory(
+			Model model,
+			HttpSession session,
+			HttpServletRequest request) {
 
-		model.addAttribute("activePage", "CD Share History");
-		List<CDShareDeductions> lst = cdShareDeductionService.findByUserId(currentUser.getUserId());
+		User currentUser = getCurrentUser(request, session);
+
+		// -----------------------------
+		// CD / SHARE HISTORY
+		// -----------------------------
+		List<CDShareDeductions> lst =
+				cdShareDeductionService.findByUserId(
+						currentUser.getUserId()
+				);
 
 		model.addAttribute("cdshare", lst);
 
-		// Update session
-		updateSessionUser(session, currentUser);
+		Loan personalLoan =
+				loanRepository
+						.findTop1ByUserIdAndLoanTypeOrderByLoanApproveDateDesc(
+								currentUser.getUserId(),
+								LoanType.PERSONAL
+						);
 
-		return "cdshare_history";
+
+		Loan commodityLoan =
+				loanRepository
+						.findTop1ByUserIdAndLoanTypeOrderByLoanApproveDateDesc(
+								currentUser.getUserId(),
+								LoanType.COMMODITY
+						);
+
+
+		double personalLoanBalance = 0.0;
+
+		if (personalLoan != null) {
+			personalLoanBalance =
+					personalLoan.getLoanBalance();
+		}
+
+
+		double commodityLoanBalance = 0.0;
+
+		if (commodityLoan != null) {
+			commodityLoanBalance =
+					commodityLoan.getLoanBalance();
+		}
+
+
+		double totalLoanBalance =
+				personalLoanBalance
+						+ commodityLoanBalance;
+
+
+		Date latestLoanDate = null;
+
+		if (personalLoan != null
+				&& personalLoan.getLoanApproveDate() != null) {
+
+			latestLoanDate =
+					personalLoan.getLoanApproveDate();
+		}
+
+		if (commodityLoan != null
+				&& commodityLoan.getLoanApproveDate() != null) {
+
+			if (latestLoanDate == null
+					|| commodityLoan
+					.getLoanApproveDate()
+					.after(latestLoanDate)) {
+
+				latestLoanDate =
+						commodityLoan.getLoanApproveDate();
+			}
+		}
+
+
+		String paymentYear = "";
+
+		if (latestLoanDate != null) {
+
+			Calendar calendar =
+					Calendar.getInstance();
+
+			calendar.setTime(latestLoanDate);
+
+			paymentYear =
+					String.valueOf(
+							calendar.get(Calendar.YEAR)
+					);
+		}
+
+
+		// -----------------------------
+		// SEND DATA TO HTML
+		// -----------------------------
+		model.addAttribute(
+				"personalLoanBalance",
+				personalLoanBalance
+		);
+
+		model.addAttribute(
+				"commodityLoanBalance",
+				commodityLoanBalance
+		);
+
+		model.addAttribute(
+				"totalLoanBalance",
+				totalLoanBalance
+		);
+
+		model.addAttribute(
+				"paymentYear",
+				paymentYear
+		);
+
+
+		// Existing loan objects if your HTML needs them
+		model.addAttribute(
+				"personalLoan",
+				personalLoan
+		);
+
+		model.addAttribute(
+				"commodityLoan",
+				commodityLoan
+		);
+
+
+		// Update session
+		updateSessionUser(
+				session,
+				currentUser
+		);
+
+		return "annual_statementhistory";
 	}
+
+	@GetMapping("/cdsharehis/pdf")
+	public ResponseEntity<byte[]> downloadCdSharePdf(
+			HttpSession session,
+			HttpServletRequest request) {
+
+		try {
+
+			User currentUser =
+					getCurrentUser(request, session);
+
+			byte[] pdf =
+					annualStatementPdfService
+							.generateAnnualStatementPdf(currentUser);
+
+			HttpHeaders headers = new HttpHeaders();
+
+			headers.setContentType(
+					MediaType.APPLICATION_PDF
+			);
+
+			headers.setContentDisposition(
+					ContentDisposition
+							.attachment()
+							.filename(
+									"Annual_Statement_"
+											+ currentUser.getUserId()
+											+ ".pdf"
+							)
+							.build()
+			);
+
+			headers.setContentLength(pdf.length);
+
+			return new ResponseEntity<>(
+					pdf,
+					headers,
+					HttpStatus.OK
+			);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+			return ResponseEntity
+					.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.build();
+		}
+	}
+
+
 	
 	@GetMapping("/resetpassword")
 	public String newPassword(Model model, HttpSession session, HttpServletRequest request) {

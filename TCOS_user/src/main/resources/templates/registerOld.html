@@ -150,6 +150,12 @@
       #otplog[style*="color: red"] {
         color: red !important;
       }
+
+      @media (max-width: 640px) {
+            #ticket-search .btn {
+                margin-top: 10px;
+            }
+        }
     </style>
     <!-- END: CSS Assets-->
   </head>
@@ -164,7 +170,7 @@
             MEMBER REGISTRATION PROCESS FOR OLD MEMBERS
           </h2>
           Already have a account?
-          <a class="btn btn-primary" th:href="@{/telco_co/userlogin}"
+          <a class="btn btn-primary ml-3" th:href="@{/telco_co/userlogin}"
             >Sign In</a
           >
         </div>
@@ -205,8 +211,8 @@
               <div class="font-medium text-center text-lg mb-4">
                 Enter Your Ticket Number to Auto-fill Data
               </div>
-              <div class="grid grid-cols-12 gap-4">
-                <div class="intro-y col-span-8">
+              <div class="flex flex-col md:flex-row gap-4">
+                <div class="flex-1">
                   <label for="searchUserId" class="form-label"
                     >Ticket Number</label
                   >
@@ -218,7 +224,7 @@
                   />
                   <span class="error-message" id="searchUserIdError"></span>
                 </div>
-                <div class="intro-y col-span-4 flex items-end">
+                <div class="md:w-56 flex items-end">
                   <button
                     type="button"
                     class="btn btn-primary w-full"
@@ -644,14 +650,13 @@
                 </div>
                 <!-- Email -->
                 <div class="intro-y col-span-6">
-                  <label for="email" class="form-label">Email ID<span class="text-danger">*</span></label>
+                  <label for="email" class="form-label">Email ID</label>
                   <input
                     id="email"
                     name="email"
                     type="email"
                     class="form-control"
                     th:field="*{email}"
-                    required
                   />
                   <span class="error-message" id="emailError"
                     >Valid email required</span
@@ -1759,7 +1764,7 @@
         isValid &= validateField("bcNumber", "B.C. Number");
         isValid &= validateField("gender", "Gender", "select");
         isValid &= validateField("dob", "Date of Birth");
-        isValid &= validateField("email", "Email ID");
+       //  isValid &= validateField("email", "Email ID");
         isValid &= validateField(
           "phoneNum",
           "Phone Number",
@@ -1790,11 +1795,14 @@
            const email = emailInput.value.trim();
            const errorElement = document.getElementById('emailError');
 
-           // 1. Empty check
-           if (!email) {
-               setErrorMessage('email', 'Email is required');
-               return false;
-           }
+           // Clear previous error
+           errorElement.textContent = "";
+           errorElement.style.display = "none";
+
+          // Email is optional
+           if (email === "") {
+           return true;
+       }
 
            // 2. Format validation
            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -1803,9 +1811,6 @@
                return false;
            }
 
-           // Clear error if format is valid
-           errorElement.textContent = '';
-           errorElement.style.display = 'none';
 
       //     // 3. Uniqueness check
            try {

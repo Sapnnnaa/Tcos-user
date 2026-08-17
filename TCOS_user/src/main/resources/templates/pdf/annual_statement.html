@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8"/>
+
+    <title>Annual Statement</title>
+
+    <style>
+
+    @page {
+        size: A4;
+        margin: 30px 40px 30px 40px;
+    }
+
+    body {
+        font-family: Arial, Helvetica, sans-serif;
+        color: #111111;
+        font-size: 9px;
+        margin: 0;
+        padding: 0;
+    }
+
+    .main-container {
+        width: 100%;
+    }
+
+    /* =========================
+       HEADER
+       ========================= */
+
+    .society-name {
+        text-align: center;
+        font-size: 16px;
+        font-weight: bold;
+        margin-top: 3px;
+        margin-bottom: 15px;
+    }
+
+    .statement-title {
+        text-align: center;
+        font-size: 14px;
+        font-weight: bold;
+        margin-bottom: 30px;
+    }
+
+    .statement-title h2 {
+        font-size: 14px;
+        margin: 0;
+    }
+
+    /* =========================
+       MEMBER DETAILS
+       ========================= */
+
+    .member-details {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 35px;
+    }
+
+    .member-details td {
+        padding: 4px 0;
+        vertical-align: middle;
+    }
+
+    .member-label {
+        width: 30%;
+        font-size: 11px;
+    }
+
+    .member-value {
+        width: 70%;
+        font-size: 11px;
+        font-weight: bold;
+    }
+
+    /* =========================
+       HORIZONTAL LINE
+       ========================= */
+
+    .line {
+        border-top: 1px solid #111111;
+        width: 100%;
+        margin-bottom: 28px;
+    }
+
+    /* =========================
+       FINANCIAL DETAILS
+       ========================= */
+
+    .financial-title {
+        font-size: 12px;
+        font-weight: bold;
+        text-decoration: underline;
+        margin-bottom: 15px;
+    }
+
+    .financial-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .financial-table td {
+        padding: 6px 0;
+        font-size: 11px;
+        vertical-align: middle;
+    }
+
+    .financial-label {
+        width: 72%;
+        font-size: 11px;
+    }
+
+    .financial-amount {
+        width: 28%;
+        text-align: right;
+        font-size: 11px;
+    }
+
+    .amount-heading {
+        text-align: right;
+        font-size: 11px;
+        font-weight: bold;
+        text-decoration: underline;
+        padding-bottom: 12px !important;
+    }
+
+    /* =========================
+       BOTTOM LINE
+       ========================= */
+
+    .bottom-line {
+        border-top: 1px solid #111111;
+        width: 100%;
+        margin-top: 25px;
+        margin-bottom: 8px;
+    }
+
+    /* =========================
+       NOTE
+       ========================= */
+
+    .note-title {
+        font-size: 11px;
+        font-weight: bold;
+        margin-bottom: 12px;
+    }
+
+    .notes {
+        margin: 0;
+        padding-left: 22px;
+    }
+
+    .notes li {
+        font-size: 10px;
+        font-weight: bold;
+        margin-bottom: 10px;
+        line-height: 1.5;
+    }
+
+    /* =========================
+       PRINT
+       ========================= */
+
+    .no-border {
+        border: none;
+    }
+
+</style>
+
+</head>
+
+<body>
+
+<div class="main-container">
+
+    <div class="society-name">
+        TELCO COOPERATIVE SOCIETY, JAMSHEDPUR
+    </div>
+
+
+    <div class="statement-title">
+        <h2>STATEMENT OF ACCOUNT AS ON 31.3.2025</h2>
+    </div>
+
+
+    <!-- ==========================================
+         MEMBER INFORMATION
+         Only Name + Personal Number
+         ========================================== -->
+
+    <table class="member-details">
+
+        <tr>
+            <td class="member-label">
+                MEMBER NAME:
+            </td>
+
+            <td class="member-value"
+                th:text="${memberName}">
+                Member Name
+            </td>
+        </tr>
+
+
+        <tr>
+            <td class="member-label">
+                PERSONAL NUMBER:
+            </td>
+
+            <td class="member-value"
+                th:text="${personalNumber}">
+                000000
+            </td>
+        </tr>
+
+        <tr>
+            <td class="member-label">
+                COMPANY:
+            </td>
+            <td class="member-value"
+                th:text="${company}">
+            </td>
+        </tr>
+
+    </table>
+
+
+    <!-- ==========================================
+         HORIZONTAL LINE
+         ========================================== -->
+
+    <div class="line"></div>
+
+
+    <!-- ==========================================
+         FINANCIAL DETAILS
+         STATIC 31.3.2025
+         ========================================== -->
+
+    <div class="financial-title">
+        FINANCIAL DETAILS AS ON 31.3.2025
+    </div>
+
+
+    <table class="financial-table">
+
+        <!-- Amount Heading -->
+
+        <tr>
+
+            <td class="financial-label"></td>
+
+            <td class="amount-heading">
+                AMOUNT(RS)
+            </td>
+
+        </tr>
+
+
+        <tr>
+
+            <td class="financial-label">
+                SHARE CAPITAL:
+            </td>
+
+            <td class="financial-amount"
+                th:text="${shareCapital}">
+                0.00
+            </td>
+
+        </tr>
+
+        <tr>
+
+            <td class="financial-label">
+                COMPULSORY DEPOSIT:
+            </td>
+
+            <td class="financial-amount"
+                th:text="${compulsoryDeposit}">
+                0.00
+            </td>
+
+        </tr>
+
+
+        <tr>
+
+            <td class="financial-label">
+                TCS LOAN BALANCE:
+            </td>
+
+            <td class="financial-amount"
+                th:text="${personalLoanBalance}">
+                0.00
+            </td>
+
+        </tr>
+
+
+        <tr>
+
+            <td class="financial-label">
+                COMMODITY LOAN BALANCE:
+            </td>
+
+            <td class="financial-amount"
+                th:text="${commodityLoanBalance}">
+                0.00
+            </td>
+
+        </tr>
+
+        <tr>
+
+            <td class="financial-label">
+                Compulsory Deposit Interest Credited for 2024-25
+            </td>
+
+            <td class="financial-amount"
+                th:text="${cdInterest}">
+                0.00
+            </td>
+
+        </tr>
+
+    </table>
+
+
+    <div class="bottom-line"></div>
+
+
+    <!-- ==========================================
+         NOTES
+         ========================================== -->
+
+    <div class="note-title">
+        # Note:
+    </div>
+
+
+    <ul class="notes">
+
+        <li>
+            The above balances are as on 31<sup>st</sup> March,2025.
+        </li>
+
+        <li>
+            In case of any query please contact Telco Cooperative Society Office
+            between 9 AM to 4 P.M on society working days.
+        </li>
+
+        <li>
+            Interest on Compulsory Deposit is already included in
+            Compulsory Deposit Closing Amount.
+        </li>
+
+    </ul>
+
+</div>
+
+</body>
+
+</html>
